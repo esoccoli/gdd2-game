@@ -224,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 487199105}
   - component: {fileID: 487199104}
+  - component: {fileID: 487199106}
   m_Layer: 0
   m_Name: henry
   m_TagString: Untagged
@@ -298,6 +299,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &487199106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487199103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc55436120bffd46aa89ac12f161cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 487199103}
+  max_health: 10
+  max_willpower: 10
+  regen_willpower: 3
+  vitality: 3
+  strength: 2
+  resolve: 2
+  fortitude: 2
+  fortune: 2
+  weakness: Fire
 --- !u!1 &726072270
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1269956904}
   - component: {fileID: 1269956903}
+  - component: {fileID: 1269956905}
   m_Layer: 0
   m_Name: E1
   m_TagString: Untagged
@@ -618,6 +642,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269956905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269956902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181b4659e98349745a391beaa36f87fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 1269956902}
+  max_health: 15
+  max_willpower: 10
+  regen_willpower: 4
+  vitality: 2
+  strength: 2
+  resolve: 2
+  fortitude: 3
+  fortune: 2
+  weakness: Fire
 --- !u!1 &1568957600
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,6 +674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1568957602}
   - component: {fileID: 1568957601}
+  - component: {fileID: 1568957603}
   m_Layer: 0
   m_Name: lucine
   m_TagString: Untagged
@@ -702,6 +749,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1568957603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568957600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc55436120bffd46aa89ac12f161cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1568957600}
+  max_health: 8
+  max_willpower: 12
+  regen_willpower: 4
+  vitality: 1
+  strength: 1
+  resolve: 2
+  fortitude: 2
+  fortune: 3
+  weakness: Ice
 --- !u!1 &1706382062
 GameObject:
   m_ObjectHideFlags: 0
