@@ -855,7 +855,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1706382066}
+        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c05adfaa-c704-48cd-8724-0ed6fde66b9e
     m_ActionName: Combat Controls/Attack[/Keyboard/space]
   - m_PersistentCalls:
@@ -863,7 +875,19 @@ MonoBehaviour:
     m_ActionId: 7672d55c-7ee2-4ac7-9589-71f57b33c0bd
     m_ActionName: Combat Controls/Spell
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2f5952c8-d2c3-4f53-afbd-0f275e067ee0
     m_ActionName: Combat Controls/Rest
   m_NeverAutoSwitchControlSchemes: 0
@@ -883,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f753998dabc0b24d97083fa5fd720e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 1706382063}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
