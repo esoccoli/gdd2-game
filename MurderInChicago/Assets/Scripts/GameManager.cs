@@ -53,8 +53,8 @@ public class GameManager : MonoBehaviour
          * Once we have enemies, add them to the enemies list here using the same type of syntax as
          * used above for the party members
          */
-        // GameObject enemy = GameObject.Find("<INSERT NAME OF ENEMY GAME OBJECT HERE>");
-        // enemies.Add(enemy);
+        GameObject enemy = GameObject.Find("E1");
+        enemies.Add(enemy);
     }
 
     // Update is called once per frame
