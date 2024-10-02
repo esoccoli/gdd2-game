@@ -90,7 +90,7 @@ public class EnemyScript : MonoBehaviour
         {
             PhysicalAttack(target);
         }
-        else if (action < 80)
+        else if (action < 80 && action > 40)
         {
             MagicAttack(target, spellType, spellCost);
         }

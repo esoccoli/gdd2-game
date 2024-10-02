@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Presets;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -33,7 +35,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     List<EnemyScript> enemies;
 
-    
+    //A queue to manage turn order
+    Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
     public List<PartyMemberScript> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
     public List<EnemyScript> Enemies { get { return enemies; } set { enemies = value; } }
@@ -44,7 +47,9 @@ public class GameManager : MonoBehaviour
     {
         turnCounter = 0;
 
-        NextTurn();
+        PrepareTurnQueue();
+
+        StartNextTurn();
         
         //partyMembers = new List<GameObject>();
         //enemies = new List<GameObject>();
@@ -71,70 +76,74 @@ public class GameManager : MonoBehaviour
         //enemies.Add(enemy);
     }
 
-    // Update is called once per frame
+    //Prepare the turn queue for all party members and enemies
+    void PrepareTurnQueue()
+    {
+        //Clear the current queue to prevent stacking turns
+        turnQueue.Clear();
+
+        //Add party members to the turn queue
+        foreach (var member in partyMembers)
+        {
+            turnQueue.Enqueue(PartyMemberTurn(member));
+        }
+
+        //Add enemies to the turn queue
+        foreach (var enemy in enemies)
+        {
+            turnQueue.Enqueue(EnemyTurn(enemy));
+        }
+    }
+
+    //Process the next turn in the queue
+    void StartNextTurn()
+    {
+        if (turnQueue.Count > 0)
+        {
+            StartCoroutine(turnQueue.Dequeue());
+        }
+        else
+        {
+            //All turns are done, start the next round
+            PrepareTurnQueue();
+            StartNextTurn();
+        }
+    }
+
+    //Coroutine to handle a party member's turn
+    IEnumerator PartyMemberTurn(PartyMemberScript member)
+    {
+        member.IsMyTurn = true;
+
+        //Wait until the player completes their action
+        yield return StartCoroutine(member.AwaitInputFromUI());
+
+        member.TurnEnd();
+        member.IsMyTurn = false; // Mark the member's turn as complete
+        StartNextTurn(); //Proceed to the next turn after this one ends
+    }
+
+    //Coroutine to handle an enemy's turn
+    IEnumerator EnemyTurn(EnemyScript enemy)
+    {
+        enemy.IsMyTurn = true;
+
+        int target = Random.Range(0, partyMembers.Count);
+
+        //Simulate enemy determining action
+        enemy.DetermineAction(partyMembers[target], "Heal", 3);
+
+        //Add a slight delay to simulate enemy thinking/action
+        yield return new WaitForSeconds(1.0f);
+
+        enemy.TurnEnd();
+        enemy.IsMyTurn = false; // Mark the enemy's turn as complete
+        StartNextTurn(); //Proceed to the next turn after this one ends
+    }
+
+    //Update is called once per frame
     void Update()
     {
         
-    }
-
-    void NextTurn()
-    {
-        turnCounter++;
-        //start next turn code goes here
-        //ManageTurns(partyMembers, enemies);
-        ManageTurns();
-    }
-
-    //void ManageTurns(List<PartyMemberScript> partyMembers, List<EnemyScript> enemies)
-    void ManageTurns()
-    {
-        // Loops through the list of party members and allows each one to take their turn
-        for (int i = 0; i < partyMembers.Count; i++)
-        {
-        /* 
-         * AwaitInputFromUI DOES NOT EXIST YET!!!!
-         * 
-         * There should be a function with this name inside both PartyMemberScript and EnemyScript
-         * This function should wait until it gets input from the UI, and then call the appropriate function(s)
-         * Ie: If the attack button is clicked, call the necessary functions to have that character attack a target specified by a parameter
-        */
-
-            partyMembers[i].IsMyTurn = true;
-
-
-
-            //there is a bug here and I'm not sure how to fix it. the game will not wait for the coroutine to finish
-            //so it loops through all of the player's turns in one go instead of waiting
-            
-            
-            StartCoroutine(partyMembers[i].AwaitInputFromUI());
-
-
-            //Debug.Log("coroutine is done");
-
-
-            /*
-             * Once the TurnEnd() function has been called for this party member, the loop should 
-             * move to the next iteration, allowing the next party member to take their turn
-             * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
-            */
-        }
-
-        // Loops through the list of enemies and allows each one to take their turn
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            int target = Random.Range(0, partyMembers.Count);
-
-            // Feel free to change the spell type or cost, I just picked arbitrary values
-            //enemies[i].GetComponent<EnemyScript>().DetermineAction(partyMembers[i], "Buff", 3);
-            enemies[i].DetermineAction(partyMembers[i], "Buff", 3);
-            /*
-             * Once the TurnEnd() function has been called for this enemy, the loop should 
-             * move to the next iteration, allowing the next enemy to take their turn
-             * 
-             * If this was the last enemy in the list, the loop will exit, and then the function also exits,
-             * moving to the next round of the battle (one round of the battle consists of every party member getting a turn, and then every enemy is getting a turn
-             */
-        }
     }
 }
