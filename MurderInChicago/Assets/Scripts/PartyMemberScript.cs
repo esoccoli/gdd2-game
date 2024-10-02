@@ -12,6 +12,9 @@ public class PartyMemberScript : MonoBehaviour
 
     SpriteRenderer sr_player;
 
+    //used for UI so game knows when to disable the button
+    bool isMyTurn;
+
     //STATS
 
     int current_health;
@@ -50,11 +53,19 @@ public class PartyMemberScript : MonoBehaviour
 
 
     public int Health { get { return current_health; } }
+    public int Current_Willpower { get { return current_willpower; } }
+
+    public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+
 
     // Start is called before the first frame update
     void Start()
     {
         sr_player = GetComponent<SpriteRenderer>();
+        isMyTurn = false;
+        current_health = max_health;
+        current_willpower = max_willpower;
+
     }
 
     // Update is called once per frame
@@ -67,9 +78,8 @@ public class PartyMemberScript : MonoBehaviour
     //Because these are the scripts for the player characters,
     //they will get the Enemy Scripts of the target.
     //Gets called when player selects "Attack" option
-    public void PhysicalAttack(GameObject target)
+    public void PhysicalAttack(EnemyScript targetScript)
     {
-        EnemyScript targetScript = target.GetComponent<EnemyScript>();
         if (targetScript != null)
         {
             targetScript.TakeDamage("physical", 4 + strength + Crit(), "physical");
@@ -233,6 +243,7 @@ public class PartyMemberScript : MonoBehaviour
     //And pass in regen_willpower if TurnEnd is called from anywhere but Rest()
     public void TurnEnd()
     {
+        isMyTurn = false;
         TurnEnd(regen_willpower);
     }
 

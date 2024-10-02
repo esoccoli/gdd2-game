@@ -12,6 +12,10 @@ public class EnemyScript : MonoBehaviour
 
     SpriteRenderer sr_enemy;
 
+
+    //used for UI so game knows when to disable the button
+    bool isMyTurn;
+
     //STATS
 
     int current_health;
@@ -50,11 +54,19 @@ public class EnemyScript : MonoBehaviour
 
 
     public int Health { get { return current_health; } }
+    public int Current_Willpower { get { return current_willpower; } }
+
+
+    public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+
 
     // Start is called before the first frame update
     void Start()
     {
         sr_enemy = GetComponent<SpriteRenderer>();
+        isMyTurn = false;
+        current_health = max_health;
+        current_willpower = max_willpower;
     }
 
     // Update is called once per frame
@@ -70,7 +82,7 @@ public class EnemyScript : MonoBehaviour
     //Everything else is the same
     //Currently, it will just randomly choose an option.
     //TODO: Improve AI
-    public void DetermineAction(GameObject target, string spellType, int spellCost)
+    public void DetermineAction(PartyMemberScript target, string spellType, int spellCost)
     {
         //Currently: 40% to do a physical attack, 40% to cast a spell, and 20% to cast a spell
         int action = Random.Range(0, 100);
@@ -92,9 +104,9 @@ public class EnemyScript : MonoBehaviour
     //Because these are the scripts for the enemy characters,
     //they will get the Party Member Scripts of the target.
     //Gets called when the enemy selects "Attack" option
-    public void PhysicalAttack(GameObject target)
+    public void PhysicalAttack(PartyMemberScript targetScript)
     {
-        PartyMemberScript targetScript = target.GetComponent<PartyMemberScript>();
+        //PartyMemberScript targetScript = target.GetComponent<PartyMemberScript>();
         if (targetScript != null)
         {
             targetScript.TakeDamage("physical", 4 + strength + Crit(), "physical");
@@ -105,7 +117,7 @@ public class EnemyScript : MonoBehaviour
     //Deals magical type damage to the target. Magic spells can have multiple different subtypes,
     //such as fire, ice, electricity, etc
     //Gets called when the enemy selects "Use Spell" option
-    public void MagicAttack(GameObject target, string spellType, int spellCost)
+    public void MagicAttack(PartyMemberScript target, string spellType, int spellCost)
     {
         PartyMemberScript targetScript = target.GetComponent<PartyMemberScript>();
         if (targetScript != null)
@@ -252,6 +264,7 @@ public class EnemyScript : MonoBehaviour
     //And pass in regen_willpower if TurnEnd is called from anywhere but Rest()
     public void TurnEnd()
     {
+        isMyTurn = false;
         TurnEnd(regen_willpower);
     }
 
