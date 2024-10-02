@@ -82,7 +82,7 @@ public class UIScript : MonoBehaviour
         //checks if it is a party member's turn and then re enables the buttons if it is
         foreach (PartyMemberScript pMember in manager.PartyMembers)
         {
-            Debug.Log(pMember.IsMyTurn);
+            //Debug.Log(pMember.IsMyTurn);
             if (pMember.IsMyTurn == true)
             {
                 attackButton.gameObject.SetActive(true);

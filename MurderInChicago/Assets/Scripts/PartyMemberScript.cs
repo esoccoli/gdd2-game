@@ -305,11 +305,11 @@ public class PartyMemberScript : MonoBehaviour
 
     public IEnumerator AwaitInputFromUI()
     {
-        Debug.Log("button is not pressed");
-        while (isMyTurn)
+        Debug.Log("1");
+        while (isMyTurn == true)
         {
             yield return null;
         }
-        Debug.Log("button is pressed");
+        yield return new WaitForSeconds(0.1f);
     }
 }

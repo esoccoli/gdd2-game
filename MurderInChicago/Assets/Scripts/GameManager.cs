@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -88,27 +89,29 @@ public class GameManager : MonoBehaviour
     void ManageTurns()
     {
         // Loops through the list of party members and allows each one to take their turn
-        for (int i = 1; i < partyMembers.Count; i++)
+        for (int i = 0; i < partyMembers.Count; i++)
         {
-            /* 
-             * AwaitInputFromUI DOES NOT EXIST YET!!!!
-             * 
-             * There should be a function with this name inside both PartyMemberScript and EnemyScript
-             * This function should wait until it gets input from the UI, and then call the appropriate function(s)
-             * Ie: If the attack button is clicked, call the necessary functions to have that character attack a target specified by a parameter
-            */
+        /* 
+         * AwaitInputFromUI DOES NOT EXIST YET!!!!
+         * 
+         * There should be a function with this name inside both PartyMemberScript and EnemyScript
+         * This function should wait until it gets input from the UI, and then call the appropriate function(s)
+         * Ie: If the attack button is clicked, call the necessary functions to have that character attack a target specified by a parameter
+        */
 
             partyMembers[i].IsMyTurn = true;
 
+
+
+        //there is a bug here
             StartCoroutine(partyMembers[i].AwaitInputFromUI());
 
-            /*
-             * Once the TurnEnd() function has been called for this party member, the loop should 
-             * move to the next iteration, allowing the next party member to take their turn
-             * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
-            */
-
-
+        /*
+         * Once the TurnEnd() function has been called for this party member, the loop should 
+         * move to the next iteration, allowing the next party member to take their turn
+         * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
+        */
+            Debug.Log("coroutine is done");
         }
 
         // Loops through the list of enemies and allows each one to take their turn
