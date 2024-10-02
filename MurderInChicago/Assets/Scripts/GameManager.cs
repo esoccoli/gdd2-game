@@ -80,19 +80,16 @@ public class GameManager : MonoBehaviour
     {
         turnCounter++;
         //start next turn code goes here
-        ManageTurns(partyMembers, enemies);
+        //ManageTurns(partyMembers, enemies);
+        ManageTurns();
     }
 
-    void ManageTurns(List<PartyMemberScript> partyMembers, List<EnemyScript> enemies)
+    //void ManageTurns(List<PartyMemberScript> partyMembers, List<EnemyScript> enemies)
+    void ManageTurns()
     {
-        //partyMembers[0].IsMyTurn = true;
-
         // Loops through the list of party members and allows each one to take their turn
         for (int i = 1; i < partyMembers.Count; i++)
         {
-            partyMembers[i].IsMyTurn = true;
-
-
             /* 
              * AwaitInputFromUI DOES NOT EXIST YET!!!!
              * 
@@ -100,13 +97,18 @@ public class GameManager : MonoBehaviour
              * This function should wait until it gets input from the UI, and then call the appropriate function(s)
              * Ie: If the attack button is clicked, call the necessary functions to have that character attack a target specified by a parameter
             */
-            //partyMembers[i].AwaitInputFromUI();
+
+            partyMembers[i].IsMyTurn = true;
+
+            StartCoroutine(partyMembers[i].AwaitInputFromUI());
 
             /*
              * Once the TurnEnd() function has been called for this party member, the loop should 
              * move to the next iteration, allowing the next party member to take their turn
              * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
             */
+
+
         }
 
         // Loops through the list of enemies and allows each one to take their turn

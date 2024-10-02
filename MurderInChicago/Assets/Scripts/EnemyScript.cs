@@ -117,9 +117,9 @@ public class EnemyScript : MonoBehaviour
     //Deals magical type damage to the target. Magic spells can have multiple different subtypes,
     //such as fire, ice, electricity, etc
     //Gets called when the enemy selects "Use Spell" option
-    public void MagicAttack(PartyMemberScript target, string spellType, int spellCost)
+    public void MagicAttack(PartyMemberScript targetScript, string spellType, int spellCost)
     {
-        PartyMemberScript targetScript = target.GetComponent<PartyMemberScript>();
+        //PartyMemberScript targetScript = target.GetComponent<PartyMemberScript>();
         if (targetScript != null)
         {
             if (current_willpower - spellCost >= 0)
@@ -322,5 +322,10 @@ public class EnemyScript : MonoBehaviour
                 sr_enemy.color = Color.blue;
                 break;
         }
+    }
+
+    public void AwaitInputFromUI()
+    {
+
     }
 }

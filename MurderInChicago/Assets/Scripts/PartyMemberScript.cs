@@ -302,4 +302,14 @@ public class PartyMemberScript : MonoBehaviour
                 break;
         }
     }
+
+    public IEnumerator AwaitInputFromUI()
+    {
+        Debug.Log("button is not pressed");
+        while (isMyTurn)
+        {
+            yield return null;
+        }
+        Debug.Log("button is pressed");
+    }
 }
