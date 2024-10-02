@@ -103,7 +103,8 @@ public class GameManager : MonoBehaviour
 
 
 
-        //there is a bug here
+            //there is a bug here and I'm not sure how to fix it. the game will not wait for the coroutine to finish
+            //so it loops through all of the player's turns as soon as 
             StartCoroutine(partyMembers[i].AwaitInputFromUI());
 
         /*
