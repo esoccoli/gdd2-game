@@ -104,15 +104,20 @@ public class GameManager : MonoBehaviour
 
 
             //there is a bug here and I'm not sure how to fix it. the game will not wait for the coroutine to finish
-            //so it loops through all of the player's turns as soon as 
+            //so it loops through all of the player's turns in one go instead of waiting
+            
+            
             StartCoroutine(partyMembers[i].AwaitInputFromUI());
 
-        /*
-         * Once the TurnEnd() function has been called for this party member, the loop should 
-         * move to the next iteration, allowing the next party member to take their turn
-         * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
-        */
-            Debug.Log("coroutine is done");
+
+            //Debug.Log("coroutine is done");
+
+
+            /*
+             * Once the TurnEnd() function has been called for this party member, the loop should 
+             * move to the next iteration, allowing the next party member to take their turn
+             * If this was the last party member in the list, the loop will exit and then the program will move to the enemies
+            */
         }
 
         // Loops through the list of enemies and allows each one to take their turn

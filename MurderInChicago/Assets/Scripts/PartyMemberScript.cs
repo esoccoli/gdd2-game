@@ -305,11 +305,12 @@ public class PartyMemberScript : MonoBehaviour
 
     public IEnumerator AwaitInputFromUI()
     {
-        Debug.Log("1");
+        //Debug.Log("1");
+        yield return new WaitForSeconds(2.0f);
         while (isMyTurn == true)
         {
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
+        //Debug.Log("2");
     }
 }
