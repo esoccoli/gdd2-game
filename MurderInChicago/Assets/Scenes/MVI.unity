@@ -2495,8 +2495,9 @@ MonoBehaviour:
   - {fileID: 258458784}
   enemyWPTexts:
   - {fileID: 664543693}
-  attackButton: {fileID: 1142911255}
-  restButton: {fileID: 1855867403}
+  buttons:
+  - {fileID: 1142911255}
+  - {fileID: 1855867403}
   turnIndicator: {fileID: 1679537747}
   winScreen: {fileID: 1949179990}
   loseScreen: {fileID: 121937604}
