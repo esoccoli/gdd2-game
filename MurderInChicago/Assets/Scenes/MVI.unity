@@ -789,16 +789,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc55436120bffd46aa89ac12f161cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 487199103}
-  max_health: 10
-  max_willpower: 10
-  regen_willpower: 3
+  character: {fileID: 487199103}
+  maxHealth: 20
+  maxWillpower: 10
+  regenWillpower: 2
   vitality: 3
   strength: 2
   resolve: 2
   fortitude: 2
   fortune: 2
   weakness: Fire
+  currentEmotion: 0
+  pastEmotion: 0
 --- !u!1 &664543691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1858,16 +1860,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181b4659e98349745a391beaa36f87fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 1269956902}
-  max_health: 15
-  max_willpower: 10
-  regen_willpower: 4
+  character: {fileID: 1269956902}
+  maxHealth: 30
+  maxWillpower: 10
+  regenWillpower: 2
   vitality: 2
-  strength: 2
+  strength: 1
   resolve: 2
   fortitude: 3
   fortune: 2
   weakness: Fire
+  currentEmotion: 5
+  pastEmotion: 5
 --- !u!1 &1290527149
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,16 +2103,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc55436120bffd46aa89ac12f161cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1568957600}
-  max_health: 8
-  max_willpower: 12
-  regen_willpower: 4
+  character: {fileID: 1568957600}
+  maxHealth: 20
+  maxWillpower: 10
+  regenWillpower: 2
   vitality: 1
   strength: 1
   resolve: 2
   fortitude: 2
   fortune: 3
   weakness: Ice
+  currentEmotion: 0
+  pastEmotion: 0
 --- !u!1 &1662047859
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,29 +10,30 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    /// GameManager object/script reference
     [SerializeField]
     GameManager manager;
 
     [SerializeField]
-    PartyMemberScript henry;
+    PartyMember henry;
 
     [SerializeField]
-    PartyMemberScript lucine;
+    PartyMember lucine;
 
     [SerializeField]
-    EnemyScript enemy;
+    Enemy enemy;
 
 
-    //UI elements
+    // UI elements
     [SerializeField]
-    List<TextMeshProUGUI> pMemberHPTexts;
+    List<TextMeshProUGUI> partyMemberHPTexts;
 
     [SerializeField]
     List<TextMeshProUGUI> enemyHPTexts;
 
 
     [SerializeField]
-    List<TextMeshProUGUI> pMemberWPTexts;
+    List<TextMeshProUGUI> partyMemberWPTexts;
 
     [SerializeField]
     List<TextMeshProUGUI> enemyWPTexts;
@@ -40,8 +41,9 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<Button> buttons;
 
+    /// A circle below a character to indicate who's turn it is
     [SerializeField]
-    SpriteRenderer turnIndicator; //The circle indicator
+    SpriteRenderer turnIndicator;
 
     // Win/Lose UI Elements
     [SerializeField]
@@ -51,75 +53,78 @@ public class UIScript : MonoBehaviour
     GameObject loseScreen;
 
 
-    //Update the turn indicator position based on the current turn
+    // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
     {
-
-        //Check for active party member
-        foreach (PartyMemberScript pMember in manager.PartyMembers)
+        // Check for active party member
+        foreach (PartyMember partyMember in manager.PartyMembers)
         {
-            if (pMember.IsMyTurn)
+            if (partyMember.IsMyTurn)
             {
-                //Position the turn indicator directly below the party member
-                Vector3 newPosition = pMember.transform.position + new Vector3(0, -0.8f, 0);
+                // Position the turn indicator directly below the party member
+                Vector3 newPosition = partyMember.transform.position + new Vector3(0, -0.8f, 0);
                 turnIndicator.transform.position = newPosition;
-                return; //Exit after finding the current turn member
+                return;
             }
         }
 
-        //Check for active enemy
-        foreach (EnemyScript enemy in manager.Enemies)
+        // Check for active enemy
+        foreach (Enemy enemy in manager.Enemies)
         {
-            if (enemy.IsMyTurn) //Assuming EnemyScript has IsMyTurn property
+            if (enemy.IsMyTurn)
             {
-                //Position the turn indicator directly below the enemy
+                // Position the turn indicator directly below the enemy
                 Vector3 newPosition = enemy.transform.position + new Vector3(0, -0.8f, 0);
                 turnIndicator.transform.position = newPosition;
-                return; //Exit after finding the current enemy
+                return;
             }
         }
     }
 
-
-    //disables the buttons if Attack is clicked so you can't spam a button and then makes the currect party member attack the enemy for that turn
+    /// <summary>
+    /// Called when the user clicks the "Attack" button in the battle menu
+    /// Takes the appropriate actions and disables all the UI buttons to prevent spam
+    /// </summary>
     public void OnAttack()
     {
         ShowAndHideButtons(false);
 
-        foreach (PartyMemberScript pMember in manager.PartyMembers) 
+        foreach (PartyMember partyMember in manager.PartyMembers) 
         {
-            if (pMember.IsMyTurn)
-            {
-                pMember.PhysicalAttack(enemy);
-            }
+            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
         }
 
-        UpdateTurnIndicatorPosition(); // Update position after action
+        UpdateTurnIndicatorPosition();
     }
 
     //disables the buttons if rest is clicked so you can't spam a button and then makes the currect party member rest for that turn
+
+    /// <summary>
+    /// Called when the user clicks the "Rest" button in the battle menu
+    /// Takes the appropriate actions and disables all the UI buttons to prevent spam
+    /// </summary>
     public void OnRest()
     {
         ShowAndHideButtons(false);
 
-        foreach (PartyMemberScript pMember in manager.PartyMembers)
+        foreach (PartyMember partyMember in manager.PartyMembers)
         {
-            if (pMember.IsMyTurn)
-            {
-                pMember.Rest();
-            }
+            if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
 
-        UpdateTurnIndicatorPosition(); // Update position after action
+        UpdateTurnIndicatorPosition();
     }
 
+    /// <summary>
+    /// Checks whether all characters on one side are defeated
+    /// </summary>
     private void CheckGameOver()
     {
         // Check if all party members are defeated
         bool allPlayersDefeated = true;
-        foreach (PartyMemberScript pMember in manager.PartyMembers)
+        foreach (PartyMember partyMember in manager.PartyMembers)
         {
-            if (pMember.Health > 0)
+            if (partyMember.Health > 0)
             {
                 allPlayersDefeated = false;
                 break;
@@ -130,13 +135,15 @@ public class UIScript : MonoBehaviour
         {
             // Show lose screen
             loseScreen.SetActive(true);
-            Time.timeScale = 0; // Stop the game
+
+            // Stop the game
+            Time.timeScale = 0;
             return;
         }
 
         // Check if all enemies are defeated
         bool allEnemiesDefeated = true;
-        foreach (EnemyScript enemy in manager.Enemies)
+        foreach (Enemy enemy in manager.Enemies)
         {
             if (enemy.Health > 0)
             {
@@ -149,13 +156,15 @@ public class UIScript : MonoBehaviour
         {
             // Show win screen
             winScreen.SetActive(true);
-            Time.timeScale = 0; // Stop the game
+
+            // Stop the game
+            Time.timeScale = 0;
         }
     }
 
     void Start()
     {
-        //Initialize the turn indicator position
+        // Initialize the turn indicator position
         UpdateTurnIndicatorPosition();
 
         // Hide win and lose screens at the start
@@ -168,28 +177,27 @@ public class UIScript : MonoBehaviour
         // Check for win/lose conditions
         CheckGameOver();
 
-        foreach (PartyMemberScript pMember in manager.PartyMembers)
+        foreach (PartyMember partyMember in manager.PartyMembers)
         {
-            //checks if it is a party member's turn and then re enables the buttons if it is
-            if (pMember.IsMyTurn == true)
+            // Checks if it is a party member's turn and then re enables the buttons if it is
+            if (partyMember.IsMyTurn == true)
             {
                 ShowAndHideButtons(true);
-
-                UpdateTurnIndicatorPosition(); // Update position during turn
+                UpdateTurnIndicatorPosition();
             }
 
-            //updates each of the player hp and wp UI elements
-            foreach (TextMeshProUGUI hpText in pMemberHPTexts)
+            // Updates each of the player hp and wp UI elements
+            foreach (TextMeshProUGUI hpText in partyMemberHPTexts)
             {
-                hpText.text = "HP: " + pMember.Health.ToString();
+                hpText.text = "HP: " + partyMember.Health.ToString();
             }
-            foreach (TextMeshProUGUI wpText in pMemberWPTexts)
+            foreach (TextMeshProUGUI wpText in partyMemberWPTexts)
             {
-                wpText.text = "WP: " + pMember.Current_Willpower.ToString();
+                wpText.text = "WP: " + partyMember.Willpower.ToString();
             }
         }
 
-        foreach (EnemyScript enemy in manager.Enemies)
+        foreach (Enemy enemy in manager.Enemies)
         {
             // Check if it's an enemy's turn to update the indicator if necessary
             if (enemy.IsMyTurn == true)
@@ -197,19 +205,19 @@ public class UIScript : MonoBehaviour
                 UpdateTurnIndicatorPosition(); // Update position during turn
             }
 
-            //updates each of the enemy hp and wp UI elements
+            // Updates each of the enemy hp and wp UI elements
             foreach (TextMeshProUGUI hpText in enemyHPTexts)
             {
                 hpText.text = "HP: " + enemy.Health.ToString();
             }
             foreach (TextMeshProUGUI wpText in enemyWPTexts)
             {
-                wpText.text = "WP: " + enemy.Current_Willpower.ToString();
+                wpText.text = "WP: " + enemy.Willpower.ToString();
             }
         }
     }
 
-    //shows or hides the buttons depending on if it is a party members turn or not
+    // Shows or hides the buttons depending on if it is a party members turn or not
     void ShowAndHideButtons(bool isActive)
     {
         foreach (Button b in buttons)
