@@ -4,10 +4,10 @@ using UnityEngine;
 using System.Collections.Specialized;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.TextCore.Text;
 
 public class PartyMember : Character
 {
-
     /// <summary>
     /// Allows the player to select an item from their inventory and use it
     /// Only players can use items
@@ -24,12 +24,10 @@ public class PartyMember : Character
     /// <returns></returns>
     public IEnumerator AwaitInputFromUI()
     {
-        //Debug.Log("1");
         yield return new WaitForSeconds(2.0f);
         while (IsMyTurn == true)
         {
             yield return null;
         }
-        //Debug.Log("2");
     }
 }

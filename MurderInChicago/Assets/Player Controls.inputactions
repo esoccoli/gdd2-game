@@ -2,31 +2,22 @@
     "name": "Player Controls",
     "maps": [
         {
-            "name": "Combat Controls",
+            "name": "Hub Controls",
             "id": "4d971db0-f569-4ebe-acba-0fc08d9a2e9f",
             "actions": [
                 {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "c05adfaa-c704-48cd-8724-0ed6fde66b9e",
-                    "expectedControlType": "",
+                    "name": "Move A/D",
+                    "type": "Value",
+                    "id": "19e000b1-8f9f-4fd8-9640-fe43a7ca1596",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
-                    "name": "Spell",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "7672d55c-7ee2-4ac7-9589-71f57b33c0bd",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rest",
-                    "type": "Button",
-                    "id": "2f5952c8-d2c3-4f53-afbd-0f275e067ee0",
+                    "id": "06bd9105-135a-481e-abc1-2d4dbf147f51",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -36,36 +27,47 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "2de7e858-c7d6-419b-a573-891ec66f5589",
-                    "path": "<Keyboard>/space",
+                    "id": "e278fc8c-4fdd-49c7-8565-171f204593c3",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "adb6a3e8-16ee-44db-9f2c-04dcbb261a9c",
-                    "path": "",
+                    "name": "2D Vector",
+                    "id": "82c53c32-8fbc-4336-87ca-139f87b8a3bd",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Spell",
-                    "isComposite": false,
+                    "action": "Move A/D",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "eeaa97b2-fc5e-43f7-bdd6-ca1731c94aa9",
-                    "path": "",
+                    "name": "Left",
+                    "id": "97c6ce6e-e338-45a3-b460-50eacb83cae7",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rest",
+                    "action": "Move A/D",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "79a7b001-a122-4072-8854-89961fad7c3a",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move A/D",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

@@ -5,5 +5,17 @@ using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
-    //this was not needed for MVI since everything to do with combat will be with buttons on screen
+    [SerializeField]
+    HubControls HubControls;
+
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        HubControls.SetMoveDirection(context.ReadValue<Vector2>());
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        //HubControls.   dialogue/whiteboard open
+    }
 }

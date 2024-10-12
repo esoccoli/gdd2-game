@@ -23,6 +23,8 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     Enemy enemy;
 
+    [SerializeField]
+    List<Character> characterList;
 
     // UI elements
     [SerializeField]
@@ -37,6 +39,12 @@ public class UIScript : MonoBehaviour
 
     [SerializeField]
     List<TextMeshProUGUI> enemyWPTexts;
+
+    /*[SerializeField]
+    List<TextMeshProUGUI> HPTexts;
+
+    [SerializeField]
+    List<TextMeshProUGUI> WPTexts;*/
 
     [SerializeField]
     List<Button> buttons;
@@ -56,7 +64,19 @@ public class UIScript : MonoBehaviour
     // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
     {
+        //TODO: Refactor code so it only needs to chech a list of characters
         // Check for active party member
+        /*foreach (Character character in characterList)
+        {
+            if (character.IsMyTurn)
+            {
+                // Position the turn indicator directly below the party member
+                Vector3 newPosition = character.transform.position + new Vector3(0, -0.8f, 0);
+                turnIndicator.transform.position = newPosition;
+                return;
+            }
+        }*/
+
         foreach (PartyMember partyMember in manager.PartyMembers)
         {
             if (partyMember.IsMyTurn)
@@ -94,10 +114,15 @@ public class UIScript : MonoBehaviour
             if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
         }
 
+        //TODO: Refactor code so it only needs to chech a list of characters
+        /*foreach (PartyMember partyMember in characterList) 
+        {
+            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
+        }*/
+
         UpdateTurnIndicatorPosition();
     }
 
-    //disables the buttons if rest is clicked so you can't spam a button and then makes the currect party member rest for that turn
 
     /// <summary>
     /// Called when the user clicks the "Rest" button in the battle menu
@@ -111,6 +136,12 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
+
+        //TODO: Refactor code so it only needs to chech a list of characters
+        /*foreach (PartyMember partyMember in characterList)
+        {
+            if (partyMember.IsMyTurn) { partyMember.Rest(); }
+        }*/
 
         UpdateTurnIndicatorPosition();
     }
@@ -187,6 +218,10 @@ public class UIScript : MonoBehaviour
             }
 
             // Updates each of the player hp and wp UI elements
+            //TODO: Refactor code so it only needs to chech a list of characters
+            //UpdateText(true, partyMember);
+            //UpdateText(false, partyMember);
+
             foreach (TextMeshProUGUI hpText in partyMemberHPTexts)
             {
                 hpText.text = "HP: " + partyMember.Health.ToString();
@@ -206,6 +241,10 @@ public class UIScript : MonoBehaviour
             }
 
             // Updates each of the enemy hp and wp UI elements
+            //TODO: Refactor code so it only needs to chech a list of characters
+            //UpdateText(true, enemy);
+            //UpdateText(false, enemy);
+
             foreach (TextMeshProUGUI hpText in enemyHPTexts)
             {
                 hpText.text = "HP: " + enemy.Health.ToString();
@@ -216,8 +255,10 @@ public class UIScript : MonoBehaviour
             }
         }
     }
-
-    // Shows or hides the buttons depending on if it is a party members turn or not
+    /// <summary>
+    /// Shows or hides the buttons depending on if it is a party members turn or not
+    /// </summary>
+    /// <param name="isActive"></param>
     void ShowAndHideButtons(bool isActive)
     {
         foreach (Button b in buttons)
@@ -225,4 +266,23 @@ public class UIScript : MonoBehaviour
             b.gameObject.SetActive(isActive);
         }
     }
+
+    /*void UpdateText(bool isHP, Character character)
+    {
+        if (isHP) 
+        {
+            foreach (TextMeshProUGUI text in HPTexts)
+            {
+                text.text = "HP: " + character.Health.ToString();
+            }
+
+        }
+        else 
+        {
+            foreach (TextMeshProUGUI text in WPTexts)
+            {
+                text.text = "WP: " + character.Willpower.ToString();
+            }
+        }
+    }*/
 }

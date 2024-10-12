@@ -2343,8 +2343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1706382064}
   - component: {fileID: 1706382063}
-  - component: {fileID: 1706382066}
-  - component: {fileID: 1706382065}
   - component: {fileID: 1706382067}
   m_Layer: 0
   m_Name: GameManager
@@ -2385,96 +2383,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1706382065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706382062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: f2267b4f866c2ec44ae1cdebfbdceb5f, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1706382062}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1706382066}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: c05adfaa-c704-48cd-8724-0ed6fde66b9e
-    m_ActionName: Combat Controls/Attack[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7672d55c-7ee2-4ac7-9589-71f57b33c0bd
-    m_ActionName: Combat Controls/Spell
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 2f5952c8-d2c3-4f53-afbd-0f275e067ee0
-    m_ActionName: Combat Controls/Rest
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Combat Controls
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &1706382066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706382062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f753998dabc0b24d97083fa5fd720e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1706382067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2488,15 +2396,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1706382063}
-  henry: {fileID: 487199106}
-  lucine: {fileID: 1568957603}
+  henry: {fileID: 0}
+  lucine: {fileID: 0}
   enemy: {fileID: 1269956905}
-  pMemberHPTexts:
+  characterList:
+  - {fileID: 487199106}
+  - {fileID: 1568957603}
+  - {fileID: 1269956905}
+  partyMemberHPTexts:
   - {fileID: 726072272}
   - {fileID: 322247413}
   enemyHPTexts:
   - {fileID: 1023068207}
-  pMemberWPTexts:
+  partyMemberWPTexts:
   - {fileID: 1662047861}
   - {fileID: 258458784}
   enemyWPTexts:
