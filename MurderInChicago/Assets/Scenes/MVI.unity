@@ -2475,6 +2475,7 @@ MonoBehaviour:
   partyMembers:
   - {fileID: 487199106}
   - {fileID: 1568957603}
+  - {fileID: 1568957603}
   enemies:
   - {fileID: 1269956905}
 --- !u!4 &1706382064
@@ -2505,8 +2506,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1706382063}
-  henry: {fileID: 0}
-  lucine: {fileID: 0}
+  henry: {fileID: 487199106}
+  lucine: {fileID: 1568957603}
   enemy: {fileID: 1269956905}
   characterList:
   - {fileID: 487199106}
@@ -2515,10 +2516,12 @@ MonoBehaviour:
   partyMemberHPTexts:
   - {fileID: 726072272}
   - {fileID: 322247413}
+  - {fileID: 322247413}
   enemyHPTexts:
   - {fileID: 1023068207}
   partyMemberWPTexts:
   - {fileID: 1662047861}
+  - {fileID: 258458784}
   - {fileID: 258458784}
   enemyWPTexts:
   - {fileID: 664543693}
