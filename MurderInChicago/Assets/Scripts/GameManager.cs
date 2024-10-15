@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         int target = Random.Range(0, partyMembers.Count);
 
         // Simulate enemy determining action
-        enemy.DetermineAction(partyMembers[target], "Heal", 3);
+        enemy.DetermineAction(partyMembers[target], "Soulfire");
 
         // Add a slight delay to simulate enemy thinking/action
         yield return new WaitForSeconds(1.0f);

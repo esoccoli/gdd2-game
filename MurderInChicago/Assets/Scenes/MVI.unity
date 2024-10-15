@@ -790,6 +790,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 487199103}
+  spellList:
+  - Fire
+  - Soulfire
+  - Strengthen
+  - Corruption
+  - Taunt
   maxHealth: 20
   maxWillpower: 10
   regenWillpower: 2
@@ -1861,6 +1867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1269956902}
+  spellList:
+  - Soulfire
+  - Ice Blast
+  - Devastation
   maxHealth: 30
   maxWillpower: 10
   regenWillpower: 2
@@ -2037,6 +2047,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1461412145}
+  spellList:
+  - Dreadcall
+  - Putrescence
+  - Wither
+  - Despair
+  - Supreme Being
   maxHealth: 20
   maxWillpower: 10
   regenWillpower: 2
@@ -2213,6 +2229,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1568957600}
+  spellList:
+  - Ice Blast
+  - Strong Heal
+  - Galvanize
+  - Joy
   maxHealth: 20
   maxWillpower: 10
   regenWillpower: 2
@@ -2453,6 +2474,7 @@ GameObject:
   - component: {fileID: 1706382064}
   - component: {fileID: 1706382063}
   - component: {fileID: 1706382067}
+  - component: {fileID: 1706382068}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2531,6 +2553,18 @@ MonoBehaviour:
   turnIndicator: {fileID: 1679537747}
   winScreen: {fileID: 1949179990}
   loseScreen: {fileID: 121937604}
+--- !u!114 &1706382068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706382062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d81978b8d936a4abfdc124bc36e1ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1855867401
 GameObject:
   m_ObjectHideFlags: 0

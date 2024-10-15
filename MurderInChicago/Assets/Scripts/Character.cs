@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Specialized;
 using System;
 using Random = UnityEngine.Random;
+using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
 public enum Emotion
@@ -37,6 +38,16 @@ public class Character : MonoBehaviour
 
     /// True if it is currently this characters' turn, or false otherwise
     protected bool isMyTurn;
+
+    /// The GameManager empty object, used for spells and eventually items
+    GameObject gameManager;
+
+    /// Contains the list of all spells that are available in the game.
+    Spells spells;
+
+    /// Contains the list of all spells that are known to this character only.
+    [SerializeField]
+    List<string> spellList;
 
     #region Defining Stats
 
@@ -114,6 +125,24 @@ public class Character : MonoBehaviour
     [SerializeField]
     protected Emotion pastEmotion;
 
+    /// <summary>
+    /// This stores how many emotion points of each emotion this character has recieved during the battle
+    /// Order: Happiness, Anger, Sadness, Fear, Disgust
+    /// Once an Emotion eachs 100 Emotion Points (from various sources) the character gets that emotion
+    /// and the other emotions are zeroed out.
+    /// </summary>
+    int[] emotionPoints = new int[5];
+
+    /// <summary>
+    /// If a Character has Fear, they can't Rest and all spells will require more Willpower to cast
+    /// </summary>
+    bool hasFear = false;
+
+    /// <summary>
+    /// If a Character has Disgust, they can't Rest and all heals, buffs, and positive effects will do nothing
+    /// </summary>
+    bool hasDisgust = false;
+
     #endregion
 
     public int Health { get { return currentHealth; } }
@@ -123,6 +152,9 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager");
+        spells = gameManager.GetComponent<Spells>();
+
         srCharacter = GetComponent<SpriteRenderer>();
         isMyTurn = false;
         currentHealth = maxHealth;
@@ -132,7 +164,7 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     /// <summary>
@@ -159,7 +191,7 @@ public class Character : MonoBehaviour
     /// <param name="target">The 'Character' component of desired the target</param>
     /// <param name="spellType">The type of the spell to cast</param>
     /// <param name="spellCost">The amount of willpower required to cast this spell</param>
-    public void MagicAttack(Character target, string spellType, int spellCost)
+    public void MagicAttack(Character target, string spellName)
     {
         if (target == null)
         {
@@ -167,12 +199,25 @@ public class Character : MonoBehaviour
             return;
         }
 
+        var spell = spells.GetSpell(spellName);
+
         // If the character has enough willpower to cast the spell
-        if (currentWillpower >= spellCost)
+        if (currentWillpower >= spell.willpowerCost)
         {
-            switch (spellType) {
+            //First, the spell increases Emotion, then is case
+            //Order of Emotion Point Array: Happiness, Anger, Sadness, Fear, Disgust
+            switch (spell.emotion)
+            {
+                case Emotion.Happiness: emotionPoints[0] += spell.emotionPoints; break;
+                case Emotion.Anger: emotionPoints[1] += spell.emotionPoints; break;
+                case Emotion.Sadness: emotionPoints[2] += spell.emotionPoints; break;
+                case Emotion.Fear: emotionPoints[3] += spell.emotionPoints; break;
+                case Emotion.Disgust: emotionPoints[4] += spell.emotionPoints; break;
+            }
+
+            switch (spell.type) {
                 case "Heal":
-                    Heal(5);
+                    Heal(spell.damageAmount);
                     break;
                 case "Buff":
                     Buff(/*Stats.Strength, 2*/);
@@ -181,27 +226,38 @@ public class Character : MonoBehaviour
                     // List<Stats> debuffStats = new List<Stats>() { Stats.Strength };
                     Buff(/*debuffStats, 2*/);
                     break;
+                case "Emotion":
+                    //Emotion spells just increase your Emotion and nothing else
+                    TurnEnd();
+                    break;
                 default:
-                    target.TakeDamage("spell", 3 + resolve + Crit(), spellType);
+                    target.TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
+                    TurnEnd();
                     break;
             }
         }
         else
         {
-            // Implement functionality for what happens if you try to cast a spell but don't have enough willpower
+            // TODO: Implement functionality for what happens if you try to cast a spell but don't have enough willpower
         }
-
-        TurnEnd();
     }
 
     /// <summary>
     /// Ends your turn, resets your emotion to none, and increases your willpower regen
     /// Ths function gets called when the player selects the "Rest" option in the battle menu
+    /// Resting does not work if the Character has Fear or Disgust
     /// </summary>
     public void Rest()
     {
-        ChangeEmotion(Emotion.None);
-        TurnEnd(regenWillpower + 3);
+        if (hasFear == false && hasDisgust == false) 
+        {
+            ChangeEmotion(Emotion.None);
+            TurnEnd(regenWillpower + 3);
+        }
+        else
+        {
+            //TODO: Implement some UI text indicating that Resting is not currently available
+        }
     }
 
     //Takes damage. First determines if a dodge occurs. If not, physical attacks get reduced
@@ -222,23 +278,6 @@ public class Character : MonoBehaviour
 
         currentHealth -=  damageAmount;
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
-
-        //For now, after any attack, there is a 20% chance of getting either Angry or Sad
-        //This will be improved and changed at a later date
-        //TODO: Improve the emotion system
-        int emotionChance = Random.Range(0, 100);
-
-        if (emotionChance >= 80)
-        {
-            if (emotionChance % 2 == 0)
-            {
-                ChangeEmotion(Emotion.Sadness);
-            }
-            else
-            {
-                ChangeEmotion(Emotion.Anger);
-            }
-        }
     }
 
     /// <summary>
@@ -257,7 +296,7 @@ public class Character : MonoBehaviour
     //TODO: Implement spells that buff or debuff certain stats
     public void Buff(/*List<Stats> statList, List<Character> targetList*/)
     {
-
+       //Guide: { vitality, strength, resolve, fortitude, fortune }
     }
 
     /// <summary>
@@ -298,6 +337,22 @@ public class Character : MonoBehaviour
     {
         currentWillpower += willpowerAmount;
         currentWillpower = currentWillpower > maxWillpower ? maxWillpower : currentWillpower;
+        CheckEmotion();
+    }
+
+    /// <summary>
+    /// Checks if any of the emotions have reached 100 emotion points
+    /// If so, changes the emotion to that newly reached emotion
+    /// </summary>
+    public void CheckEmotion()
+    {
+        /// Order: Happiness, Anger, Sadness, Fear, Disgust
+        
+        if (emotionPoints[0] >= 100) { ChangeEmotion(Emotion.Happiness); }
+        else if (emotionPoints[1] >= 100) { ChangeEmotion(Emotion.Anger); }
+        else if (emotionPoints[2] >= 100) { ChangeEmotion(Emotion.Sadness); }
+        else if (emotionPoints[3] >= 100) { ChangeEmotion(Emotion.Fear); }
+        else if (emotionPoints[4] >= 100) { ChangeEmotion(Emotion.Disgust); }
     }
 
     /// <summary>
@@ -308,6 +363,12 @@ public class Character : MonoBehaviour
     {
         pastEmotion = currentEmotion;
         currentEmotion = newEmotion;
+
+        hasFear = false;
+        hasDisgust = false;
+
+        /// Resets the emotion points values
+        emotionPoints = new int[5];
 
         switch (currentEmotion)
         {
@@ -350,6 +411,14 @@ public class Character : MonoBehaviour
                 if (resolve < 0) { resolve = 0; }
 
                 srCharacter.color = Color.blue;
+                break;
+            case Emotion.Fear:
+                hasFear = true;
+                srCharacter.color = new Color(160f, 32f, 240f, 1f); //purple
+                break;
+            case Emotion.Disgust:
+                hasDisgust = true;
+                srCharacter.color = Color.green;
                 break;
         }
     }
