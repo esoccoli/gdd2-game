@@ -72,7 +72,6 @@ public class GameManager : MonoBehaviour
 
         // Mark this character's turn as complete and move to the next one
         member.TurnEnd();
-        member.IsMyTurn = false;
         StartNextTurn();
     }
 
@@ -91,7 +90,6 @@ public class GameManager : MonoBehaviour
 
         // Mark the enemy's turn as complete and move to the next one
         enemy.TurnEnd();
-        enemy.IsMyTurn = false; 
         StartNextTurn();
     }
 

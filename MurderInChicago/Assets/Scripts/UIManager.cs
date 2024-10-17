@@ -94,8 +94,6 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
         }*/
-
-        UpdateTurnIndicatorPosition();
     }
 
 
@@ -117,8 +115,6 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }*/
-
-        UpdateTurnIndicatorPosition();
     }
 
     /// <summary>
@@ -183,13 +179,15 @@ public class UIScript : MonoBehaviour
         // Check for win/lose conditions
         CheckGameOver();
 
-        foreach (PartyMember partyMember in manager.PartyMembers)
+        UpdateTurnIndicatorPosition();
+
+        for (int i = 0; i < manager.PartyMembers.Count; i++)
         {
             // Checks if it is a party member's turn and then re enables the buttons if it is
-            if (partyMember.IsMyTurn == true)
+            if (manager.PartyMembers[i].IsMyTurn == true)
             {
                 ShowAndHideButtons(true);
-                UpdateTurnIndicatorPosition();
+                //UpdateTurnIndicatorPosition();
             }
 
             // Updates each of the player hp and wp UI elements
@@ -197,22 +195,16 @@ public class UIScript : MonoBehaviour
             //UpdateText(true, partyMember);
             //UpdateText(false, partyMember);
 
-            foreach (TextMeshProUGUI hpText in partyMemberHPTexts)
-            {
-                hpText.text = "HP: " + partyMember.Health.ToString();
-            }
-            foreach (TextMeshProUGUI wpText in partyMemberWPTexts)
-            {
-                wpText.text = "WP: " + partyMember.Willpower.ToString();
-            }
+            partyMemberHPTexts[i].text = "HP: " + manager.PartyMembers[i].Health.ToString();
+            partyMemberWPTexts[i].text = "WP: " + manager.PartyMembers[i].Willpower.ToString();
         }
 
-        foreach (Enemy enemy in manager.Enemies)
+        for (int i = 0; i < manager.Enemies.Count; i++)
         {
             // Check if it's an enemy's turn to update the indicator if necessary
-            if (enemy.IsMyTurn == true)
+            if (manager.Enemies[i].IsMyTurn == true)
             {
-                UpdateTurnIndicatorPosition(); // Update position during turn
+                //UpdateTurnIndicatorPosition(); // Update position during turn
             }
 
             // Updates each of the enemy hp and wp UI elements
@@ -220,14 +212,8 @@ public class UIScript : MonoBehaviour
             //UpdateText(true, enemy);
             //UpdateText(false, enemy);
 
-            foreach (TextMeshProUGUI hpText in enemyHPTexts)
-            {
-                hpText.text = "HP: " + enemy.Health.ToString();
-            }
-            foreach (TextMeshProUGUI wpText in enemyWPTexts)
-            {
-                wpText.text = "WP: " + enemy.Willpower.ToString();
-            }
+            enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
+            enemyWPTexts[i].text = "WP: " + manager.Enemies[i].Willpower.ToString();
         }
     }
     /// <summary>
