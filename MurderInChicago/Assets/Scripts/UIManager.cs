@@ -64,37 +64,12 @@ public class UIScript : MonoBehaviour
     // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
     {
-        //TODO: Refactor code so it only needs to chech a list of characters
-        // Check for active party member
-        /*foreach (Character character in characterList)
+        foreach (Character character in characterList)
         {
             if (character.IsMyTurn)
             {
                 // Position the turn indicator directly below the party member
                 Vector3 newPosition = character.transform.position + new Vector3(0, -0.8f, 0);
-                turnIndicator.transform.position = newPosition;
-                return;
-            }
-        }*/
-
-        foreach (PartyMember partyMember in manager.PartyMembers)
-        {
-            if (partyMember.IsMyTurn)
-            {
-                // Position the turn indicator directly below the party member
-                Vector3 newPosition = partyMember.transform.position + new Vector3(0, -0.8f, 0);
-                turnIndicator.transform.position = newPosition;
-                return;
-            }
-        }
-
-        // Check for active enemy
-        foreach (Enemy enemy in manager.Enemies)
-        {
-            if (enemy.IsMyTurn)
-            {
-                // Position the turn indicator directly below the enemy
-                Vector3 newPosition = enemy.transform.position + new Vector3(0, -0.8f, 0);
                 turnIndicator.transform.position = newPosition;
                 return;
             }
