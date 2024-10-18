@@ -24,7 +24,7 @@ public class PartyMember : Character
     /// <returns></returns>
     public IEnumerator AwaitInputFromUI()
     {
-        yield return new WaitForSeconds(2.0f);
+        //yield return new WaitForSeconds(2.0f);
         while (IsMyTurn)
         {
             yield return null;

@@ -33,6 +33,29 @@ public class Character : MonoBehaviour
     [SerializeField]
     GameObject character;
 
+    /// Emotion sprites
+    [SerializeField]
+    SpriteRenderer angerSprite;
+
+    [SerializeField]
+    SpriteRenderer sadnessSprite;
+
+    [SerializeField]
+    SpriteRenderer fearSprite;
+
+    [SerializeField]
+    SpriteRenderer disgustSprite;
+
+    /// Crit and Miss sprites
+    [SerializeField]
+    SpriteRenderer critSprite;
+
+    [SerializeField]
+    SpriteRenderer missSprite;
+
+    /// Offset to control where the sprites appear
+    [SerializeField] private Vector3 spriteOffset;
+
     /// The SpriteRenderer component associated with the current character
     SpriteRenderer srCharacter;
 
@@ -159,6 +182,13 @@ public class Character : MonoBehaviour
         isMyTurn = false;
         currentHealth = maxHealth;
         currentWillpower = maxWillpower;
+
+        angerSprite.enabled = false;
+        sadnessSprite.enabled = false;
+        fearSprite.enabled = false;
+        disgustSprite.enabled = false;
+        critSprite.enabled = false;
+        missSprite.enabled = false;
     }
 
     // Update is called once per frame
@@ -173,9 +203,20 @@ public class Character : MonoBehaviour
     /// <param name="target">The 'Character' component of the target</param>
     public void PhysicalAttack(Character target)
     {
+        int crit = Crit();
         if (target != null)
         {
-            target.TakeDamage("physical", 4 + strength + Crit(), "physical");
+            if (crit > 0)
+            {
+                critSprite.transform.position = target.transform.position + spriteOffset;
+                StartCoroutine(ShowSpriteAndFade(critSprite)); // Show crit sprite
+                target.TakeDamage("physical", 4 + strength + crit, "physical");
+            }
+            else
+            {
+                target.TakeDamage("physical", 4 + strength, "physical");
+            }
+            
         }
 
         TurnEnd();
@@ -264,7 +305,12 @@ public class Character : MonoBehaviour
     //by the fortitude stat. If the character is weak to a certain spell type, they take increased damage.
     public void TakeDamage(string damageType, int damageAmount, string spellType)
     {
-        if (Dodge()) { return; }
+        if (Dodge())
+        {
+            missSprite.transform.position = transform.position + spriteOffset;
+            StartCoroutine(ShowSpriteAndFade(missSprite)); // Show miss sprite
+            return;
+        }
 
         if (damageType == "physical")
         {
@@ -277,6 +323,9 @@ public class Character : MonoBehaviour
         }
 
         currentHealth -=  damageAmount;
+
+        FindObjectOfType<UIScript>().ShowDamagePopup(transform.position, damageAmount, spriteOffset);
+
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
     }
 
@@ -306,7 +355,7 @@ public class Character : MonoBehaviour
     public int Crit()
     {
         int critChance = Random.Range(0, 100) + fortune;
-        return critChance >= 90 ? 0 : 3 + fortune;
+        return critChance >= 10 ? 0 : 3 + fortune;
     }
 
     /// <summary>
@@ -317,6 +366,29 @@ public class Character : MonoBehaviour
     {
         int dodgeChance = Random.Range(0, 100) + fortune;
         return dodgeChance >= 95 ? true : false;
+    }
+
+    /// <summary>
+    /// This is for making the crit and miss sprites have a fading aspect
+    /// </summary>
+    /// <param name="sprite"></param>
+    /// <returns></returns>
+    private IEnumerator ShowSpriteAndFade(SpriteRenderer sprite)
+    {
+        sprite.enabled = true; // Show the sprite
+        float duration = 1f; // Duration to show
+        yield return new WaitForSeconds(duration); // Wait for a second
+
+        // Fade out
+        for (float t = 0; t < 1; t += Time.deltaTime)
+        {
+            Color color = sprite.color;
+            color.a = Mathf.Lerp(1, 0, t); // Fade to transparent
+            sprite.color = color;
+            yield return null; // Wait for the next frame
+        }
+
+        sprite.enabled = false; // Hide the sprite after fading
     }
 
     /// <summary>
@@ -389,6 +461,11 @@ public class Character : MonoBehaviour
                         break;
                 }
                 srCharacter.color = Color.white;
+
+                angerSprite.enabled = false;
+                sadnessSprite.enabled = false;
+                fearSprite.enabled = false;
+                disgustSprite.enabled = false;
                 break;
             case Emotion.Anger:
                 strength += 5;
@@ -400,6 +477,9 @@ public class Character : MonoBehaviour
                 if (fortune < 0) { fortune = 0; }
 
                 srCharacter.color = Color.red;
+
+                angerSprite.enabled = true;
+                angerSprite.transform.position = transform.position + spriteOffset;
                 break;
             case Emotion.Sadness:
                 fortitude += 5;
@@ -411,14 +491,23 @@ public class Character : MonoBehaviour
                 if (resolve < 0) { resolve = 0; }
 
                 srCharacter.color = Color.blue;
+
+                sadnessSprite.enabled = true;
+                sadnessSprite.transform.position = transform.position + spriteOffset;
                 break;
             case Emotion.Fear:
                 hasFear = true;
                 srCharacter.color = new Color(160f, 32f, 240f, 1f); //purple
+
+                fearSprite.enabled = true;
+                fearSprite.transform.position = transform.position + spriteOffset;
                 break;
             case Emotion.Disgust:
                 hasDisgust = true;
                 srCharacter.color = Color.green;
+
+                disgustSprite.enabled = true;
+                disgustSprite.transform.position = transform.position + spriteOffset;
                 break;
         }
     }

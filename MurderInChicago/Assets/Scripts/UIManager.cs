@@ -40,6 +40,10 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<TextMeshProUGUI> enemyWPTexts;
 
+    [SerializeField]
+    TextMeshPro damageText;
+
+
     /*[SerializeField]
     List<TextMeshProUGUI> HPTexts;
 
@@ -118,6 +122,42 @@ public class UIScript : MonoBehaviour
     }
 
     /// <summary>
+    /// This takes the damage text and updates it and moves to where the player getting hit is
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="damageAmount"></param>
+    /// <param name="offset"></param>
+    public void ShowDamagePopup(Vector3 position, int damageAmount, Vector3 offset)
+    {
+        damageText.text = damageAmount.ToString();
+        damageText.color = Color.red;
+        damageText.transform.position = position + offset; // Adjusts above the target
+
+        StartCoroutine(FadeOutDamagePopup());
+    }
+
+    /// <summary>
+    /// This makes the text that shows the damage fade away after a second
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FadeOutDamagePopup()
+    {
+        float duration = 1f;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            float alpha = Mathf.Lerp(1, 0, elapsedTime / duration);
+            damageText.color = new Color(1, 0, 0, alpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Hide the text after fading out
+        damageText.text = "";
+    }
+
+    /// <summary>
     /// Checks whether all characters on one side are defeated
     /// </summary>
     private void CheckGameOver()
@@ -137,9 +177,6 @@ public class UIScript : MonoBehaviour
         {
             // Show lose screen
             loseScreen.SetActive(true);
-
-            // Stop the game
-            Time.timeScale = 0;
             return;
         }
 
@@ -158,9 +195,6 @@ public class UIScript : MonoBehaviour
         {
             // Show win screen
             winScreen.SetActive(true);
-
-            // Stop the game
-            Time.timeScale = 0;
         }
     }
 

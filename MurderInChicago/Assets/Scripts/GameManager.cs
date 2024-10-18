@@ -71,7 +71,6 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(member.AwaitInputFromUI());
 
         // Mark this character's turn as complete and move to the next one
-        member.TurnEnd();
         StartNextTurn();
     }
 
@@ -89,7 +88,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         // Mark the enemy's turn as complete and move to the next one
-        enemy.TurnEnd();
         StartNextTurn();
     }
 
