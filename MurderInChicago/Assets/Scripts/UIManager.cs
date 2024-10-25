@@ -21,7 +21,13 @@ public class UIScript : MonoBehaviour
     PartyMember lucine;
 
     [SerializeField]
-    Enemy enemy;
+    PartyMember clyde;
+
+    [SerializeField]
+    Enemy enemy1;
+
+    [SerializeField] 
+    Enemy enemy2;
 
     [SerializeField]
     List<Character> characterList;
@@ -90,7 +96,7 @@ public class UIScript : MonoBehaviour
 
         foreach (PartyMember partyMember in manager.PartyMembers) 
         {
-            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
+            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy1); }
         }
 
         //TODO: Refactor code so it only needs to chech a list of characters
@@ -238,7 +244,7 @@ public class UIScript : MonoBehaviour
             // Check if it's an enemy's turn to update the indicator if necessary
             if (manager.Enemies[i].IsMyTurn == true)
             {
-                //UpdateTurnIndicatorPosition(); // Update position during turn
+                UpdateTurnIndicatorPosition(); // Update position during turn
             }
 
             // Updates each of the enemy hp and wp UI elements
