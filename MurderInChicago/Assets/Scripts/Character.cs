@@ -293,12 +293,9 @@ public class Character : MonoBehaviour
         if (hasFear == false && hasDisgust == false) 
         {
             ChangeEmotion(Emotion.None);
-            TurnEnd(regenWillpower + 3);
+            
         }
-        else
-        {
-            //TODO: Implement some UI text indicating that Resting is not currently available
-        }
+        TurnEnd(regenWillpower + 3);
     }
 
     //Takes damage. First determines if a dodge occurs. If not, physical attacks get reduced
@@ -410,6 +407,8 @@ public class Character : MonoBehaviour
         currentWillpower += willpowerAmount;
         currentWillpower = currentWillpower > maxWillpower ? maxWillpower : currentWillpower;
         CheckEmotion();
+        isMyTurn = false;
+        UnityEngine.Debug.Log("Reached end of TurnEnd()");
     }
 
     /// <summary>
