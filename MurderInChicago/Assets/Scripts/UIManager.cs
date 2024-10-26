@@ -104,19 +104,23 @@ public class UIScript : MonoBehaviour
     /// </summary>
     public void OnAttack()
     {
+
+        //PrepareTargetQueue();
+
+
         ShowAndHideButtons(false);
 
         foreach (PartyMember partyMember in manager.PartyMembers) 
         {
             if (partyMember.IsMyTurn) 
             { 
-                //StartCoroutine(WaitForTarget());
+                //StartCoroutine(WaitForTarget(partyMember));
                 targetPicked = false;
                 partyMember.PhysicalAttack(enemy1); 
             }
         }
 
-        //TODO: Refactor code so it only needs to chech a list of characters
+        //TODO: Refactor code so it only needs to check a list of characters
         /*foreach (PartyMember partyMember in characterList) 
         {
             if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
@@ -224,7 +228,7 @@ public class UIScript : MonoBehaviour
     /// <summary>
     /// waits until the player has chosen someone to attack, buff, debuff,or heal
     /// </summary>
-    IEnumerator WaitForTarget()
+    IEnumerator WaitForTarget(PartyMember partyMember)
     {
         foreach (Enemy enemy in manager.Enemies)
         {
@@ -236,14 +240,8 @@ public class UIScript : MonoBehaviour
 
                 if (Input.GetMouseButton(0))
                 {
-                    foreach (PartyMember partyMember in manager.PartyMembers)
-                    {
-                        if (partyMember.IsMyTurn)
-                        {
-                            partyMember.PhysicalAttack(enemy);
-                            targetPicked = true;
-                        }
-                    }
+                    partyMember.PhysicalAttack(enemy);
+                    targetPicked = true;
                 }
             }
         }
@@ -280,13 +278,13 @@ public class UIScript : MonoBehaviour
 
 
         // Clear the current queue to prevent stacking turns
-        targetQueue.Clear();
+        //targetQueue.Clear();
 
         // Add party members to the turn queue
         //foreach (PartyMember member in partyMembers)
         //{
             //targetQueue.Enqueue(PartyMemberTurn(member));
-            targetQueue.Enqueue(WaitForTarget());
+            //targetQueue.Enqueue(WaitForTarget());
         //}
     }
 
@@ -349,6 +347,21 @@ public class UIScript : MonoBehaviour
         while (targetPicked) 
         {
             yield return null;
+        }
+    }
+
+    void PrepareTargetQueue()
+    {
+        // Clear the current queue to prevent stacking turns
+        targetQueue.Clear();
+
+        // Add party members to the turn queue
+        foreach (PartyMember member in manager.PartyMembers)
+        {
+            if (member.IsMyTurn)
+            {
+                targetQueue.Enqueue(WaitForTarget(member));
+            }
         }
     }
 
