@@ -83,12 +83,6 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject arrowIndicator;
 
-    Queue<IEnumerator> targetQueue = new Queue<IEnumerator>();
-
-    bool targetPicked;
-
-
-
     // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
     {
@@ -110,19 +104,13 @@ public class UIScript : MonoBehaviour
     /// </summary>
     public void OnAttack()
     {
-
-        //PrepareTargetQueue();
-
-
         ShowAndHideButtons(false);
 
         foreach (PartyMember partyMember in manager.PartyMembers) 
         {
             if (partyMember.IsMyTurn) 
-            { 
-                //StartCoroutine(WaitForTarget(partyMember));
-                targetPicked = false;
-                partyMember.PhysicalAttack(enemy1); 
+            {
+                partyMember.IsTargeting = true;
             }
         }
 
@@ -146,6 +134,7 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
+
 
         //TODO: Refactor code so it only needs to chech a list of characters
         /*foreach (PartyMember partyMember in characterList)
@@ -250,44 +239,6 @@ public class UIScript : MonoBehaviour
             restartButton.SetActive(true);
         }
     }
-    
-    /// <summary>
-    /// waits until the player has chosen someone to attack, buff, debuff,or heal
-    /// </summary>
-    IEnumerator WaitForTarget(PartyMember partyMember)
-    {
-        foreach (Enemy enemy in manager.Enemies)
-        {
-            //Vector3 mousePos = Input.mousePosition;
-            if (cursor.bounds.Intersects(enemy.Collider.bounds))
-            {
-                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
-                arrowIndicator.SetActive(true);
-
-                if (Input.GetMouseButton(0))
-                {
-                    partyMember.PhysicalAttack(enemy);
-                    targetPicked = true;
-                }
-            }
-        }
-
-        
-
-
-
-
-        // Wait until the player completes their action
-
-        //make new coroutine
-
-
-        //yield return StartCoroutine(member.AwaitInputFromUI());
-        yield return StartCoroutine(Wait());
-    }
-
-
-
 
     void Start()
     {
@@ -299,19 +250,6 @@ public class UIScript : MonoBehaviour
         loseScreen.SetActive(false);
 
         arrowIndicator.SetActive(false);
-
-        targetPicked = false;
-
-
-        // Clear the current queue to prevent stacking turns
-        //targetQueue.Clear();
-
-        // Add party members to the turn queue
-        //foreach (PartyMember member in partyMembers)
-        //{
-            //targetQueue.Enqueue(PartyMemberTurn(member));
-            //targetQueue.Enqueue(WaitForTarget());
-        //}
     }
 
     void Update()
@@ -328,6 +266,28 @@ public class UIScript : MonoBehaviour
             {
                 ShowAndHideButtons(true);
                 //UpdateTurnIndicatorPosition();
+
+                if (manager.PartyMembers[i].IsTargeting)
+                {
+                    ShowAndHideButtons(false);
+                    foreach (Enemy enemy in manager.Enemies)
+                    {
+                        if (cursor.bounds.Intersects(enemy.Collider.bounds))
+                        {
+                            arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                            arrowIndicator.SetActive(true);
+
+                            if (Input.GetMouseButton(0))
+                            {
+                                manager.PartyMembers[i].PhysicalAttack(enemy);
+                            }
+                        }
+                    }
+                }
+                if (manager.PartyMembers[i].IsTargeting == false)
+                {
+                    arrowIndicator.SetActive(false);
+                }
             }
 
             // Updates each of the player hp and wp UI elements
@@ -365,29 +325,6 @@ public class UIScript : MonoBehaviour
         foreach (Button b in buttons)
         {
             b.gameObject.SetActive(isActive);
-        }
-    }
-
-    IEnumerator Wait()
-    {
-        while (targetPicked) 
-        {
-            yield return null;
-        }
-    }
-
-    void PrepareTargetQueue()
-    {
-        // Clear the current queue to prevent stacking turns
-        targetQueue.Clear();
-
-        // Add party members to the turn queue
-        foreach (PartyMember member in manager.PartyMembers)
-        {
-            if (member.IsMyTurn)
-            {
-                targetQueue.Enqueue(WaitForTarget(member));
-            }
         }
     }
 

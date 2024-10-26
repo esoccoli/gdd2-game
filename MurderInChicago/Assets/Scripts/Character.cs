@@ -83,6 +83,10 @@ public class Character : MonoBehaviour
     [SerializeField]
     Collider2D collider;
 
+    bool isTargeting;
+
+    public bool IsTargeting { get { return isTargeting; } set { isTargeting = value; } }
+
     #region Defining Stats
 
     protected int currentHealth;
@@ -211,6 +215,8 @@ public class Character : MonoBehaviour
         isMyTurn = false;
         currentHealth = maxHealth;
         currentWillpower = maxWillpower;
+
+        isTargeting = false;
 
         angerSprite.enabled = false;
         sadnessSprite.enabled = false;
@@ -460,6 +466,7 @@ public class Character : MonoBehaviour
     public void TurnEnd()
     {
         isMyTurn = false;
+        isTargeting = false;
         TurnEnd(regenWillpower);
     }
 
