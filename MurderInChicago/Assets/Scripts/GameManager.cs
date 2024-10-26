@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject cursor;
 
+    Vector3 mousePos;
+
     // A queue to manage turn order
     Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
@@ -109,6 +111,9 @@ public class GameManager : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
-        cursor.transform.position = Input.mousePosition;
+        mousePos = Input.mousePosition;
+        mousePos.z = 10.0f;
+        cursor.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+
     }
 }
