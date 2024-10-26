@@ -27,6 +27,13 @@ public enum Stats
     Fortune
 }
 
+// Stores the type of buff or debuff
+public enum BuffType
+{
+    Buff,
+    Debuff
+}
+
 public class Character : MonoBehaviour
 {
     /// The GameObject component for the current character
@@ -166,6 +173,23 @@ public class Character : MonoBehaviour
     /// </summary>
     bool hasDisgust = false;
 
+    /// <summary>
+    /// When a character gets a stat buff or debuff, the stats that were changed, given as an array of ints
+    /// get stored here. After the spell expires, the stat changes are reversed and it gets deleted.
+    /// </summary>
+    List<int[]> affectedStats = new List<int[]>();
+
+    /// <summary>
+    /// How long a buff or debuff spell lasts. In TurnStart(), each of these get decreased by 1. If any gets to 0,
+    /// the buff/debuff is revoked.
+    /// </summary>
+    List<int> affectedStatsTurncount = new List<int>();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    List<BuffType> affectedStatsType = new List<BuffType>();
+
     #endregion
 
     public int Health { get { return currentHealth; } }
@@ -261,11 +285,11 @@ public class Character : MonoBehaviour
                     Heal(spell.damageAmount);
                     break;
                 case "Buff":
-                    Buff(/*Stats.Strength, 2*/);
+                    //Buff(/*Stats.Strength, 2*/);
                     break;
                 case "Debuff":
                     // List<Stats> debuffStats = new List<Stats>() { Stats.Strength };
-                    Buff(/*debuffStats, 2*/);
+                    //Buff(/*debuffStats, 2*/);
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
@@ -340,10 +364,38 @@ public class Character : MonoBehaviour
     }
 
     //TODO: Implement spells that buff or debuff certain stats
-    public void Buff(/*List<Stats> statList, List<Character> targetList*/)
-    {
+    //public void Buff(/*Spell spell, List<Character> targetList*/)
+    //{
        //Guide: { vitality, strength, resolve, fortitude, fortune }
-    }
+       //for (int i = 0; i < targetList.Count; i++)
+       // {
+       //     if (spell.type == "Buff")
+       //     {
+       //         targetList[i].vitality += spell.statChanges[0];
+       //         targetList[i].strength += spell.statChanges[1];
+       //         targetList[i].resolve += spell.statChanges[2];
+       //         targetList[i].fortitude += spell.statChanges[3];
+       //         targetList[i].fortune += spell.statChanges[4];
+       //     }
+       //     else if (spell.type == "Debuff")
+       //     {
+       //         targetList[i].vitality -= spell.statChanges[0];
+       //         targetList[i].strength -= spell.statChanges[1];
+       //         targetList[i].resolve -= spell.statChanges[2];
+       //         targetList[i].fortitude -= spell.statChanges[3];
+       //         targetList[i].fortune -= spell.statChanges[4];
+
+       //         // TODO: Make sure that if stats go negative, it sets to zero
+       //         // Additionally, make sure that the stats increase back to the proper amount
+       //     }
+
+       //     targetList[i].affectedStats.Add(spell.statChanges);
+       //     targetList[i].affectedStatsTurncount.Add(spell.turnCount);
+       //     targetList[i].affectedStatsType.Add(spell.type);
+
+            // TODO: Make a new function to reverse the buff/debuff
+    //    }
+    //}
 
     /// <summary>
     /// Determines whether a given attack is a crit
@@ -386,6 +438,14 @@ public class Character : MonoBehaviour
         }
 
         sprite.enabled = false; // Hide the sprite after fading
+    }
+
+    /// <summary>
+    /// Runs before a character takes their turn. Decreases already applied stat buffs and debuffs
+    /// </summary>
+    public void TurnStart()
+    {
+
     }
 
     /// <summary>
