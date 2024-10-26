@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
@@ -70,6 +71,17 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject loseScreen;
 
+    [SerializeField]
+    Collider2D cursor;
+
+    [SerializeField]
+    GameObject arrowIndicator;
+
+    Queue<IEnumerator> targetQueue = new Queue<IEnumerator>();
+
+    bool targetPicked;
+
+
 
     // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
@@ -96,7 +108,12 @@ public class UIScript : MonoBehaviour
 
         foreach (PartyMember partyMember in manager.PartyMembers) 
         {
-            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy1); }
+            if (partyMember.IsMyTurn) 
+            { 
+                //StartCoroutine(WaitForTarget());
+                targetPicked = false;
+                partyMember.PhysicalAttack(enemy1); 
+            }
         }
 
         //TODO: Refactor code so it only needs to chech a list of characters
@@ -203,6 +220,50 @@ public class UIScript : MonoBehaviour
             winScreen.SetActive(true);
         }
     }
+    
+    /// <summary>
+    /// waits until the player has chosen someone to attack, buff, debuff,or heal
+    /// </summary>
+    IEnumerator WaitForTarget()
+    {
+        foreach (Enemy enemy in manager.Enemies)
+        {
+            //Vector3 mousePos = Input.mousePosition;
+            if (cursor.bounds.Intersects(enemy.Collider.bounds))
+            {
+                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                arrowIndicator.SetActive(true);
+
+                if (Input.GetMouseButton(0))
+                {
+                    foreach (PartyMember partyMember in manager.PartyMembers)
+                    {
+                        if (partyMember.IsMyTurn)
+                        {
+                            partyMember.PhysicalAttack(enemy);
+                            targetPicked = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        
+
+
+
+
+        // Wait until the player completes their action
+
+        //make new coroutine
+
+
+        //yield return StartCoroutine(member.AwaitInputFromUI());
+        yield return StartCoroutine(Wait());
+    }
+
+
+
 
     void Start()
     {
@@ -212,6 +273,21 @@ public class UIScript : MonoBehaviour
         // Hide win and lose screens at the start
         winScreen.SetActive(false);
         loseScreen.SetActive(false);
+
+        arrowIndicator.SetActive(false);
+
+        targetPicked = false;
+
+
+        // Clear the current queue to prevent stacking turns
+        targetQueue.Clear();
+
+        // Add party members to the turn queue
+        //foreach (PartyMember member in partyMembers)
+        //{
+            //targetQueue.Enqueue(PartyMemberTurn(member));
+            targetQueue.Enqueue(WaitForTarget());
+        //}
     }
 
     void Update()
@@ -265,6 +341,14 @@ public class UIScript : MonoBehaviour
         foreach (Button b in buttons)
         {
             b.gameObject.SetActive(isActive);
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        while (targetPicked) 
+        {
+            yield return null;
         }
     }
 
