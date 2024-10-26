@@ -72,6 +72,12 @@ public class UIScript : MonoBehaviour
     GameObject loseScreen;
 
     [SerializeField]
+    GameObject quitButton;
+
+    [SerializeField]
+    GameObject restartButton;
+
+    [SerializeField]
     Collider2D cursor;
 
     [SerializeField]
@@ -149,6 +155,22 @@ public class UIScript : MonoBehaviour
     }
 
     /// <summary>
+    /// quits game
+    /// </summary>
+    public void OnQuit()
+    {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// restarts the scene
+    /// </summary>
+    public void OnRestart()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    /// <summary>
     /// This takes the damage text and updates it and moves to where the player getting hit is
     /// </summary>
     /// <param name="position"></param>
@@ -204,6 +226,8 @@ public class UIScript : MonoBehaviour
         {
             // Show lose screen
             loseScreen.SetActive(true);
+            quitButton.SetActive(true);
+            restartButton.SetActive(true);
             return;
         }
 
@@ -222,6 +246,8 @@ public class UIScript : MonoBehaviour
         {
             // Show win screen
             winScreen.SetActive(true);
+            quitButton.SetActive(true);
+            restartButton.SetActive(true);
         }
     }
     
