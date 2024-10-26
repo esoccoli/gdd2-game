@@ -72,6 +72,10 @@ public class Character : MonoBehaviour
     [SerializeField]
     List<string> spellList;
 
+
+    [SerializeField]
+    Collider2D collider;
+
     #region Defining Stats
 
     protected int currentHealth;
@@ -171,6 +175,7 @@ public class Character : MonoBehaviour
     public int Health { get { return currentHealth; } }
     public int Willpower { get { return currentWillpower; } }
     public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+    public Collider2D Collider { get { return collider; } }
 
     // Start is called before the first frame update
     void Start()

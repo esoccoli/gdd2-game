@@ -70,6 +70,12 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject loseScreen;
 
+    [SerializeField]
+    Collider2D cursor;
+
+    [SerializeField]
+    GameObject arrowIndicator;
+
 
     // Update the turn indicator position based on the current turn
     private void UpdateTurnIndicatorPosition()
@@ -96,7 +102,11 @@ public class UIScript : MonoBehaviour
 
         foreach (PartyMember partyMember in manager.PartyMembers) 
         {
-            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy1); }
+            if (partyMember.IsMyTurn) 
+            { 
+                StartCoroutine(WaitForTarget(partyMember));
+                partyMember.PhysicalAttack(enemy1); 
+            }
         }
 
         //TODO: Refactor code so it only needs to chech a list of characters
@@ -203,6 +213,39 @@ public class UIScript : MonoBehaviour
             winScreen.SetActive(true);
         }
     }
+    
+    /// <summary>
+    /// waits until the player has chosen someone to attack, buff, debuff,or heal
+    /// </summary>
+    /// <param name="member"></param>
+    /// <returns></returns>
+    IEnumerator WaitForTarget(PartyMember member)
+    {
+        foreach (Enemy enemy in manager.Enemies)
+        {
+            //Vector3 mousePos = Input.mousePosition;
+            if (cursor.bounds == enemy.Collider.bounds)
+            {
+
+            }
+        }
+
+        
+
+
+
+
+        // Wait until the player completes their action
+
+        //make new coroutine
+
+
+        //yield return StartCoroutine(member.AwaitInputFromUI());
+        yield return StartCoroutine(member.AwaitInputFromUI());
+    }
+
+
+
 
     void Start()
     {
@@ -212,6 +255,8 @@ public class UIScript : MonoBehaviour
         // Hide win and lose screens at the start
         winScreen.SetActive(false);
         loseScreen.SetActive(false);
+
+        arrowIndicator.SetActive(false);
     }
 
     void Update()

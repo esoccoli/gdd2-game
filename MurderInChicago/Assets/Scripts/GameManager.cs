@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     List<Enemy> enemies;
 
+    [SerializeField]
+    GameObject cursor;
+
     // A queue to manage turn order
     Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
@@ -31,7 +34,9 @@ public class GameManager : MonoBehaviour
         StartNextTurn();
     }
 
-    //Prepare the turn queue for all party members and enemies
+    /// <summary>
+    /// Prepare the turn queue for all party members and enemies
+    /// </summary>
     void PrepareTurnQueue()
     {
         // Clear the current queue to prevent stacking turns
@@ -50,7 +55,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Process the next turn in the queue
+    /// <summary>
+    /// Process the next turn in the queue
+    /// </summary>
     void StartNextTurn()
     {
         if (turnQueue.Count > 0) { StartCoroutine(turnQueue.Dequeue()); }
@@ -62,7 +69,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Coroutine to handle a party member's turn
+    /// <summary>
+    /// Coroutine to handle a party member's turn
+    /// </summary>
+    /// <param name="member"></param>
+    /// <returns></returns>
     IEnumerator PartyMemberTurn(PartyMember member)
     {
         member.IsMyTurn = true;
@@ -74,7 +85,11 @@ public class GameManager : MonoBehaviour
         StartNextTurn();
     }
 
-    // Coroutine to handle an enemy's turn
+    /// <summary>
+    /// Coroutine to handle an enemy's turn
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
     IEnumerator EnemyTurn(Enemy enemy)
     {
         enemy.IsMyTurn = true;
@@ -94,6 +109,6 @@ public class GameManager : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
-        
+        cursor.transform.position = Input.mousePosition;
     }
 }
