@@ -66,6 +66,10 @@ public class Character : MonoBehaviour
     /// The SpriteRenderer component associated with the current character
     SpriteRenderer srCharacter;
 
+    /// The tombstone sprite used for dead characters
+    [SerializeField]
+    Sprite tombstone;
+
     /// True if it is currently this characters' turn, or false otherwise
     protected bool isMyTurn;
 
@@ -199,9 +203,14 @@ public class Character : MonoBehaviour
     List<int> affectedStatsTurncount = new List<int>();
 
     /// <summary>
-    /// 
+    /// The types of buffs or debuffs currently applied. You can have multiple buffs and debuffs active at one time.
     /// </summary>
     List<BuffType> affectedStatsType = new List<BuffType>();
+
+    /// <summary>
+    /// Stores whether the Character is alive. If not, their turn is skipped.
+    /// </summary>
+    public bool isAlive = true;
 
     #endregion
 
@@ -248,7 +257,7 @@ public class Character : MonoBehaviour
         {
             if (crit > 0)
             {
-                critSprite.transform.position = target.transform.position + spriteOffset;
+                critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(0.0f, 0.75f, 3.0f);
                 StartCoroutine(ShowSpriteAndFade(critSprite)); // Show crit sprite
                 target.TakeDamage("physical", 4 + strength + crit, "physical");
             }
@@ -374,6 +383,11 @@ public class Character : MonoBehaviour
         FindObjectOfType<UIScript>().ShowDamagePopup(transform.position, damageAmount, spriteOffset);
 
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
+
+        if (currentHealth <= 0)
+        {
+            Death();
+        }
     }
 
     /// <summary>
@@ -739,5 +753,15 @@ public class Character : MonoBehaviour
                 disgustSprite.transform.position = transform.position + spriteOffset;
                 break;
         }
+    }
+
+    /// <summary>
+    /// Sets them to dead, removes their emotions, and sets their sprite to tombstone
+    /// </summary>
+    public void Death()
+    {
+        isAlive = false;
+        ChangeEmotion(Emotion.None);
+        srCharacter.sprite = tombstone;
     }
 }
