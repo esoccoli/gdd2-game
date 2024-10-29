@@ -282,6 +282,12 @@ public class Character : MonoBehaviour
 
         var spell = spells.GetSpell(spellName);
 
+        // If the character has fear, then all of their spells require more willpower to cast
+        if (hasFear)
+        {
+            spell.willpowerCost = spell.willpowerCost + ((int)(spell.willpowerCost * 0.5f));
+        }
+
         // If the character has enough willpower to cast the spell
         if (currentWillpower >= spell.willpowerCost)
         {
@@ -315,7 +321,7 @@ public class Character : MonoBehaviour
                     for (int i = 0; i < targetList.Count; i++)
                     {
                         targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
-                    }     
+                    }
                     TurnEnd();
                     break;
             }
@@ -376,12 +382,19 @@ public class Character : MonoBehaviour
     /// <param name="healAmount">Amount of health to heal</param>
     public void Heal(int healAmount)
     {
+        // Happiness increases the effectiveness of healing
         if (hasHappiness)
         {
             healAmount += 3;
         }
 
-        currentHealth += (healAmount + Crit());
+        // Disgust prevents healing from having any positive effect
+        // You can still cast it, but it won't do anything
+        if (!hasDisgust)
+        {
+            currentHealth += (healAmount + Crit());
+        }
+
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
@@ -420,11 +433,17 @@ public class Character : MonoBehaviour
                     }
                 }
 
-                targetList[i].vitality += spell.statChanges[0];
-                targetList[i].strength += spell.statChanges[1];
-                targetList[i].resolve += spell.statChanges[2];
-                targetList[i].fortitude += spell.statChanges[3];
-                targetList[i].fortune += spell.statChanges[4];
+                // Disgust will prevent buffs from having an effect
+                // You can still cast it, but it won't do anything
+
+                if (!hasDisgust)
+                {
+                    targetList[i].vitality += spell.statChanges[0];
+                    targetList[i].strength += spell.statChanges[1];
+                    targetList[i].resolve += spell.statChanges[2];
+                    targetList[i].fortitude += spell.statChanges[3];
+                    targetList[i].fortune += spell.statChanges[4];
+                }
             }
             else if (spell.type == "Debuff")
             {
