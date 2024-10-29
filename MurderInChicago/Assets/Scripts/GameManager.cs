@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     // Party members in current party
     [SerializeField]
-    List<PartyMember> partyMembers;
+    List<Character> partyMembers;
 
     [SerializeField]
     List<Enemy> enemies;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     // A queue to manage turn order
     Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
-    public List<PartyMember> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
+    public List<Character> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
     public List<Enemy> Enemies { get { return enemies; } set { enemies = value; } }
 
 
@@ -96,10 +96,10 @@ public class GameManager : MonoBehaviour
     {
         enemy.IsMyTurn = true;
 
-        int target = Random.Range(0, partyMembers.Count);
+        int target = Random.Range(0, partyMembers.Count - 1);
 
         // Simulate enemy determining action
-        enemy.DetermineAction(partyMembers[target], "Soulfire");
+        enemy.DetermineAction(partyMembers, enemy.GetRandomSpell());
 
         // Add a slight delay to simulate enemy thinking/action
         yield return new WaitForSeconds(1.0f);

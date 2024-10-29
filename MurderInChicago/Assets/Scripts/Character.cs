@@ -77,7 +77,7 @@ public class Character : MonoBehaviour
 
     /// Contains the list of all spells that are known to this character only.
     [SerializeField]
-    List<string> spellList;
+    public List<string> spellList;
 
 
     [SerializeField]
@@ -172,6 +172,11 @@ public class Character : MonoBehaviour
     int[] emotionPoints = new int[5];
 
     /// <summary>
+    /// If a Character has Happiness, their heals & buffs get boosted, but their health & physical attacks get nerfed
+    /// </summary>
+    bool hasHappiness = false;
+
+    /// <summary>
     /// If a Character has Fear, they can't Rest and all spells will require more Willpower to cast
     /// </summary>
     bool hasFear = false;
@@ -229,7 +234,7 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     /// <summary>
@@ -251,7 +256,7 @@ public class Character : MonoBehaviour
             {
                 target.TakeDamage("physical", 4 + strength, "physical");
             }
-            
+
         }
 
         TurnEnd();
@@ -267,9 +272,9 @@ public class Character : MonoBehaviour
     /// <param name="target">The 'Character' component of desired the target</param>
     /// <param name="spellType">The type of the spell to cast</param>
     /// <param name="spellCost">The amount of willpower required to cast this spell</param>
-    public void MagicAttack(Character target, string spellName)
+    public void MagicAttack(List<Character> targetList, string spellName)
     {
-        if (target == null)
+        if (targetList.Count == 0)
         {
             TurnEnd();
             return;
@@ -291,23 +296,26 @@ public class Character : MonoBehaviour
                 case Emotion.Disgust: emotionPoints[4] += spell.emotionPoints; break;
             }
 
-            switch (spell.type) {
+            switch (spell.type)
+            {
                 case "Heal":
                     Heal(spell.damageAmount);
                     break;
                 case "Buff":
-                    //Buff(/*Stats.Strength, 2*/);
+                    Buff(spell, targetList);
                     break;
                 case "Debuff":
-                    // List<Stats> debuffStats = new List<Stats>() { Stats.Strength };
-                    //Buff(/*debuffStats, 2*/);
+                    Buff(spell, targetList);
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
                     TurnEnd();
                     break;
                 default:
-                    target.TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
+                    for (int i = 0; i < targetList.Count; i++)
+                    {
+                        targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
+                    }     
                     TurnEnd();
                     break;
             }
@@ -315,6 +323,7 @@ public class Character : MonoBehaviour
         else
         {
             // TODO: Implement functionality for what happens if you try to cast a spell but don't have enough willpower
+            UnityEngine.Debug.Log("You do not have enough Willpower to cast this spell");
         }
     }
 
@@ -325,10 +334,10 @@ public class Character : MonoBehaviour
     /// </summary>
     public void Rest()
     {
-        if (hasFear == false && hasDisgust == false) 
+        if (hasFear == false && hasDisgust == false)
         {
             ChangeEmotion(Emotion.None);
-            
+
         }
         TurnEnd(regenWillpower + 3);
     }
@@ -354,7 +363,7 @@ public class Character : MonoBehaviour
             damageAmount += 3;
         }
 
-        currentHealth -=  damageAmount;
+        currentHealth -= damageAmount;
 
         FindObjectOfType<UIScript>().ShowDamagePopup(transform.position, damageAmount, spriteOffset);
 
@@ -367,6 +376,11 @@ public class Character : MonoBehaviour
     /// <param name="healAmount">Amount of health to heal</param>
     public void Heal(int healAmount)
     {
+        if (hasHappiness)
+        {
+            healAmount += 3;
+        }
+
         currentHealth += (healAmount + Crit());
         if (currentHealth > maxHealth)
         {
@@ -375,38 +389,139 @@ public class Character : MonoBehaviour
     }
 
     //TODO: Implement spells that buff or debuff certain stats
-    //public void Buff(/*Spell spell, List<Character> targetList*/)
-    //{
-       //Guide: { vitality, strength, resolve, fortitude, fortune }
-       //for (int i = 0; i < targetList.Count; i++)
-       // {
-       //     if (spell.type == "Buff")
-       //     {
-       //         targetList[i].vitality += spell.statChanges[0];
-       //         targetList[i].strength += spell.statChanges[1];
-       //         targetList[i].resolve += spell.statChanges[2];
-       //         targetList[i].fortitude += spell.statChanges[3];
-       //         targetList[i].fortune += spell.statChanges[4];
-       //     }
-       //     else if (spell.type == "Debuff")
-       //     {
-       //         targetList[i].vitality -= spell.statChanges[0];
-       //         targetList[i].strength -= spell.statChanges[1];
-       //         targetList[i].resolve -= spell.statChanges[2];
-       //         targetList[i].fortitude -= spell.statChanges[3];
-       //         targetList[i].fortune -= spell.statChanges[4];
+    public void Buff(Spells.Spell spell, List<Character> targetList)
+    {
+        // Guide: { vitality, strength, resolve, fortitude, fortune }
+        for (int i = 0; i < targetList.Count; i++)
+        {
+            // oldStats hold the previous stats of the Character, used for Debuffs only
+            // Here is how it works: If a stat goes negative due to a debuff, it will be set to 0
+            // When the debuff wears off, the stat gets added back to it's original value
+            // by adding back to the stat. However, say you have two mana, and subtract three mana
+            // due to a debuff. You now have -1 mana, so it gets set to 0 mana. When the debuff
+            // wears off, it would normally add the value back, so 3 mana would be added back after
+            // the debuff ends. However, you started at only 2 mana. So instead, we store 2 in oldStat
+            // and add 2 back, instead of 3. 
+            int[] oldStats = new int[5];
 
-       //         // TODO: Make sure that if stats go negative, it sets to zero
-       //         // Additionally, make sure that the stats increase back to the proper amount
-       //     }
+            if (spell.type == "Buff")
+            {
+                // If the Character has happiness, buffs will be more effective
+                // If a buff does not touch a stat, it gets skipped for Happy buff
 
-       //     targetList[i].affectedStats.Add(spell.statChanges);
-       //     targetList[i].affectedStatsTurncount.Add(spell.turnCount);
-       //     targetList[i].affectedStatsType.Add(spell.type);
+                if (hasHappiness)
+                {
+                    for (int j = 0; j < spell.statChanges.Length; j++)
+                    {
+                        if (spell.statChanges[j] > 0)
+                        {
+                            spell.statChanges[j] += 2;
+                        }
+                    }
+                }
 
-            // TODO: Make a new function to reverse the buff/debuff
-    //    }
-    //}
+                targetList[i].vitality += spell.statChanges[0];
+                targetList[i].strength += spell.statChanges[1];
+                targetList[i].resolve += spell.statChanges[2];
+                targetList[i].fortitude += spell.statChanges[3];
+                targetList[i].fortune += spell.statChanges[4];
+            }
+            else if (spell.type == "Debuff")
+            {
+                oldStats[0] = targetList[i].vitality;
+                oldStats[1] = targetList[i].strength;
+                oldStats[2] = targetList[i].resolve;
+                oldStats[3] = targetList[i].fortitude;
+                oldStats[4] = targetList[i].fortune;
+
+                targetList[i].vitality -= spell.statChanges[0];
+                targetList[i].strength -= spell.statChanges[1];
+                targetList[i].resolve -= spell.statChanges[2];
+                targetList[i].fortitude -= spell.statChanges[3];
+                targetList[i].fortune -= spell.statChanges[4];
+
+                // Sets stats to 0 if they are negative, and makes sure the 
+                // stat will be reset to the correct amount
+                if (targetList[i].vitality <= 0)
+                {
+                    targetList[i].vitality = 0;
+                    spell.statChanges[0] = oldStats[0];
+                }
+                if (targetList[i].strength <= 0)
+                {
+                    targetList[i].strength = 0;
+                    spell.statChanges[1] = oldStats[1];
+                }
+                if (targetList[i].resolve <= 0)
+                {
+                    targetList[i].resolve = 0;
+                    spell.statChanges[2] = oldStats[2];
+                }
+                if (targetList[i].fortitude <= 0)
+                {
+                    targetList[i].fortitude = 0;
+                    spell.statChanges[3] = oldStats[3];
+                }
+                if (targetList[i].fortune <= 0)
+                {
+                    targetList[i].fortune = 0;
+                    spell.statChanges[4] = oldStats[4];
+                }
+            }
+
+            targetList[i].affectedStats.Add(spell.statChanges);
+            targetList[i].affectedStatsTurncount.Add(spell.turnCount);
+
+            // Takes the string spell type and adds the correct BuffType enum
+            if (spell.type == "Buff")
+            {
+                targetList[i].affectedStatsType.Add(BuffType.Buff);
+            }
+            else
+            {
+                targetList[i].affectedStatsType.Add(BuffType.Debuff);
+            }
+
+            // TODO: Make a new function to reverse the buff/ debuff
+        }
+    }
+
+    /// <summary>
+    /// Checks to see if any of the buff or debuff spells have expired. If they have, reverse their effects
+    /// </summary>
+    public void BuffEnd()
+    {
+        for (int i = 0; i < affectedStatsTurncount.Count; i++)
+        {
+            affectedStatsTurncount[i]--;
+
+            if (affectedStatsTurncount[i] <= 0)
+            {
+                if (affectedStatsType[i] == BuffType.Buff)
+                {
+                    vitality -= affectedStats[i][0];
+                    strength -= affectedStats[i][1];
+                    resolve -= affectedStats[i][2];
+                    fortitude -= affectedStats[i][3];
+                    fortune -= affectedStats[i][4];
+                }
+                else
+                {
+                    vitality += affectedStats[i][0];
+                    strength += affectedStats[i][1];
+                    resolve += affectedStats[i][2];
+                    fortitude += affectedStats[i][3];
+                    fortune += affectedStats[i][4];
+                }
+
+                // Gets rid of buff/debuff data from this Character
+                affectedStats.RemoveAt(i);
+                affectedStatsTurncount.RemoveAt(i);
+                affectedStatsType.RemoveAt(i);
+                i--;
+            }
+        }
+    }
 
     /// <summary>
     /// Determines whether a given attack is a crit
@@ -452,11 +567,12 @@ public class Character : MonoBehaviour
     }
 
     /// <summary>
-    /// Runs before a character takes their turn. Decreases already applied stat buffs and debuffs
+    /// Runs before a character takes their turn. Calls BuffEnd to 
+    /// decrease already applied stat buffs and debuffs
     /// </summary>
     public void TurnStart()
     {
-
+        BuffEnd();
     }
 
     /// <summary>
@@ -490,7 +606,7 @@ public class Character : MonoBehaviour
     public void CheckEmotion()
     {
         /// Order: Happiness, Anger, Sadness, Fear, Disgust
-        
+
         if (emotionPoints[0] >= 100) { ChangeEmotion(Emotion.Happiness); }
         else if (emotionPoints[1] >= 100) { ChangeEmotion(Emotion.Anger); }
         else if (emotionPoints[2] >= 100) { ChangeEmotion(Emotion.Sadness); }
@@ -509,6 +625,7 @@ public class Character : MonoBehaviour
 
         hasFear = false;
         hasDisgust = false;
+        hasHappiness = false;
 
         /// Resets the emotion points values
         emotionPoints = new int[5];
@@ -518,25 +635,47 @@ public class Character : MonoBehaviour
             case Emotion.None:
                 switch (pastEmotion)
                 {
-                    case Emotion.Anger: 
-                        strength -= 5; 
-                        resolve -= 5; 
-                        fortitude += 5; 
-                        fortune += 5; 
+                    case Emotion.Anger:
+                        strength -= 5;
+                        resolve -= 5;
+                        fortitude += 5;
+                        fortune += 5;
                         break;
-                    case Emotion.Sadness: 
-                        fortitude -= 5; 
-                        fortune -= 5; 
-                        strength += 5; 
-                        resolve += 5; 
+                    case Emotion.Sadness:
+                        fortitude -= 5;
+                        fortune -= 5;
+                        strength += 5;
+                        resolve += 5;
+                        break;
+                    case Emotion.Happiness:
+                        strength += 5;
+                        currentHealth += 5;
+                        maxHealth += 5;
                         break;
                 }
                 srCharacter.color = Color.white;
 
                 angerSprite.enabled = false;
                 sadnessSprite.enabled = false;
+                // happinessSprite.enabled = false;
                 fearSprite.enabled = false;
                 disgustSprite.enabled = false;
+                break;
+            case Emotion.Happiness:
+                hasHappiness = true;
+                strength -= 5;
+                currentHealth -= 5;
+                maxHealth -= 5;
+
+                if (currentHealth <= 0) { currentHealth = 1; }
+                if (maxHealth <= 0) { maxHealth = 1; }
+                if (strength < 0) { strength = 0; }
+
+                srCharacter.color = Color.yellow;
+
+                // TODO: Add a happinessSprite
+                //happinessSprite.enabled = true;
+                //happiness.transform.position = transform.position + spriteOffset;
                 break;
             case Emotion.Anger:
                 strength += 5;
