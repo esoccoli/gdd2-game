@@ -280,8 +280,6 @@ public class UIScript : MonoBehaviour
                 }
 
 
-
-
                 if (manager.PartyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);

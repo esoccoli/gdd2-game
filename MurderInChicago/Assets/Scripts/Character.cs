@@ -295,6 +295,8 @@ public class Character : MonoBehaviour
 
         var spell = spells.GetSpell(spellName);
 
+        Debug.Log(spell.damageAmount);
+
 
         // If the character has fear, then all of their spells require more willpower to cast
         if (hasFear)
