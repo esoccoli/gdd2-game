@@ -44,18 +44,11 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<TextMeshProUGUI> partyMemberWPTexts;
 
-    [SerializeField]
-    List<TextMeshProUGUI> enemyWPTexts;
+/*    [SerializeField]
+    List<TextMeshProUGUI> enemyWPTexts;*/
 
     [SerializeField]
     TextMeshPro damageText;
-
-
-    /*[SerializeField]
-    List<TextMeshProUGUI> HPTexts;
-
-    [SerializeField]
-    List<TextMeshProUGUI> WPTexts;*/
 
     [SerializeField]
     List<Button> buttons;
@@ -134,7 +127,6 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
-
 
         //TODO: Refactor code so it only needs to chech a list of characters
         /*foreach (PartyMember partyMember in characterList)
@@ -295,8 +287,8 @@ public class UIScript : MonoBehaviour
             //UpdateText(true, partyMember);
             //UpdateText(false, partyMember);
 
-            partyMemberHPTexts[i].text = "HP: " + manager.PartyMembers[i].Health.ToString();
-            partyMemberWPTexts[i].text = "WP: " + manager.PartyMembers[i].Willpower.ToString();
+            partyMemberHPTexts[i].text = manager.PartyMembers[i].Health.ToString();
+            partyMemberWPTexts[i].text = manager.PartyMembers[i].Willpower.ToString();
         }
 
         for (int i = 0; i < manager.Enemies.Count; i++)
@@ -313,7 +305,6 @@ public class UIScript : MonoBehaviour
             //UpdateText(false, enemy);
 
             enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
-            enemyWPTexts[i].text = "WP: " + manager.Enemies[i].Willpower.ToString();
         }
     }
     /// <summary>
