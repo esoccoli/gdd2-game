@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     // Party members in current party
     [SerializeField]
-    List<Character> partyMembers;
+    List<PartyMember> partyMembers;
 
     [SerializeField]
     List<Enemy> enemies;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     // A queue to manage turn order
     Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
-    public List<Character> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
+    public List<PartyMember> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
     public List<Enemy> Enemies { get { return enemies; } set { enemies = value; } }
 
 
@@ -47,12 +47,14 @@ public class GameManager : MonoBehaviour
         // Add party members to the turn queue
         foreach (PartyMember member in partyMembers)
         {
+            if (member.isAlive == false) continue;
             turnQueue.Enqueue(PartyMemberTurn(member));
         }
 
         // Add enemies to the turn queue
         foreach (Enemy enemy in enemies)
         {
+            if (enemy.isAlive == false) continue;
             turnQueue.Enqueue(EnemyTurn(enemy));
         }
     }
@@ -78,10 +80,13 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PartyMemberTurn(PartyMember member)
     {
-        member.IsMyTurn = true;
+        if (member.isAlive)
+        {
+            member.IsMyTurn = true;
 
-        // Wait until the player completes their action
-        yield return StartCoroutine(member.AwaitInputFromUI());
+            // Wait until the player completes their action
+            yield return StartCoroutine(member.AwaitInputFromUI());
+        }
 
         // Mark this character's turn as complete and move to the next one
         StartNextTurn();
@@ -94,16 +99,19 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator EnemyTurn(Enemy enemy)
     {
-        enemy.IsMyTurn = true;
+        if (enemy.isAlive)
+        {
+            enemy.IsMyTurn = true;
 
-        int target = Random.Range(0, partyMembers.Count - 1);
+            int target = Random.Range(0, partyMembers.Count - 1);
 
-        // Simulate enemy determining action
-        enemy.DetermineAction(partyMembers, enemy.GetRandomSpell());
+            // Simulate enemy determining action
+            enemy.DetermineAction(partyMembers, enemy.GetRandomSpell());
 
-        // Add a slight delay to simulate enemy thinking/action
-        yield return new WaitForSeconds(1.0f);
+            // Add a slight delay to simulate enemy thinking/action
+            yield return new WaitForSeconds(1.0f);
 
+        }
         // Mark the enemy's turn as complete and move to the next one
         StartNextTurn();
     }

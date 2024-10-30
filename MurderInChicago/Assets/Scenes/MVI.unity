@@ -1614,6 +1614,7 @@ MonoBehaviour:
   critSprite: {fileID: 571791741}
   missSprite: {fileID: 1380504678}
   spriteOffset: {x: 0, y: 1, z: 0}
+  tombstone: {fileID: 21300000, guid: a63a1d70df3a2364b96467576ee9abdd, type: 3}
   spellList:
   - Fire
   - Soulfire
@@ -1632,6 +1633,7 @@ MonoBehaviour:
   weakness: Fire
   currentEmotion: 0
   pastEmotion: 0
+  isAlive: 1
 --- !u!1 &500373924
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,6 +2494,7 @@ MonoBehaviour:
   critSprite: {fileID: 571791741}
   missSprite: {fileID: 1380504678}
   spriteOffset: {x: 0, y: 1, z: 0}
+  tombstone: {fileID: 21300000, guid: a63a1d70df3a2364b96467576ee9abdd, type: 3}
   spellList:
   - Fire
   - Soulfire
@@ -2510,6 +2513,7 @@ MonoBehaviour:
   weakness: Poison
   currentEmotion: 0
   pastEmotion: 0
+  isAlive: 1
 --- !u!212 &732709424
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3940,6 +3944,7 @@ MonoBehaviour:
   critSprite: {fileID: 571791741}
   missSprite: {fileID: 1380504678}
   spriteOffset: {x: 0, y: 1, z: 0}
+  tombstone: {fileID: 21300000, guid: a63a1d70df3a2364b96467576ee9abdd, type: 3}
   spellList:
   - Soulfire
   - Ice Blast
@@ -3956,6 +3961,7 @@ MonoBehaviour:
   weakness: Fire
   currentEmotion: 5
   pastEmotion: 5
+  isAlive: 1
 --- !u!61 &1269956906
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4258,6 +4264,7 @@ MonoBehaviour:
   critSprite: {fileID: 571791741}
   missSprite: {fileID: 1380504678}
   spriteOffset: {x: 0, y: 1, z: 0}
+  tombstone: {fileID: 21300000, guid: a63a1d70df3a2364b96467576ee9abdd, type: 3}
   spellList:
   - Soulfire
   - Ice Blast
@@ -4274,6 +4281,7 @@ MonoBehaviour:
   weakness: Ice
   currentEmotion: 5
   pastEmotion: 5
+  isAlive: 1
 --- !u!212 &1326892701
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4792,6 +4800,7 @@ MonoBehaviour:
   critSprite: {fileID: 571791741}
   missSprite: {fileID: 1380504678}
   spriteOffset: {x: 0, y: 1, z: 0}
+  tombstone: {fileID: 21300000, guid: a63a1d70df3a2364b96467576ee9abdd, type: 3}
   spellList:
   - Ice Blast
   - Strong Heal
@@ -4809,6 +4818,7 @@ MonoBehaviour:
   weakness: Ice
   currentEmotion: 0
   pastEmotion: 0
+  isAlive: 1
 --- !u!1 &1662047859
 GameObject:
   m_ObjectHideFlags: 0

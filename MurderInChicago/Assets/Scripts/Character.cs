@@ -66,6 +66,10 @@ public class Character : MonoBehaviour
     /// The SpriteRenderer component associated with the current character
     SpriteRenderer srCharacter;
 
+    /// The tombstone sprite used for dead characters
+    [SerializeField]
+    Sprite tombstone;
+
     /// True if it is currently this characters' turn, or false otherwise
     protected bool isMyTurn;
 
@@ -199,9 +203,14 @@ public class Character : MonoBehaviour
     List<int> affectedStatsTurncount = new List<int>();
 
     /// <summary>
-    /// 
+    /// The types of buffs or debuffs currently applied. You can have multiple buffs and debuffs active at one time.
     /// </summary>
     List<BuffType> affectedStatsType = new List<BuffType>();
+
+    /// <summary>
+    /// Stores whether the Character is alive. If not, their turn is skipped.
+    /// </summary>
+    public bool isAlive = true;
 
     #endregion
 
@@ -248,7 +257,7 @@ public class Character : MonoBehaviour
         {
             if (crit > 0)
             {
-                critSprite.transform.position = target.transform.position + spriteOffset;
+                critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(0.0f, 0.75f, 3.0f);
                 StartCoroutine(ShowSpriteAndFade(critSprite)); // Show crit sprite
                 target.TakeDamage("physical", 4 + strength + crit, "physical");
             }
@@ -281,6 +290,12 @@ public class Character : MonoBehaviour
         }
 
         var spell = spells.GetSpell(spellName);
+
+        // If the character has fear, then all of their spells require more willpower to cast
+        if (hasFear)
+        {
+            spell.willpowerCost = spell.willpowerCost + ((int)(spell.willpowerCost * 0.5f));
+        }
 
         // If the character has enough willpower to cast the spell
         if (currentWillpower >= spell.willpowerCost)
@@ -315,7 +330,7 @@ public class Character : MonoBehaviour
                     for (int i = 0; i < targetList.Count; i++)
                     {
                         targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
-                    }     
+                    }
                     TurnEnd();
                     break;
             }
@@ -368,6 +383,11 @@ public class Character : MonoBehaviour
         FindObjectOfType<UIScript>().ShowDamagePopup(transform.position, damageAmount, spriteOffset);
 
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
+
+        if (currentHealth <= 0)
+        {
+            Death();
+        }
     }
 
     /// <summary>
@@ -376,12 +396,19 @@ public class Character : MonoBehaviour
     /// <param name="healAmount">Amount of health to heal</param>
     public void Heal(int healAmount)
     {
+        // Happiness increases the effectiveness of healing
         if (hasHappiness)
         {
             healAmount += 3;
         }
 
-        currentHealth += (healAmount + Crit());
+        // Disgust prevents healing from having any positive effect
+        // You can still cast it, but it won't do anything
+        if (!hasDisgust)
+        {
+            currentHealth += (healAmount + Crit());
+        }
+
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
@@ -420,11 +447,17 @@ public class Character : MonoBehaviour
                     }
                 }
 
-                targetList[i].vitality += spell.statChanges[0];
-                targetList[i].strength += spell.statChanges[1];
-                targetList[i].resolve += spell.statChanges[2];
-                targetList[i].fortitude += spell.statChanges[3];
-                targetList[i].fortune += spell.statChanges[4];
+                // Disgust will prevent buffs from having an effect
+                // You can still cast it, but it won't do anything
+
+                if (!hasDisgust)
+                {
+                    targetList[i].vitality += spell.statChanges[0];
+                    targetList[i].strength += spell.statChanges[1];
+                    targetList[i].resolve += spell.statChanges[2];
+                    targetList[i].fortitude += spell.statChanges[3];
+                    targetList[i].fortune += spell.statChanges[4];
+                }
             }
             else if (spell.type == "Debuff")
             {
@@ -720,5 +753,15 @@ public class Character : MonoBehaviour
                 disgustSprite.transform.position = transform.position + spriteOffset;
                 break;
         }
+    }
+
+    /// <summary>
+    /// Sets them to dead, removes their emotions, and sets their sprite to tombstone
+    /// </summary>
+    public void Death()
+    {
+        isAlive = false;
+        ChangeEmotion(Emotion.None);
+        srCharacter.sprite = tombstone;
     }
 }
