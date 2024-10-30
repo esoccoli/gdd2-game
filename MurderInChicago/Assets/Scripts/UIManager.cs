@@ -392,6 +392,17 @@ public class UIScript : MonoBehaviour
     {
 
         List<Character> targetedCharacters = new List<Character>();
+
+        if (member.GetSpellTargeting(spellButtons[spellListIndex].text) == "Multiple")
+        {
+            foreach (Enemy enemy in manager.Enemies)
+            {
+                targetedCharacters.Add(enemy);
+            }
+            member.MagicAttack(targetedCharacters, spellButtons[spellListIndex].text);
+            return;
+        }
+
         foreach (Enemy enemy in manager.Enemies)
         {
             if (cursor.bounds.Intersects(enemy.Collider.bounds))
