@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Specialized;
 using System;
 using Random = UnityEngine.Random;
-using System.Diagnostics;
+//using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
 public enum Emotion
@@ -89,7 +89,11 @@ public class Character : MonoBehaviour
 
     bool isTargeting;
 
+    bool isUsingSpell;
+
+
     public bool IsTargeting { get { return isTargeting; } set { isTargeting = value; } }
+    public bool IsUsingSpell { get { return isUsingSpell; } set { isUsingSpell = value; } }
 
     #region Defining Stats
 
@@ -290,6 +294,7 @@ public class Character : MonoBehaviour
         }
 
         var spell = spells.GetSpell(spellName);
+
 
         // If the character has fear, then all of their spells require more willpower to cast
         if (hasFear)

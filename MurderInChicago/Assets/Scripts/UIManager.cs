@@ -53,6 +53,14 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<Button> buttons;
 
+    [SerializeField]
+    GameObject spellBox;
+
+    [SerializeField]
+    List<TextMeshProUGUI> spellButtons;
+
+    int spellListIndex;
+
     /// A circle below a character to indicate who's turn it is
     [SerializeField]
     SpriteRenderer turnIndicator;
@@ -70,26 +78,12 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject restartButton;
 
+    //targeting/spell UI elements
     [SerializeField]
     Collider2D cursor;
 
     [SerializeField]
     GameObject arrowIndicator;
-
-    // Update the turn indicator position based on the current turn
-    private void UpdateTurnIndicatorPosition()
-    {
-        foreach (Character character in characterList)
-        {
-            if (character.IsMyTurn)
-            {
-                // Position the turn indicator directly below the party member
-                Vector3 newPosition = character.transform.position + new Vector3(0, -0.8f, 0);
-                turnIndicator.transform.position = newPosition;
-                return;
-            }
-        }
-    }
 
     /// <summary>
     /// Called when the user clicks the "Attack" button in the battle menu
@@ -133,6 +127,25 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }*/
+    }
+
+    public void OnSpell()
+    {
+        spellBox.SetActive(true);
+    }
+
+    public void OnSpell(int index)
+    {
+        ShowAndHideButtons(false);
+        foreach (PartyMember partyMember in manager.PartyMembers)
+        {
+            if (partyMember.IsMyTurn)
+            {
+                partyMember.IsUsingSpell = true;
+                partyMember.IsTargeting = true;
+                spellListIndex = index;
+            }
+        }
     }
 
     /// <summary>
@@ -259,21 +272,32 @@ public class UIScript : MonoBehaviour
                 ShowAndHideButtons(true);
                 //UpdateTurnIndicatorPosition();
 
+                
+                //updates text on the spell buttons
+                for (int j = 0; j < spellButtons.Count-1; j++)
+                {
+                    spellButtons[j].text = manager.PartyMembers[i].spellList[j];
+                }
+
+
+
+
                 if (manager.PartyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
-                    foreach (Enemy enemy in manager.Enemies)
-                    {
-                        if (cursor.bounds.Intersects(enemy.Collider.bounds))
-                        {
-                            arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
-                            arrowIndicator.SetActive(true);
 
-                            if (Input.GetMouseButton(0))
-                            {
-                                manager.PartyMembers[i].PhysicalAttack(enemy);
-                            }
-                        }
+
+                    if (manager.PartyMembers[i].IsUsingSpell)
+                    {
+                        //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
+                        //arrowIndicator.SetActive(true);
+
+                                
+                        TargetEnemies(manager.PartyMembers[i], spellListIndex);
+                    }
+                    else
+                    {
+                        TargetEnemies(manager.PartyMembers[i]);
                     }
                 }
                 if (manager.PartyMembers[i].IsTargeting == false)
@@ -307,6 +331,25 @@ public class UIScript : MonoBehaviour
             enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
         }
     }
+
+    /// <summary>
+    /// Update the turn indicator position based on the current turn
+    /// </summary>
+    private void UpdateTurnIndicatorPosition()
+    {
+        foreach (Character character in characterList)
+        {
+            if (character.IsMyTurn)
+            {
+                // Position the turn indicator directly below the party member
+                Vector3 newPosition = character.transform.position + new Vector3(0, -0.8f, 0);
+                turnIndicator.transform.position = newPosition;
+                return;
+            }
+        }
+    }
+
+
     /// <summary>
     /// Shows or hides the buttons depending on if it is a party members turn or not
     /// </summary>
@@ -316,6 +359,53 @@ public class UIScript : MonoBehaviour
         foreach (Button b in buttons)
         {
             b.gameObject.SetActive(isActive);
+        }
+    }
+
+    /// <summary>
+    /// lets a chosen party member target and ennemy and attack them
+    /// </summary>
+    /// <param name="member"></param>
+    void TargetEnemies(PartyMember member)
+    {
+        foreach (Enemy enemy in manager.Enemies)
+        {
+            if (cursor.bounds.Intersects(enemy.Collider.bounds))
+            {
+                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                arrowIndicator.SetActive(true);
+
+                if (Input.GetMouseButton(0))
+                {
+                    member.PhysicalAttack(enemy);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// targets an enemy with a specific spell
+    /// </summary>
+    /// <param name="member"></param>
+    /// <param name="isSpell"></param>
+    void TargetEnemies(PartyMember member, int index)
+    {
+
+        List<Character> targetedCharacters = new List<Character>();
+
+        foreach (Enemy enemy in manager.Enemies)
+        {
+            if (cursor.bounds.Intersects(enemy.Collider.bounds))
+            {
+                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                arrowIndicator.SetActive(true);
+
+                if (Input.GetMouseButton(0))
+                {
+                    targetedCharacters.Add(enemy);
+                    member.MagicAttack(targetedCharacters, spellButtons[spellListIndex].text);
+                }
+            }
         }
     }
 
