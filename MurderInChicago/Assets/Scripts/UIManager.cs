@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using TMPro.Examples;
 using Unity.VisualScripting;
@@ -267,7 +268,7 @@ public class UIScript : MonoBehaviour
         for (int i = 0; i < manager.PartyMembers.Count; i++)
         {
             // Checks if it is a party member's turn and then re enables the buttons if it is
-            if (manager.PartyMembers[i].IsMyTurn == true)
+            if (manager.PartyMembers[i].IsMyTurn)
             {
                 ShowAndHideButtons(true);
                 //UpdateTurnIndicatorPosition();
@@ -289,16 +290,17 @@ public class UIScript : MonoBehaviour
                     {
                         //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
                         //arrowIndicator.SetActive(true);
-
-                                
-                        TargetEnemies(manager.PartyMembers[i], spellListIndex);
+                        //if (manager.PartyMembers[i].GetSpellTargeting(spellButtons[spellListIndex].text) == "Single")
+                            TargetEnemies(manager.PartyMembers[i], spellListIndex);
+                        //else 
+                        
                     }
                     else
                     {
                         TargetEnemies(manager.PartyMembers[i]);
                     }
                 }
-                if (manager.PartyMembers[i].IsTargeting == false)
+                else
                 {
                     arrowIndicator.SetActive(false);
                 }
@@ -316,7 +318,7 @@ public class UIScript : MonoBehaviour
         for (int i = 0; i < manager.Enemies.Count; i++)
         {
             // Check if it's an enemy's turn to update the indicator if necessary
-            if (manager.Enemies[i].IsMyTurn == true)
+            if (manager.Enemies[i].IsMyTurn)
             {
                 UpdateTurnIndicatorPosition(); // Update position during turn
             }
@@ -390,7 +392,6 @@ public class UIScript : MonoBehaviour
     {
 
         List<Character> targetedCharacters = new List<Character>();
-
         foreach (Enemy enemy in manager.Enemies)
         {
             if (cursor.bounds.Intersects(enemy.Collider.bounds))

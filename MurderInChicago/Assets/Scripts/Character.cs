@@ -301,7 +301,7 @@ public class Character : MonoBehaviour
         // If the character has fear, then all of their spells require more willpower to cast
         if (hasFear)
         {
-            spell.willpowerCost = spell.willpowerCost + ((int)(spell.willpowerCost * 0.5f));
+            spell.willpowerCost += ((int)(spell.willpowerCost * 0.5f));
         }
 
         // If the character has enough willpower to cast the spell
@@ -347,6 +347,11 @@ public class Character : MonoBehaviour
             // TODO: Implement functionality for what happens if you try to cast a spell but don't have enough willpower
             UnityEngine.Debug.Log("You do not have enough Willpower to cast this spell");
         }
+    }
+
+    public string GetSpellTargeting(string spellName)
+    {
+        return spells.GetSpell(spellName).target;
     }
 
     /// <summary>
