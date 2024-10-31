@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3653207426799210881}
   - component: {fileID: 2918476367541738403}
   - component: {fileID: 18831704630811973}
+  - component: {fileID: -3989072729371772981}
   m_Layer: 0
   m_Name: lucine
   m_TagString: Untagged
@@ -111,7 +112,8 @@ MonoBehaviour:
   - Strong Heal
   - Galvanize
   - Joy
-  collider: {fileID: 0}
+  - Joy
+  collider: {fileID: -3989072729371772981}
   maxHealth: 20
   maxWillpower: 10
   regenWillpower: 2
@@ -124,3 +126,48 @@ MonoBehaviour:
   currentEmotion: 0
   pastEmotion: 0
   isAlive: 1
+--- !u!61 &-3989072729371772981
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5948678948290097754}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.875}
+    newSize: {x: 0.5, y: 0.875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.875}
+  m_EdgeRadius: 0

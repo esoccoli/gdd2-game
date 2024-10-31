@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using TMPro.Examples;
 using Unity.VisualScripting;
@@ -41,12 +43,8 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<TextMeshProUGUI> enemyHPTexts;
 
-
     [SerializeField]
     List<TextMeshProUGUI> partyMemberWPTexts;
-
-/*    [SerializeField]
-    List<TextMeshProUGUI> enemyWPTexts;*/
 
     [SerializeField]
     TextMeshPro damageText;
@@ -54,6 +52,7 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<Button> buttons;
 
+    //spell UI
     [SerializeField]
     GameObject spellBox;
 
@@ -79,7 +78,7 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject restartButton;
 
-    //targeting/spell UI elements
+    //targeting UI
     [SerializeField]
     Collider2D cursor;
 
@@ -101,12 +100,6 @@ public class UIScript : MonoBehaviour
                 partyMember.IsTargeting = true;
             }
         }
-
-        //TODO: Refactor code so it only needs to check a list of characters
-        /*foreach (PartyMember partyMember in characterList) 
-        {
-            if (partyMember.IsMyTurn) { partyMember.PhysicalAttack(enemy); }
-        }*/
     }
 
 
@@ -122,12 +115,6 @@ public class UIScript : MonoBehaviour
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
-
-        //TODO: Refactor code so it only needs to chech a list of characters
-        /*foreach (PartyMember partyMember in characterList)
-        {
-            if (partyMember.IsMyTurn) { partyMember.Rest(); }
-        }*/
     }
 
     public void OnSpell()
@@ -275,7 +262,7 @@ public class UIScript : MonoBehaviour
 
                 
                 //updates text on the spell buttons
-                for (int j = 0; j < spellButtons.Count-1; j++)
+                for (int j = 0; j < spellButtons.Count; j++)
                 {
                     spellButtons[j].text = manager.PartyMembers[i].spellList[j];
                 }
@@ -288,11 +275,13 @@ public class UIScript : MonoBehaviour
 
                     if (manager.PartyMembers[i].IsUsingSpell)
                     {
+                        //todo: add the new turn indicator 
                         //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
                         //arrowIndicator.SetActive(true);
-                        //if (manager.PartyMembers[i].GetSpellTargeting(spellButtons[spellListIndex].text) == "Single")
-                            TargetEnemies(manager.PartyMembers[i], spellListIndex);
-                        //else 
+
+                        string[] spellInfo = manager.PartyMembers[i].GetSpellInfo(spellButtons[spellListIndex].text);
+
+                        TargetEnemies(manager.PartyMembers[i], spellListIndex, spellInfo[0], spellInfo[1]);
                         
                     }
                     else
@@ -307,9 +296,6 @@ public class UIScript : MonoBehaviour
             }
 
             // Updates each of the player hp and wp UI elements
-            //TODO: Refactor code so it only needs to chech a list of characters
-            //UpdateText(true, partyMember);
-            //UpdateText(false, partyMember);
 
             partyMemberHPTexts[i].text = manager.PartyMembers[i].Health.ToString();
             partyMemberWPTexts[i].text = manager.PartyMembers[i].Willpower.ToString();
@@ -324,10 +310,6 @@ public class UIScript : MonoBehaviour
             }
 
             // Updates each of the enemy hp and wp UI elements
-            //TODO: Refactor code so it only needs to chech a list of characters
-            //UpdateText(true, enemy);
-            //UpdateText(false, enemy);
-
             enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
         }
     }
@@ -384,57 +366,49 @@ public class UIScript : MonoBehaviour
     }
 
     /// <summary>
-    /// targets an enemy with a specific spell
+    /// targets an enemy with a specific spell or if spell is multi targeted targets all
     /// </summary>
     /// <param name="member"></param>
     /// <param name="isSpell"></param>
-    void TargetEnemies(PartyMember member, int index)
+    void TargetEnemies(PartyMember member, int index, string type, string enemiesTargeted)
     {
-
         List<Character> targetedCharacters = new List<Character>();
 
-        if (member.GetSpellTargeting(spellButtons[spellListIndex].text) == "Multiple")
+        //if (member.GetSpellTargeting(spellButtons[index].text) == "Multiple")
+        if (enemiesTargeted == "Multiple")
+        {
+            if (type == "Heal" || type == "Buff")
+            {
+                foreach (PartyMember pMember in manager.PartyMembers)
+                {
+                    targetedCharacters.Add(pMember);
+                }
+            }
+            else
+            {
+                foreach (Enemy enemy in manager.Enemies)
+                {
+                    targetedCharacters.Add(enemy);
+                }
+            }
+            member.MagicAttack(targetedCharacters, spellButtons[index].text);
+        }
+        else
         {
             foreach (Enemy enemy in manager.Enemies)
             {
-                targetedCharacters.Add(enemy);
-            }
-            member.MagicAttack(targetedCharacters, spellButtons[spellListIndex].text);
-            return;
-        }
-
-        foreach (Enemy enemy in manager.Enemies)
-        {
-            if (cursor.bounds.Intersects(enemy.Collider.bounds))
-            {
-                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
-                arrowIndicator.SetActive(true);
-
-                if (Input.GetMouseButton(0))
+                if (cursor.bounds.Intersects(enemy.Collider.bounds))
                 {
-                    targetedCharacters.Add(enemy);
-                    member.MagicAttack(targetedCharacters, spellButtons[spellListIndex].text);
+                    arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                    arrowIndicator.SetActive(true);
+
+                    if (Input.GetMouseButton(0))
+                    {
+                        targetedCharacters.Add(enemy);
+                        member.MagicAttack(targetedCharacters, spellButtons[index].text);
+                    }
                 }
             }
         }
     }
-
-    /*void UpdateText(bool isHP, Character character)
-    {
-        if (isHP) 
-        {
-            foreach (TextMeshProUGUI text in HPTexts)
-            {
-                text.text = "HP: " + character.Health.ToString();
-            }
-
-        }
-        else 
-        {
-            foreach (TextMeshProUGUI text in WPTexts)
-            {
-                text.text = "WP: " + character.Willpower.ToString();
-            }
-        }
-    }*/
 }

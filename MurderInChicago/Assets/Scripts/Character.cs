@@ -321,13 +321,17 @@ public class Character : MonoBehaviour
             switch (spell.type)
             {
                 case "Heal":
-                    Heal(spell.damageAmount);
+                    //Heal(spell.damageAmount);
+                    Heal(spell.damageAmount, targetList);
+                    TurnEnd();
                     break;
                 case "Buff":
                     Buff(spell, targetList);
+                    TurnEnd();
                     break;
                 case "Debuff":
                     Buff(spell, targetList);
+                    TurnEnd();
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
@@ -349,9 +353,21 @@ public class Character : MonoBehaviour
         }
     }
 
-    public string GetSpellTargeting(string spellName)
+    /*public string GetSpellTargeting(string spellName)
     {
         return spells.GetSpell(spellName).target;
+    }*/
+
+    /// <summary>
+    /// returns an array of spell type na dhow many characters it targets based on what spell name is given
+    /// </summary>
+    /// <param name="spellName"></param>
+    /// <returns></returns>
+    public string[] GetSpellInfo(string spellName)
+    {
+        return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target};
+        //(string type, string target, string description) 
+        //(string name, string type, string target, Emotion emotion, string description, int damageAmount, int turnCount, int willpowerCost, int emotionPoints) 
     }
 
     /// <summary>
@@ -406,24 +422,26 @@ public class Character : MonoBehaviour
     /// Heals the character by the specified amount
     /// </summary>
     /// <param name="healAmount">Amount of health to heal</param>
-    public void Heal(int healAmount)
+    //public void Heal(int healAmount)
+    public void Heal(int healAmount, List<Character> targetList)
     {
-        // Happiness increases the effectiveness of healing
-        if (hasHappiness)
+        for (int i = 0; i < targetList.Count; i++)
         {
-            healAmount += 3;
-        }
-
-        // Disgust prevents healing from having any positive effect
-        // You can still cast it, but it won't do anything
-        if (!hasDisgust)
-        {
-            currentHealth += (healAmount + Crit());
-        }
-
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
+            // Happiness increases the effectiveness of healing
+            if (targetList[i].hasHappiness)
+            {
+                healAmount += 3;
+            }
+            // Disgust prevents healing from having any positive effect
+            // You can still cast it, but it won't do anything
+            if (!(targetList[i].hasDisgust))
+            {
+                targetList[i].currentHealth += (healAmount + Crit());
+            }
+            if (targetList[i].currentHealth > targetList[i].maxHealth)
+            {
+                targetList[i].currentHealth = targetList[i].maxHealth;
+            }
         }
     }
 

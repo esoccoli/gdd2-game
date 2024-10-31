@@ -2618,6 +2618,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142911253}
   m_CullTransparentMesh: 1
+--- !u!61 &1185421554 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: -7764326401712753823, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
+  m_PrefabInstance: {fileID: 4240911505482760850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1187810461
 GameObject:
   m_ObjectHideFlags: 0
@@ -4953,7 +4958,7 @@ PrefabInstance:
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: collider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1185421554}
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: critSprite
       value: 
@@ -5161,6 +5166,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: spellList.Array.data[3]
+      value: Devastation
+      objectReference: {fileID: 0}
     - target: {fileID: 7062278998147947172, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: m_Name
       value: clyde
@@ -5202,6 +5211,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: spellList.Array.data[4]
+      value: Mercy
+      objectReference: {fileID: 0}
     - target: {fileID: 3653207426799210881, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.15
