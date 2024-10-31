@@ -1641,6 +1641,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: happinessSprite
+      value: 
+      objectReference: {fileID: 4364584052329221243}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4845,6 +4849,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: happinessSprite
+      value: 
+      objectReference: {fileID: 4364584052329221243}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4983,6 +4991,14 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
+      propertyPath: spriteOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
+      propertyPath: happinessSprite
+      value: 
+      objectReference: {fileID: 4364584052329221243}
     - target: {fileID: 6886945409973428324, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: m_Name
       value: henry
@@ -5094,6 +5110,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4647290136445430131, guid: ce3f2ea95c30f6246881201a85e0e34a, type: 3}
   m_PrefabInstance: {fileID: 4364584052329221241}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &4364584052329221243 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7045833406172191248, guid: ce3f2ea95c30f6246881201a85e0e34a, type: 3}
+  m_PrefabInstance: {fileID: 4364584052329221241}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5022230970580695267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5167,6 +5188,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 133207348}
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: spriteOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: happinessSprite
+      value: 
+      objectReference: {fileID: 4364584052329221243}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: spellList.Array.data[3]
       value: Devastation
       objectReference: {fileID: 0}
@@ -5211,6 +5240,14 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: spriteOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: happinessSprite
+      value: 
+      objectReference: {fileID: 4364584052329221243}
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: spellList.Array.data[4]
       value: Mercy

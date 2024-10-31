@@ -53,6 +53,9 @@ public class Character : MonoBehaviour
     [SerializeField]
     SpriteRenderer disgustSprite;
 
+    [SerializeField]
+    SpriteRenderer happinessSprite;
+
     /// Crit and Miss sprites
     [SerializeField]
     SpriteRenderer critSprite;
@@ -240,6 +243,7 @@ public class Character : MonoBehaviour
         sadnessSprite.enabled = false;
         fearSprite.enabled = false;
         disgustSprite.enabled = false;
+        happinessSprite.enabled = false;
         critSprite.enabled = false;
         missSprite.enabled = false;
     }
@@ -261,7 +265,7 @@ public class Character : MonoBehaviour
         {
             if (crit > 0)
             {
-                critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(0.0f, 0.75f, 3.0f);
+                critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(1f, 0, 0);
                 StartCoroutine(ShowSpriteAndFade(critSprite)); // Show crit sprite
                 target.TakeDamage("physical", 4 + strength + crit, "physical");
             }
@@ -593,6 +597,7 @@ public class Character : MonoBehaviour
     public int Crit()
     {
         int critChance = Random.Range(0, 100) + fortune;
+        //int critChance = 1;
         return critChance >= 10 ? 0 : 3 + fortune;
     }
 
@@ -720,7 +725,7 @@ public class Character : MonoBehaviour
 
                 angerSprite.enabled = false;
                 sadnessSprite.enabled = false;
-                // happinessSprite.enabled = false;
+                happinessSprite.enabled = false;
                 fearSprite.enabled = false;
                 disgustSprite.enabled = false;
                 break;
@@ -736,9 +741,8 @@ public class Character : MonoBehaviour
 
                 srCharacter.color = Color.yellow;
 
-                // TODO: Add a happinessSprite
-                //happinessSprite.enabled = true;
-                //happiness.transform.position = transform.position + spriteOffset;
+                happinessSprite.enabled = true;
+                happinessSprite.transform.position = transform.position + spriteOffset;
                 break;
             case Emotion.Anger:
                 strength += 5;

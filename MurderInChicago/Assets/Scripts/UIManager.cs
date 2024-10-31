@@ -250,7 +250,7 @@ public class UIScript : MonoBehaviour
         // Check for win/lose conditions
         CheckGameOver();
 
-        UpdateTurnIndicatorPosition();
+        //UpdateTurnIndicatorPosition();
 
         for (int i = 0; i < manager.PartyMembers.Count; i++)
         {
@@ -306,7 +306,7 @@ public class UIScript : MonoBehaviour
             // Check if it's an enemy's turn to update the indicator if necessary
             if (manager.Enemies[i].IsMyTurn)
             {
-                UpdateTurnIndicatorPosition(); // Update position during turn
+                //UpdateTurnIndicatorPosition(); // Update position during turn
             }
 
             // Updates each of the enemy hp and wp UI elements

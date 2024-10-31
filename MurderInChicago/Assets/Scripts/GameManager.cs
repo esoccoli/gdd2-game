@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void StartNextTurn()
     {
-        if (turnQueue.Count > 0) { StartCoroutine(turnQueue.Dequeue()); }
+        if (turnQueue.Count > 0){ StartCoroutine(turnQueue.Dequeue()); }
         else
         {
             // All turns are done, start the next round
@@ -83,6 +83,8 @@ public class GameManager : MonoBehaviour
         if (member.isAlive)
         {
             member.IsMyTurn = true;
+
+            
 
             // Wait until the player completes their action
             yield return StartCoroutine(member.AwaitInputFromUI());
