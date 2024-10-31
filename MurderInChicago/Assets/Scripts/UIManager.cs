@@ -281,7 +281,8 @@ public class UIScript : MonoBehaviour
                 //updates text on the spell buttons
                 for (int j = 0; j < spellButtonTexts.Count; j++)
                 {
-                    spellButtonTexts[j].text = manager.PartyMembers[i].spellList[j] + "DMG: 00" + "WP: 00";
+                    //spellButtonTexts[j].text = manager.PartyMembers[i].spellList[j] + "DMG: 00" + "WP: 00";
+                    spellButtonTexts[j].text = manager.PartyMembers[i].spellList[j];
                 }
 
                 if (manager.PartyMembers[i].IsTargeting)
