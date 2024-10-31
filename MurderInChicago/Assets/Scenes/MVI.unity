@@ -382,7 +382,7 @@ Transform:
   m_GameObject: {fileID: 290239191}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.92098343, y: -0.47446513, z: 6.979031}
+  m_LocalPosition: {x: 0.92098343, y: -0.47446513, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2208,6 +2208,7 @@ GameObject:
   - component: {fileID: 1125350361}
   - component: {fileID: 1125350360}
   - component: {fileID: 1125350359}
+  - component: {fileID: 1125350363}
   m_Layer: 5
   m_Name: Spell Button 4
   m_TagString: Untagged
@@ -2329,6 +2330,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1125350357}
   m_CullTransparentMesh: 1
+--- !u!114 &1125350363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125350357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1706382067}
+          m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+          m_MethodName: OnMoveArrow
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1134273259
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,7 +2673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1187810462
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2723,6 +2753,7 @@ GameObject:
   - component: {fileID: 1242606707}
   - component: {fileID: 1242606706}
   - component: {fileID: 1242606705}
+  - component: {fileID: 1242606709}
   m_Layer: 5
   m_Name: Spell Button 3
   m_TagString: Untagged
@@ -2844,6 +2875,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242606703}
   m_CullTransparentMesh: 1
+--- !u!114 &1242606709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242606703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1706382067}
+          m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+          m_MethodName: OnMoveArrow
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1253289196
 GameObject:
   m_ObjectHideFlags: 0
@@ -3430,7 +3490,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591496976}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 61.3}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3864,12 +3924,18 @@ MonoBehaviour:
   - {fileID: 1855867403}
   - {fileID: 406281890}
   spellBox: {fileID: 1591496976}
-  spellButtons:
+  spellButtonTexts:
   - {fileID: 737104147}
   - {fileID: 662785409}
   - {fileID: 989232922}
   - {fileID: 404667482}
   - {fileID: 1594225269}
+  spellButtons:
+  - {fileID: 1707535567}
+  - {fileID: 2140424074}
+  - {fileID: 1242606705}
+  - {fileID: 1125350359}
+  - {fileID: 1989378476}
   turnIndicator: {fileID: 1679537747}
   winScreen: {fileID: 1949179990}
   loseScreen: {fileID: 924249539}
@@ -3901,6 +3967,7 @@ GameObject:
   - component: {fileID: 1707535569}
   - component: {fileID: 1707535568}
   - component: {fileID: 1707535567}
+  - component: {fileID: 1707535571}
   m_Layer: 5
   m_Name: Spell Button 1
   m_TagString: Untagged
@@ -4022,6 +4089,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707535565}
   m_CullTransparentMesh: 1
+--- !u!114 &1707535571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707535565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1706382067}
+          m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+          m_MethodName: OnMoveArrow
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1802281282 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6366976549039610644, guid: bbd3e519d8da7094a9420750f2ea48f5, type: 3}
@@ -4192,6 +4288,7 @@ GameObject:
   - component: {fileID: 1989378478}
   - component: {fileID: 1989378477}
   - component: {fileID: 1989378476}
+  - component: {fileID: 1989378480}
   m_Layer: 5
   m_Name: Spell Button 5
   m_TagString: Untagged
@@ -4313,6 +4410,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989378474}
   m_CullTransparentMesh: 1
+--- !u!114 &1989378480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989378474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1706382067}
+          m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+          m_MethodName: OnMoveArrow
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2060495028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4595,6 +4721,7 @@ GameObject:
   - component: {fileID: 2140424076}
   - component: {fileID: 2140424075}
   - component: {fileID: 2140424074}
+  - component: {fileID: 2140424078}
   m_Layer: 5
   m_Name: Spell Button 2
   m_TagString: Untagged
@@ -4716,6 +4843,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140424072}
   m_CullTransparentMesh: 1
+--- !u!114 &2140424078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140424072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1706382067}
+          m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+          m_MethodName: OnMoveArrow
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &906652770530151348
 PrefabInstance:
   m_ObjectHideFlags: 0
