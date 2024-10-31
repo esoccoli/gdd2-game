@@ -45,10 +45,16 @@ public class UIScript : MonoBehaviour
     List<TextMeshProUGUI> enemyHPTexts;
 
     [SerializeField]
+    List<GameObject> enemyHPUI;
+
+    [SerializeField]
     List<TextMeshProUGUI> partyMemberWPTexts;
 
     [SerializeField]
     TextMeshPro damageText;
+
+    [SerializeField]
+    TextMeshPro healText;
 
     [SerializeField]
     List<Button> buttons;
@@ -69,7 +75,10 @@ public class UIScript : MonoBehaviour
 
     /// A circle below a character to indicate who's turn it is
     [SerializeField]
-    SpriteRenderer turnIndicator;
+    SpriteRenderer turnIndicatorFront;
+
+    [SerializeField]
+    SpriteRenderer turnIndicatorBack;
 
     // Win/Lose UI Elements
     [SerializeField]
@@ -184,6 +193,15 @@ public class UIScript : MonoBehaviour
         StartCoroutine(FadeOutDamagePopup());
     }
 
+    public void ShowHealPopup(Vector3 position, int healAmount, Vector3 offset)
+    {
+        healText.text = healAmount.ToString();
+        healText.color = Color.green;
+        healText.transform.position = position + offset; // Adjusts above the target
+
+        StartCoroutine(FadeOutHealPopup());
+    }
+
     /// <summary>
     /// This makes the text that shows the damage fade away after a second
     /// </summary>
@@ -203,6 +221,23 @@ public class UIScript : MonoBehaviour
 
         // Hide the text after fading out
         damageText.text = "";
+    }
+
+    private IEnumerator FadeOutHealPopup()
+    {
+        float duration = 1f;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            float alpha = Mathf.Lerp(1, 0, elapsedTime / duration);
+            healText.color = new Color(0, 1, 0, alpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Hide the text after fading out
+        healText.text = "";
     }
 
     /// <summary>
@@ -267,15 +302,12 @@ public class UIScript : MonoBehaviour
         // Check for win/lose conditions
         CheckGameOver();
 
-        //UpdateTurnIndicatorPosition();
-
         for (int i = 0; i < manager.PartyMembers.Count; i++)
         {
             // Checks if it is a party member's turn and then re enables the buttons if it is
             if (manager.PartyMembers[i].IsMyTurn)
             {
                 ShowAndHideButtons(true);
-                //UpdateTurnIndicatorPosition();
 
                 
                 //updates text on the spell buttons
@@ -320,12 +352,10 @@ public class UIScript : MonoBehaviour
 
         for (int i = 0; i < manager.Enemies.Count; i++)
         {
-            // Check if it's an enemy's turn to update the indicator if necessary
-            if (manager.Enemies[i].IsMyTurn)
+            if (manager.Enemies[i].IsAlive == false)
             {
-                //UpdateTurnIndicatorPosition(); // Update position during turn
+                enemyHPUI[i].SetActive(false);
             }
-
             // Updates each of the enemy hp and wp UI elements
             enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
         }
@@ -341,8 +371,10 @@ public class UIScript : MonoBehaviour
             if (character.IsMyTurn)
             {
                 // Position the turn indicator directly below the party member
-                Vector3 newPosition = character.transform.position + new Vector3(0, -0.8f, 0);
-                turnIndicator.transform.position = newPosition;
+                Vector3 newPositionFront = character.transform.position + new Vector3(0, -0.8f, -5);
+                Vector3 newPositionBack = character.transform.position + new Vector3(0, -0.8f, 5);
+                turnIndicatorFront.transform.position = newPositionFront;
+                turnIndicatorBack.transform.position = newPositionBack;
                 return;
             }
         }

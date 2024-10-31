@@ -94,6 +94,8 @@ public class Character : MonoBehaviour
 
     bool isUsingSpell;
 
+    int healthAmount;
+
 
     public bool IsTargeting { get { return isTargeting; } set { isTargeting = value; } }
     public bool IsUsingSpell { get { return isUsingSpell; } set { isUsingSpell = value; } }
@@ -217,13 +219,16 @@ public class Character : MonoBehaviour
     /// <summary>
     /// Stores whether the Character is alive. If not, their turn is skipped.
     /// </summary>
-    public bool isAlive = true;
+    bool isAlive = true;
+    
 
     #endregion
 
     public int Health { get { return currentHealth; } }
     public int Willpower { get { return currentWillpower; } }
     public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+
+    public bool IsAlive { get { return isAlive; } }
     public Collider2D Collider { get { return collider; } }
 
     // Start is called before the first frame update
@@ -327,6 +332,7 @@ public class Character : MonoBehaviour
                 case "Heal":
                     //Heal(spell.damageAmount);
                     Heal(spell.damageAmount, targetList);
+                    FindObjectOfType<UIScript>().ShowHealPopup(transform.position, healthAmount, spriteOffset);
                     TurnEnd();
                     break;
                 case "Buff":
@@ -436,16 +442,21 @@ public class Character : MonoBehaviour
             {
                 healAmount += 3;
             }
+
+            int healCrit = healAmount + Crit();
+
             // Disgust prevents healing from having any positive effect
             // You can still cast it, but it won't do anything
             if (!(targetList[i].hasDisgust))
             {
-                targetList[i].currentHealth += (healAmount + Crit());
+                targetList[i].currentHealth += (healCrit);
             }
             if (targetList[i].currentHealth > targetList[i].maxHealth)
             {
                 targetList[i].currentHealth = targetList[i].maxHealth;
             }
+
+            healthAmount = healCrit;
         }
     }
 

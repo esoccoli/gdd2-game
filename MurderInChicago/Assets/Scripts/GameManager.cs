@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 //using UnityEditor.Presets;
 //using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     GameObject cursor;
+
+    [SerializeField]
+    SpriteRenderer turnIndicatorFront;
+
+    [SerializeField]
+    SpriteRenderer turnIndicatorBack;
 
     Vector3 mousePos;
 
@@ -47,14 +54,14 @@ public class GameManager : MonoBehaviour
         // Add party members to the turn queue
         foreach (PartyMember member in partyMembers)
         {
-            if (member.isAlive == false) continue;
+            if (member.IsAlive == false) continue;
             turnQueue.Enqueue(PartyMemberTurn(member));
         }
 
         // Add enemies to the turn queue
         foreach (Enemy enemy in enemies)
         {
-            if (enemy.isAlive == false) continue;
+            if (enemy.IsAlive == false) continue;
             turnQueue.Enqueue(EnemyTurn(enemy));
         }
     }
@@ -80,11 +87,14 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PartyMemberTurn(PartyMember member)
     {
-        if (member.isAlive)
+        if (member.IsAlive)
         {
             member.IsMyTurn = true;
 
-            
+            Vector3 newPositionFront = member.transform.position + new Vector3(0, -0.8f, -5);
+            Vector3 newPositionBack = member.transform.position + new Vector3(0, -0.8f, 5);
+            turnIndicatorFront.transform.position = newPositionFront;
+            turnIndicatorBack.transform.position = newPositionBack;
 
             // Wait until the player completes their action
             yield return StartCoroutine(member.AwaitInputFromUI());
@@ -101,9 +111,14 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator EnemyTurn(Enemy enemy)
     {
-        if (enemy.isAlive)
+        if (enemy.IsAlive)
         {
             enemy.IsMyTurn = true;
+
+            Vector3 newPositionFront = enemy.transform.position + new Vector3(0, -1f, -5);
+            Vector3 newPositionBack = enemy.transform.position + new Vector3(0, -1f, 5);
+            turnIndicatorFront.transform.position = newPositionFront;
+            turnIndicatorBack.transform.position = newPositionBack;
 
             int target = Random.Range(0, partyMembers.Count - 1);
 
@@ -111,7 +126,7 @@ public class GameManager : MonoBehaviour
             enemy.DetermineAction(partyMembers, enemy.GetRandomSpell());
 
             // Add a slight delay to simulate enemy thinking/action
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(2.0f);
 
         }
         // Mark the enemy's turn as complete and move to the next one
