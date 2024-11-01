@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Specialized;
 using System;
 using Random = UnityEngine.Random;
+using static Spells;
 //using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
@@ -85,6 +86,9 @@ public class Character : MonoBehaviour
     /// Contains the list of all spells that are known to this character only.
     [SerializeField]
     public List<string> spellList;
+
+    //TODO: make a list of these spells using the names of them so that the UI manager can easily reference a spell's name, cost, damage, etc
+    public Spells GlobalSpellList { get { return spells; } }
 
 
     [SerializeField]
@@ -330,7 +334,6 @@ public class Character : MonoBehaviour
             switch (spell.type)
             {
                 case "Heal":
-                    //Heal(spell.damageAmount);
                     Heal(spell.damageAmount, targetList);
                     FindObjectOfType<UIScript>().ShowHealPopup(transform.position, healthAmount, spriteOffset);
                     TurnEnd();
@@ -363,21 +366,24 @@ public class Character : MonoBehaviour
         }
     }
 
-    /*public string GetSpellTargeting(string spellName)
-    {
-        return spells.GetSpell(spellName).target;
-    }*/
-
     /// <summary>
-    /// returns an array of spell type na dhow many characters it targets based on what spell name is given
+    /// returns an array of spell type, spell description, and how many characters it targets based on what spell name is given
     /// </summary>
     /// <param name="spellName"></param>
     /// <returns></returns>
     public string[] GetSpellInfo(string spellName)
     {
-        return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target};
-        //(string type, string target, string description) 
-        //(string name, string type, string target, Emotion emotion, string description, int damageAmount, int turnCount, int willpowerCost, int emotionPoints) 
+        return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target, spells.GetSpell(spellName).description};
+    }
+
+    /// <summary>
+    /// gets the damage and willpower cost of a spell
+    /// </summary>
+    /// <param name="spellName"></param>
+    /// <returns></returns>
+    public int[] GetSpellStats(string spellName)
+    {
+        return new int[] { spells.GetSpell(spellName).damageAmount, spells.GetSpell(spellName).willpowerCost};
     }
 
     /// <summary>

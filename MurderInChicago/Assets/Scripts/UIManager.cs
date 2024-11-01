@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using static Spells;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class UIScript : MonoBehaviour
@@ -64,6 +65,12 @@ public class UIScript : MonoBehaviour
     GameObject spellBox;
 
     [SerializeField]
+    GameObject spellDescriptionBox;
+
+    [SerializeField]
+    TextMeshProUGUI spellDescriptionText;
+
+    [SerializeField]
     List<TextMeshProUGUI> spellButtonTexts;
 
     [SerializeField]
@@ -72,6 +79,8 @@ public class UIScript : MonoBehaviour
     int spellListIndex;
 
     bool isLookingAtSpells = false;
+
+    int currentSpell;
 
     /// A circle below a character to indicate who's turn it is
     [SerializeField]
@@ -134,7 +143,7 @@ public class UIScript : MonoBehaviour
 
     public void OnSpell()
     {
-        spellBox.SetActive(true);
+        spellBox.SetActive(!spellBox.activeSelf);
         isLookingAtSpells = !isLookingAtSpells;
     }
 
@@ -176,6 +185,8 @@ public class UIScript : MonoBehaviour
     {
         arrowIndicator.SetActive(true);
         arrowIndicator.transform.position = spellButtons[index].transform.position + new Vector3(-1.5f, 0, 0);
+        spellDescriptionBox.SetActive(true);
+        currentSpell = index;
     }
 
     /// <summary>
@@ -295,12 +306,22 @@ public class UIScript : MonoBehaviour
         loseScreen.SetActive(false);
 
         arrowIndicator.SetActive(false);
+
+        spellBox.SetActive(false);
+
+        spellDescriptionBox.SetActive(false);
+
     }
 
     void Update()
     {
         // Check for win/lose conditions
         CheckGameOver();
+
+        if (isLookingAtSpells == false)
+        {
+            arrowIndicator.SetActive(false);
+        }
 
         for (int i = 0; i < manager.PartyMembers.Count; i++)
         {
@@ -309,13 +330,27 @@ public class UIScript : MonoBehaviour
             {
                 ShowAndHideButtons(true);
 
-                
+                List<string> spellNames = new List<string>();
+
+
                 //updates text on the spell buttons
                 for (int j = 0; j < spellButtonTexts.Count; j++)
                 {
-                    //spellButtonTexts[j].text = manager.PartyMembers[i].spellList[j] + "DMG: 00" + "WP: 00";
-                    spellButtonTexts[j].text = manager.PartyMembers[i].spellList[j];
+                    spellNames.Add(manager.PartyMembers[i].spellList[j]);
+
+                    Spell spell = manager.PartyMembers[i].GlobalSpellList.GetSpell(manager.PartyMembers[i].spellList[j]);
+
+                    spellButtonTexts[j].text = spell.name + " WP: " + spell.willpowerCost;
                 }
+
+
+                Spell cSpell = manager.PartyMembers[i].GlobalSpellList.GetSpell(manager.PartyMembers[i].spellList[currentSpell]);
+
+
+                spellDescriptionText.text = cSpell.description;
+
+
+
 
                 if (manager.PartyMembers[i].IsTargeting)
                 {
@@ -328,19 +363,16 @@ public class UIScript : MonoBehaviour
                         //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
                         //arrowIndicator.SetActive(true);
 
-                        string[] spellInfo = manager.PartyMembers[i].GetSpellInfo(spellButtonTexts[spellListIndex].text);
+                        string[] spellInfo = manager.PartyMembers[i].GetSpellInfo(spellNames[spellListIndex]);
 
-                        TargetEnemies(manager.PartyMembers[i], spellListIndex, spellInfo[0], spellInfo[1]);
+
+                        TargetEnemies(manager.PartyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1]);
                         
                     }
                     else
                     {
                         TargetEnemies(manager.PartyMembers[i]);
                     }
-                }
-                else
-                {
-                    //arrowIndicator.SetActive(false);
                 }
             }
 
@@ -403,7 +435,7 @@ public class UIScript : MonoBehaviour
         {
             if (cursor.bounds.Intersects(enemy.Collider.bounds))
             {
-                arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
                 arrowIndicator.SetActive(true);
 
                 if (Input.GetMouseButton(0))
@@ -419,8 +451,12 @@ public class UIScript : MonoBehaviour
     /// </summary>
     /// <param name="member"></param>
     /// <param name="isSpell"></param>
-    void TargetEnemies(PartyMember member, int index, string type, string enemiesTargeted)
+    void TargetEnemies(PartyMember member, string name, int index, string type, string enemiesTargeted)
     {
+        spellBox.SetActive(false);
+        spellDescriptionBox.SetActive(false);
+
+
         List<Character> targetedCharacters = new List<Character>();
 
         if (enemiesTargeted == "Multiple")
@@ -439,7 +475,8 @@ public class UIScript : MonoBehaviour
                     targetedCharacters.Add(enemy);
                 }
             }
-            member.MagicAttack(targetedCharacters, spellButtonTexts[index].text);
+            member.MagicAttack(targetedCharacters, name);
+
         }
         else
         {
@@ -449,13 +486,13 @@ public class UIScript : MonoBehaviour
                 {
                     if (cursor.bounds.Intersects(pMember.Collider.bounds))
                     {
-                        arrowIndicator.transform.position = pMember.transform.position + new Vector3(0, +0.8f, 0);
+                        arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
                         arrowIndicator.SetActive(true);
 
                         if (Input.GetMouseButton(0))
                         {
                             targetedCharacters.Add(pMember);
-                            member.MagicAttack(targetedCharacters, spellButtonTexts[index].text);
+                            member.MagicAttack(targetedCharacters, name);
                         }
                     }
                 }
@@ -466,13 +503,13 @@ public class UIScript : MonoBehaviour
                 {
                     if (cursor.bounds.Intersects(enemy.Collider.bounds))
                     {
-                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(0, +0.8f, 0);
+                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
                         arrowIndicator.SetActive(true);
 
                         if (Input.GetMouseButton(0))
                         {
                             targetedCharacters.Add(enemy);
-                            member.MagicAttack(targetedCharacters, spellButtonTexts[index].text);
+                            member.MagicAttack(targetedCharacters, name);
                         }
                     }
                 }
