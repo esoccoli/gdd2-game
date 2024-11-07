@@ -1,42 +1,24 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using TMPro;
-using TMPro.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static Spells;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class UIScript : MonoBehaviour
 {
-    /// GameManager object/script reference
+    /// GameManager references
     [SerializeField]
     GameManager manager;
 
     [SerializeField]
-    PartyMember henry;
-
-    [SerializeField]
-    PartyMember lucine;
-
-    [SerializeField]
-    PartyMember clyde;
-
-    [SerializeField]
-    Enemy enemy1;
-
-    [SerializeField] 
-    Enemy enemy2;
-
-    [SerializeField]
     List<Character> characterList;
+
+    List<PartyMember> partyMembers;
+
+    List<Enemy> enemies;
 
     // UI elements
     [SerializeField]
@@ -82,7 +64,7 @@ public class UIScript : MonoBehaviour
 
     int currentSpell;
 
-    /// A circle below a character to indicate who's turn it is
+    // An indicator below a character to show who's turn it is
     [SerializeField]
     SpriteRenderer turnIndicatorFront;
 
@@ -109,6 +91,8 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject arrowIndicator;
 
+
+    #region Player UI Functions
     /// <summary>
     /// Called when the user clicks the "Attack" button in the battle menu
     /// Takes the appropriate actions and disables all the UI buttons to prevent spam
@@ -117,7 +101,7 @@ public class UIScript : MonoBehaviour
     {
         ShowAndHideButtons(false);
 
-        foreach (PartyMember partyMember in manager.PartyMembers) 
+        foreach (PartyMember partyMember in partyMembers) 
         {
             if (partyMember.IsMyTurn) 
             {
@@ -135,7 +119,7 @@ public class UIScript : MonoBehaviour
     {
         ShowAndHideButtons(false);
 
-        foreach (PartyMember partyMember in manager.PartyMembers)
+        foreach (PartyMember partyMember in partyMembers)
         {
             if (partyMember.IsMyTurn) { partyMember.Rest(); }
         }
@@ -151,7 +135,7 @@ public class UIScript : MonoBehaviour
     {
         ShowAndHideButtons(false);
         isLookingAtSpells = false;
-        foreach (PartyMember partyMember in manager.PartyMembers)
+        foreach (PartyMember partyMember in partyMembers)
         {
             if (partyMember.IsMyTurn)
             {
@@ -161,6 +145,7 @@ public class UIScript : MonoBehaviour
             }
         }
     }
+
 
     /// <summary>
     /// quits game
@@ -188,6 +173,172 @@ public class UIScript : MonoBehaviour
         spellDescriptionBox.SetActive(true);
         currentSpell = index;
     }
+
+    #endregion
+
+    void Start()
+    {
+        //get lists of characetrs from game manager
+        partyMembers = manager.PartyMembers;
+        enemies = manager.Enemies;
+
+        // Initialize the turn indicator position
+        UpdateTurnIndicatorPosition();
+
+        // Hide win/lose and spell UI at start
+        winScreen.SetActive(false);
+        loseScreen.SetActive(false);
+
+        arrowIndicator.SetActive(false);
+        spellBox.SetActive(false);
+        spellDescriptionBox.SetActive(false);
+    }
+
+    void Update()
+    {
+        // Check for win/lose conditions
+        CheckGameOver();
+
+        if (isLookingAtSpells == false)
+        {
+            arrowIndicator.SetActive(false);
+        }
+
+        for (int i = 0; i < partyMembers.Count; i++)
+        {
+            // Updates each of the player hp and wp UI elements
+            partyMemberHPTexts[i].text = partyMembers[i].Health.ToString();
+            partyMemberWPTexts[i].text = partyMembers[i].Willpower.ToString();
+
+
+            // Checks if it is a party member's turn and then re enables the buttons if it is
+            if (partyMembers[i].IsMyTurn)
+            {
+                ShowAndHideButtons(true);
+
+                List<string> spellNames = new List<string>();
+
+
+                Spell cSpell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[currentSpell]);
+
+                spellDescriptionText.text = cSpell.description;
+
+
+                //updates text on the spell buttons
+                for (int j = 0; j < spellButtonTexts.Count; j++)
+                {
+                    spellNames.Add(partyMembers[i].spellList[j]);
+
+                    Spell spell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[j]);
+
+                    spellButtonTexts[j].text = spell.name + " WP: " + spell.willpowerCost;
+                }
+
+                //while player is targeting call target function based on what the party member is doing
+                if (partyMembers[i].IsTargeting)
+                {
+                    ShowAndHideButtons(false);
+
+                    //spells
+                    if (partyMembers[i].IsUsingSpell)
+                    {
+                        //todo: add the new turn indicator 
+                        //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
+                        //arrowIndicator.SetActive(true);
+
+                        string[] spellInfo = partyMembers[i].GetSpellInfo(spellNames[spellListIndex]);
+
+
+                        TargetEnemies(partyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1]);
+                        
+                    }
+                    //attacking
+                    else
+                    {
+                        TargetEnemies(partyMembers[i]);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].IsAlive == false)
+            {
+                enemyHPUI[i].SetActive(false);
+            }
+            // Updates each of the enemy hp and wp UI elements
+            enemyHPTexts[i].text = "HP: " + enemies[i].Health.ToString();
+        }
+    }
+
+    #region Helper Functions
+
+    /// <summary>
+    /// Update the turn indicator position based on the current turn
+    /// </summary>
+    private void UpdateTurnIndicatorPosition()
+    {
+        foreach (Character character in characterList)
+        {
+            if (character.IsMyTurn)
+            {
+                // Position the turn indicator directly below the party member
+                Vector3 newPositionFront = character.transform.position + new Vector3(0, -0.8f, -5);
+                Vector3 newPositionBack = character.transform.position + new Vector3(0, -0.8f, 5);
+                turnIndicatorFront.transform.position = newPositionFront;
+                turnIndicatorBack.transform.position = newPositionBack;
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Checks whether all characters on one side are defeated
+    /// </summary>
+    private void CheckGameOver()
+    {
+        // Check if all party members are defeated
+        bool allPlayersDefeated = true;
+        foreach (PartyMember partyMember in partyMembers)
+        {
+            if (partyMember.Health > 0)
+            {
+                allPlayersDefeated = false;
+                break;
+            }
+        }
+
+        if (allPlayersDefeated)
+        {
+            // Show lose screen
+            loseScreen.SetActive(true);
+            quitButton.SetActive(true);
+            restartButton.SetActive(true);
+            return;
+        }
+
+        // Check if all enemies are defeated
+        bool allEnemiesDefeated = true;
+        foreach (Enemy enemy in enemies)
+        {
+            if (enemy.Health > 0)
+            {
+                allEnemiesDefeated = false;
+                break;
+            }
+        }
+
+        if (allEnemiesDefeated)
+        {
+            // Show win screen
+            winScreen.SetActive(true);
+            quitButton.SetActive(true);
+            restartButton.SetActive(true);
+        }
+    }
+
+    #region Popup Functions
 
     /// <summary>
     /// This takes the damage text and updates it and moves to where the player getting hit is
@@ -251,166 +402,8 @@ public class UIScript : MonoBehaviour
         healText.text = "";
     }
 
-    /// <summary>
-    /// Checks whether all characters on one side are defeated
-    /// </summary>
-    private void CheckGameOver()
-    {
-        // Check if all party members are defeated
-        bool allPlayersDefeated = true;
-        foreach (PartyMember partyMember in manager.PartyMembers)
-        {
-            if (partyMember.Health > 0)
-            {
-                allPlayersDefeated = false;
-                break;
-            }
-        }
 
-        if (allPlayersDefeated)
-        {
-            // Show lose screen
-            loseScreen.SetActive(true);
-            quitButton.SetActive(true);
-            restartButton.SetActive(true);
-            return;
-        }
-
-        // Check if all enemies are defeated
-        bool allEnemiesDefeated = true;
-        foreach (Enemy enemy in manager.Enemies)
-        {
-            if (enemy.Health > 0)
-            {
-                allEnemiesDefeated = false;
-                break;
-            }
-        }
-
-        if (allEnemiesDefeated)
-        {
-            // Show win screen
-            winScreen.SetActive(true);
-            quitButton.SetActive(true);
-            restartButton.SetActive(true);
-        }
-    }
-
-    void Start()
-    {
-        // Initialize the turn indicator position
-        UpdateTurnIndicatorPosition();
-
-        // Hide win and lose screens at the start
-        winScreen.SetActive(false);
-        loseScreen.SetActive(false);
-
-        arrowIndicator.SetActive(false);
-
-        spellBox.SetActive(false);
-
-        spellDescriptionBox.SetActive(false);
-
-    }
-
-    void Update()
-    {
-        // Check for win/lose conditions
-        CheckGameOver();
-
-        if (isLookingAtSpells == false)
-        {
-            arrowIndicator.SetActive(false);
-        }
-
-        for (int i = 0; i < manager.PartyMembers.Count; i++)
-        {
-            // Checks if it is a party member's turn and then re enables the buttons if it is
-            if (manager.PartyMembers[i].IsMyTurn)
-            {
-                ShowAndHideButtons(true);
-
-                List<string> spellNames = new List<string>();
-
-
-                //updates text on the spell buttons
-                for (int j = 0; j < spellButtonTexts.Count; j++)
-                {
-                    spellNames.Add(manager.PartyMembers[i].spellList[j]);
-
-                    Spell spell = manager.PartyMembers[i].GlobalSpellList.GetSpell(manager.PartyMembers[i].spellList[j]);
-
-                    spellButtonTexts[j].text = spell.name + " WP: " + spell.willpowerCost;
-                }
-
-
-                Spell cSpell = manager.PartyMembers[i].GlobalSpellList.GetSpell(manager.PartyMembers[i].spellList[currentSpell]);
-
-
-                spellDescriptionText.text = cSpell.description;
-
-
-
-
-                if (manager.PartyMembers[i].IsTargeting)
-                {
-                    ShowAndHideButtons(false);
-
-
-                    if (manager.PartyMembers[i].IsUsingSpell)
-                    {
-                        //todo: add the new turn indicator 
-                        //arrowIndicator.transform.position = spellText.transform.position + new Vector3(0, +0.8f, 0);
-                        //arrowIndicator.SetActive(true);
-
-                        string[] spellInfo = manager.PartyMembers[i].GetSpellInfo(spellNames[spellListIndex]);
-
-
-                        TargetEnemies(manager.PartyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1]);
-                        
-                    }
-                    else
-                    {
-                        TargetEnemies(manager.PartyMembers[i]);
-                    }
-                }
-            }
-
-            // Updates each of the player hp and wp UI elements
-
-            partyMemberHPTexts[i].text = manager.PartyMembers[i].Health.ToString();
-            partyMemberWPTexts[i].text = manager.PartyMembers[i].Willpower.ToString();
-        }
-
-        for (int i = 0; i < manager.Enemies.Count; i++)
-        {
-            if (manager.Enemies[i].IsAlive == false)
-            {
-                enemyHPUI[i].SetActive(false);
-            }
-            // Updates each of the enemy hp and wp UI elements
-            enemyHPTexts[i].text = "HP: " + manager.Enemies[i].Health.ToString();
-        }
-    }
-
-    /// <summary>
-    /// Update the turn indicator position based on the current turn
-    /// </summary>
-    private void UpdateTurnIndicatorPosition()
-    {
-        foreach (Character character in characterList)
-        {
-            if (character.IsMyTurn)
-            {
-                // Position the turn indicator directly below the party member
-                Vector3 newPositionFront = character.transform.position + new Vector3(0, -0.8f, -5);
-                Vector3 newPositionBack = character.transform.position + new Vector3(0, -0.8f, 5);
-                turnIndicatorFront.transform.position = newPositionFront;
-                turnIndicatorBack.transform.position = newPositionBack;
-                return;
-            }
-        }
-    }
+    #endregion
 
 
     /// <summary>
@@ -425,15 +418,19 @@ public class UIScript : MonoBehaviour
         }
     }
 
+    //TODO: make second show and hide buttons function for Spell UI
+
+    #region Player Targeting Functions
+
     /// <summary>
     /// lets a chosen party member target and ennemy and attack them
     /// </summary>
     /// <param name="member"></param>
     void TargetEnemies(PartyMember member)
     {
-        foreach (Enemy enemy in manager.Enemies)
+        foreach (Enemy enemy in enemies)
         {
-            if (cursor.bounds.Intersects(enemy.Collider.bounds))
+            if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
             {
                 arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
                 arrowIndicator.SetActive(true);
@@ -463,28 +460,33 @@ public class UIScript : MonoBehaviour
         {
             if (type == "Heal" || type == "Buff")
             {
-                foreach (PartyMember pMember in manager.PartyMembers)
+                foreach (PartyMember pMember in partyMembers)
                 {
-                    targetedCharacters.Add(pMember);
+                    if (pMember.IsAlive)
+                    {
+                        targetedCharacters.Add(pMember);
+                    }
                 }
             }
             else
             {
-                foreach (Enemy enemy in manager.Enemies)
+                foreach (Enemy enemy in enemies)
                 {
-                    targetedCharacters.Add(enemy);
+                    if (enemy.IsAlive)
+                    {
+                        targetedCharacters.Add(enemy);
+                    }
                 }
             }
             member.MagicAttack(targetedCharacters, name);
-
         }
         else
         {
             if (type == "Heal" || type == "Buff")
             {
-                foreach (PartyMember pMember in manager.PartyMembers)
+                foreach (PartyMember pMember in partyMembers)
                 {
-                    if (cursor.bounds.Intersects(pMember.Collider.bounds))
+                    if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                     {
                         arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
                         arrowIndicator.SetActive(true);
@@ -499,9 +501,9 @@ public class UIScript : MonoBehaviour
             }
             else
             {
-                foreach (Enemy enemy in manager.Enemies)
+                foreach (Enemy enemy in enemies)
                 {
-                    if (cursor.bounds.Intersects(enemy.Collider.bounds))
+                    if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                     {
                         arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
                         arrowIndicator.SetActive(true);
@@ -516,4 +518,9 @@ public class UIScript : MonoBehaviour
             }
         }
     }
+
+    #endregion
+
+
+    #endregion
 }
