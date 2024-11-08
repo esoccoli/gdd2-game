@@ -330,7 +330,7 @@ public class Character : MonoBehaviour
                 case Emotion.Fear: emotionPoints[3] += spell.emotionPoints; break;
                 case Emotion.Disgust: emotionPoints[4] += spell.emotionPoints; break;
             }
-
+            currentWillpower -= spell.willpowerCost;
             switch (spell.type)
             {
                 case "Heal":
@@ -668,7 +668,10 @@ public class Character : MonoBehaviour
     {
         isMyTurn = false;
         isTargeting = false;
-        TurnEnd(regenWillpower);
+        //TurnEnd(regenWillpower)
+        CheckEmotion();
+        isMyTurn = false;
+        UnityEngine.Debug.Log("Reached end of TurnEnd()");
     }
 
     /// <summary>

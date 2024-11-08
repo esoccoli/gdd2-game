@@ -199,9 +199,10 @@ public class UIScript : MonoBehaviour
         // Check for win/lose conditions
         CheckGameOver();
 
-        if (isLookingAtSpells == false)
+        if (!isLookingAtSpells)
         {
             arrowIndicator.SetActive(false);
+            spellDescriptionBox.SetActive(false);
         }
 
         for (int i = 0; i < partyMembers.Count; i++)
