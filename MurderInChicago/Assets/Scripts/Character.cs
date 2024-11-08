@@ -393,7 +393,7 @@ public class Character : MonoBehaviour
     /// </summary>
     public void Rest()
     {
-        if (hasFear == false && hasDisgust == false)
+        if (!hasFear && !hasDisgust)
         {
             ChangeEmotion(Emotion.None);
 

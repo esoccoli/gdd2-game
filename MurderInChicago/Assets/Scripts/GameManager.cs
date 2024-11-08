@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         if (member.IsAlive)
         {
             member.IsMyTurn = true;
+            member.IsUsingSpell = false;
 
             Vector3 newPositionFront = member.transform.position + new Vector3(0, -0.8f, -5);
             Vector3 newPositionBack = member.transform.position + new Vector3(0, -0.8f, 5);

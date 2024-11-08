@@ -199,12 +199,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105218956}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9022975, y: -1.379787, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.9319072, y: -1.6956828, z: 0.9524286}
   m_LocalScale: {x: 0.75, y: 0.75, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2004179251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &133207346
 PrefabInstance:
@@ -3979,12 +3979,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679537746}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9022975, y: -1.379787, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.9319072, y: -1.6956828, z: 0.9524286}
   m_LocalScale: {x: 0.75, y: 0.75, z: -5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2004179251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1690448007
 PrefabInstance:
@@ -4122,11 +4122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1706382063}
-  henry: {fileID: 487199106}
-  lucine: {fileID: 1568957603}
-  clyde: {fileID: 732709423}
-  enemy1: {fileID: 1269956905}
-  enemy2: {fileID: 933777522}
   characterList:
   - {fileID: 487199106}
   - {fileID: 1568957603}
@@ -4843,6 +4838,39 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!1 &2004179250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2004179251}
+  m_Layer: 0
+  m_Name: TurnIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2004179251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004179250}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9703903, y: 0.31589586, z: 0.047571417}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1679537748}
+  - {fileID: 105218958}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2060495028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5628,6 +5656,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1690448009}
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
+      propertyPath: pastEmotion
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: disgustSprite
       value: 
       objectReference: {fileID: 1925121360}
@@ -5635,6 +5667,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
+      propertyPath: currentEmotion
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: spriteOffset.x
       value: 0
@@ -5836,6 +5872,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1690448009}
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: pastEmotion
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: disgustSprite
       value: 
       objectReference: {fileID: 1925121360}
@@ -5843,6 +5883,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: currentEmotion
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: spriteOffset.x
       value: 0
@@ -5905,6 +5949,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1690448009}
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: pastEmotion
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: disgustSprite
       value: 
       objectReference: {fileID: 1925121360}
@@ -5912,6 +5960,10 @@ PrefabInstance:
       propertyPath: sadnessSprite
       value: 
       objectReference: {fileID: 133207348}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: currentEmotion
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: spriteOffset.x
       value: 0
@@ -6050,9 +6102,8 @@ SceneRoots:
   - {fileID: 4240911505482760850}
   - {fileID: 7180791794860663274}
   - {fileID: 5022230970580695267}
-  - {fileID: 1679537748}
-  - {fileID: 105218958}
   - {fileID: 300731478}
   - {fileID: 1253289197}
   - {fileID: 290239193}
   - {fileID: 1187810463}
+  - {fileID: 2004179251}
