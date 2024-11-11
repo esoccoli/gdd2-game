@@ -64,6 +64,18 @@ public class Character : MonoBehaviour
     [SerializeField]
     SpriteRenderer missSprite;
 
+    /// Stat icons and arrows for displaying stat buffs and debuffs
+    [SerializeField]
+    GameObject[] statIcons;
+
+    [SerializeField]
+    GameObject boostArrow;
+    [SerializeField]
+    GameObject dropArrow;
+
+    List<GameObject> buffIcons = new();
+    List<GameObject> buffArrows = new();
+
     /// Offset to control where the sprites appear
     [SerializeField] private Vector3 spriteOffset;
 
@@ -260,7 +272,7 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        DisplayBuffs();
     }
 
     /// <summary>
@@ -602,6 +614,8 @@ public class Character : MonoBehaviour
                 affectedStats.RemoveAt(i);
                 affectedStatsTurncount.RemoveAt(i);
                 affectedStatsType.RemoveAt(i);
+                buffIcons.RemoveAt(i);
+                buffArrows.RemoveAt(i);
                 i--;
             }
         }
@@ -625,7 +639,7 @@ public class Character : MonoBehaviour
     public bool Dodge()
     {
         int dodgeChance = Random.Range(0, 100) + fortune;
-        return dodgeChance >= 95 ? true : false;
+        return dodgeChance >= 95;
     }
 
     /// <summary>
@@ -817,5 +831,29 @@ public class Character : MonoBehaviour
         isAlive = false;
         ChangeEmotion(Emotion.None);
         srCharacter.sprite = tombstone;
+    }
+
+    /// <summary>
+    /// Cycles through the current stat buffs and displays accordingly.
+    /// </summary>
+    private void DisplayBuffs()
+    {
+        for (int i = 0; i < affectedStats.Count; i++)
+        {
+            for (int j = 0; j < affectedStats[i].Length; j++)
+            {
+                if (affectedStats[i][j] > 0)
+                {
+                    //Create a buff icon and show it
+                    buffIcons.Add(Instantiate(statIcons[j]));
+                    buffIcons[i].transform.position = transform.position + new Vector3(0.6f + 0.5f * i, -0.6f, -6);
+                    buffIcons[i].SetActive(true);
+
+                    buffArrows.Add(affectedStatsType[i] == BuffType.Buff ? Instantiate(boostArrow) : Instantiate(dropArrow));
+                    buffArrows[i].transform.position = buffIcons[i].transform.position + new Vector3(0.1f, -0.1f, -1);
+                    buffArrows[i].SetActive(true);
+                }
+            }
+        }
     }
 }
