@@ -5534,6 +5534,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5102574962949120510, guid: 07157ae8453e18f4f80504d016297059, type: 3}
+      propertyPath: m_Name
+      value: Win Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816223532560842987, guid: 07157ae8453e18f4f80504d016297059, type: 3}
+      propertyPath: m_text
+      value: You Win!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816223532560842987, guid: 07157ae8453e18f4f80504d016297059, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.08647919
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816223532560842987, guid: 07157ae8453e18f4f80504d016297059, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5948844637886050297, guid: 07157ae8453e18f4f80504d016297059, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
