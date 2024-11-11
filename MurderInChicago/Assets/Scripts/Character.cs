@@ -335,7 +335,7 @@ public class Character : MonoBehaviour
             {
                 case "Heal":
                     Heal(spell.damageAmount, targetList);
-                    FindObjectOfType<UIScript>().ShowHealPopup(transform.position, healthAmount, spriteOffset);
+                    FindObjectOfType<UIScript>().ShowHealPopup(targetList[0].transform.position, healthAmount, spriteOffset);
                     TurnEnd();
                     break;
                 case "Buff":

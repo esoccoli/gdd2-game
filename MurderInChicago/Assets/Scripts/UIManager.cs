@@ -91,6 +91,9 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     GameObject arrowIndicator;
 
+    [SerializeField]
+    TextMeshProUGUI targetPromptText;
+
 
     #region Player UI Functions
     /// <summary>
@@ -192,6 +195,7 @@ public class UIScript : MonoBehaviour
         arrowIndicator.SetActive(false);
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
+        targetPromptText.gameObject.SetActive(false);
     }
 
     void Update()
@@ -210,6 +214,11 @@ public class UIScript : MonoBehaviour
             // Updates each of the player hp and wp UI elements
             partyMemberHPTexts[i].text = partyMembers[i].Health.ToString();
             partyMemberWPTexts[i].text = partyMembers[i].Willpower.ToString();
+
+            /*if (!partyMembers[i].IsTargeting)
+            {
+                targetPromptText.gameObject.SetActive(false);
+            }*/
 
 
             // Checks if it is a party member's turn and then re enables the buttons if it is
@@ -453,6 +462,8 @@ public class UIScript : MonoBehaviour
     {
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
+
+        //targetPromptText.gameObject.SetActive(true);
 
 
         List<Character> targetedCharacters = new List<Character>();
