@@ -26,9 +26,10 @@ public class Enemy : Character
         Character target = targetList[(Random.Range(0, targetList.Count - 1))];
         List<Character> characterList = targetList.ConvertAll(target => (Character)target);
 
-        if (action < 40) { PhysicalAttack(target); }
+        PhysicalAttack(target);
+        /*if (action < 40) { PhysicalAttack(target); }
         else if (action > 40 && action < 80) { MagicAttack(characterList, spellName); }
-        else { Rest(); }
+        else { Rest(); }*/
     }
 
     public string GetRandomSpell()

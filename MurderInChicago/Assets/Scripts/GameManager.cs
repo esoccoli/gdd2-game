@@ -54,14 +54,14 @@ public class GameManager : MonoBehaviour
         // Add party members to the turn queue
         foreach (PartyMember member in partyMembers)
         {
-            if (member.IsAlive == false) continue;
+            if (!member.IsAlive) continue;
             turnQueue.Enqueue(PartyMemberTurn(member));
         }
 
         // Add enemies to the turn queue
         foreach (Enemy enemy in enemies)
         {
-            if (enemy.IsAlive == false) continue;
+            if (!enemy.IsAlive) continue;
             turnQueue.Enqueue(EnemyTurn(enemy));
         }
     }
@@ -123,8 +123,13 @@ public class GameManager : MonoBehaviour
 
             int target = Random.Range(0, partyMembers.Count - 1);
 
+            List<PartyMember> targetList = new();
+            foreach (PartyMember partyMember in partyMembers) { 
+                if (partyMember.IsAlive) targetList.Add(partyMember);
+            }
+
             // Simulate enemy determining action
-            enemy.DetermineAction(partyMembers, enemy.GetRandomSpell());
+            enemy.DetermineAction(targetList, enemy.GetRandomSpell());
 
             // Add a slight delay to simulate enemy thinking/action
             yield return new WaitForSeconds(2.0f);

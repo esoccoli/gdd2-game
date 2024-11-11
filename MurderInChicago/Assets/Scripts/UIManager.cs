@@ -215,11 +215,7 @@ public class UIScript : MonoBehaviour
             partyMemberHPTexts[i].text = partyMembers[i].Health.ToString();
             partyMemberWPTexts[i].text = partyMembers[i].Willpower.ToString();
 
-            /*if (!partyMembers[i].IsTargeting)
-            {
-                targetPromptText.gameObject.SetActive(false);
-            }*/
-
+            
 
             // Checks if it is a party member's turn and then re enables the buttons if it is
             if (partyMembers[i].IsMyTurn)
@@ -248,6 +244,7 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
+                    targetPromptText.gameObject.SetActive(true);
 
                     //spells
                     if (partyMembers[i].IsUsingSpell)
@@ -268,12 +265,16 @@ public class UIScript : MonoBehaviour
                         TargetEnemies(partyMembers[i]);
                     }
                 }
+                else
+                {
+                    targetPromptText.gameObject.SetActive(false);
+                }
             }
         }
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            if (enemies[i].IsAlive == false)
+            if (!enemies[i].IsAlive)
             {
                 enemyHPUI[i].SetActive(false);
             }
@@ -447,6 +448,7 @@ public class UIScript : MonoBehaviour
 
                 if (Input.GetMouseButton(0))
                 {
+                    targetPromptText.gameObject.SetActive(false);
                     member.PhysicalAttack(enemy);
                 }
             }
@@ -463,7 +465,7 @@ public class UIScript : MonoBehaviour
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
 
-        //targetPromptText.gameObject.SetActive(true);
+        targetPromptText.gameObject.SetActive(true);
 
 
         List<Character> targetedCharacters = new List<Character>();
@@ -491,6 +493,7 @@ public class UIScript : MonoBehaviour
                 }
             }
             member.MagicAttack(targetedCharacters, name);
+            targetPromptText.gameObject.SetActive(false);
         }
         else
         {
@@ -506,7 +509,9 @@ public class UIScript : MonoBehaviour
                         if (Input.GetMouseButton(0))
                         {
                             targetedCharacters.Add(pMember);
+                            targetPromptText.gameObject.SetActive(false);
                             member.MagicAttack(targetedCharacters, name);
+                            
                         }
                     }
                 }
@@ -523,7 +528,9 @@ public class UIScript : MonoBehaviour
                         if (Input.GetMouseButton(0))
                         {
                             targetedCharacters.Add(enemy);
+                            targetPromptText.gameObject.SetActive(false);
                             member.MagicAttack(targetedCharacters, name);
+                               
                         }
                     }
                 }
