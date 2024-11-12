@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System;
 using Random = UnityEngine.Random;
 using static Spells;
+using Unity.VisualScripting;
 //using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
@@ -67,6 +68,7 @@ public class Character : MonoBehaviour
     /// Stat icons and arrows for displaying stat buffs and debuffs
     [SerializeField]
     GameObject[] statIcons;
+    bool[] areIconsUsed = new bool[4];
 
     [SerializeField]
     GameObject boostArrow;
@@ -267,12 +269,16 @@ public class Character : MonoBehaviour
         happinessSprite.enabled = false;
         critSprite.enabled = false;
         missSprite.enabled = false;
+
+        for (int i = 0; i < areIconsUsed.Length; i++)
+        {
+            areIconsUsed[i] = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        DisplayBuffs();
     }
 
     /// <summary>
@@ -577,7 +583,7 @@ public class Character : MonoBehaviour
             {
                 targetList[i].affectedStatsType.Add(BuffType.Debuff);
             }
-
+            targetList[i].DisplayBuffs(spell.statChanges, spell.type);
             // TODO: Make a new function to reverse the buff/ debuff
         }
     }
@@ -614,9 +620,18 @@ public class Character : MonoBehaviour
                 affectedStats.RemoveAt(i);
                 affectedStatsTurncount.RemoveAt(i);
                 affectedStatsType.RemoveAt(i);
+                Destroy(buffIcons[i]);
                 buffIcons.RemoveAt(i);
+                Destroy(buffArrows[i]);
                 buffArrows.RemoveAt(i);
+                ResetUsedBuffIcons();
                 i--;
+                // Shift the other buffs to the left
+                for (int j = 0; j < buffIcons.Count; j++)
+                {
+                    buffIcons[j].transform.position -= new Vector3(0.5f, 0, 0);
+                    buffArrows[j].transform.position -= new Vector3(0.5f, 0, 0);
+                }
             }
         }
     }
@@ -666,20 +681,12 @@ public class Character : MonoBehaviour
     }
 
     /// <summary>
-    /// Runs before a character takes their turn. Calls BuffEnd to 
-    /// decrease already applied stat buffs and debuffs
-    /// </summary>
-    public void TurnStart()
-    {
-        BuffEnd();
-    }
-
-    /// <summary>
     /// Runs after a character takes their action for the turn, and causes willpower to be regenerated
     /// This function being called also tells the GameManager that this character's turn is complete
     /// </summary>
     public void TurnEnd()
     {
+        BuffEnd();
         isMyTurn = false;
         isTargeting = false;
         //TurnEnd(regenWillpower)
@@ -694,6 +701,7 @@ public class Character : MonoBehaviour
     /// </summary>
     public void TurnEnd(int willpowerAmount)
     {
+        BuffEnd();
         currentWillpower += willpowerAmount;
         currentWillpower = currentWillpower > maxWillpower ? maxWillpower : currentWillpower;
         CheckEmotion();
@@ -834,26 +842,40 @@ public class Character : MonoBehaviour
     }
 
     /// <summary>
-    /// Cycles through the current stat buffs and displays accordingly.
+    /// Displays a buffed or debuffed stat
     /// </summary>
-    private void DisplayBuffs()
+    private void DisplayBuffs(int[] buffedStat, string buffType)
     {
-        for (int i = 0; i < affectedStats.Count; i++)
+        for (int j = 1; j < buffedStat.Length; j++)
         {
-            for (int j = 0; j < affectedStats[i].Length; j++)
+            if (buffedStat[j] > 0 && !areIconsUsed[j - 1])
             {
-                if (affectedStats[i][j] > 0)
-                {
-                    //Create a buff icon and show it
-                    buffIcons.Add(Instantiate(statIcons[j]));
-                    buffIcons[i].transform.position = transform.position + new Vector3(0.6f + 0.5f * i, -0.6f, -6);
-                    buffIcons[i].SetActive(true);
+                //Create a buff icon and add it to the list
+                GameObject buffIcon = Instantiate(statIcons[j]);
+                areIconsUsed[j - 1] = true;
+                buffIcon.transform.position = transform.position + new Vector3(0.6f + 0.5f * buffIcons.Count, -0.6f, -6);
+                buffIcon.SetActive(true);
+                buffIcons.Add(buffIcon);
 
-                    buffArrows.Add(affectedStatsType[i] == BuffType.Buff ? Instantiate(boostArrow) : Instantiate(dropArrow));
-                    buffArrows[i].transform.position = buffIcons[i].transform.position + new Vector3(0.1f, -0.1f, -1);
-                    buffArrows[i].SetActive(true);
-                }
+                //Create an arrow for this buff icon
+                GameObject buffArrow = buffType == "Buff" ? Instantiate(boostArrow) : Instantiate(dropArrow);
+                buffArrow.transform.position = buffIcon.transform.position + new Vector3(0.1f, -0.1f, -1);
+                buffArrow.SetActive(true);
+                buffArrows.Add(buffArrow);
+
             }
+        }
+    }
+
+    private void ResetUsedBuffIcons()
+    {
+        for (int i = 0; i < areIconsUsed.Length; i++)
+        {
+            foreach (int[] buffs in affectedStats)
+            {
+                areIconsUsed[i] = buffs[i + 1] > 0;
+            }
+            if (affectedStats.Count == 0) areIconsUsed[i] = false;
         }
     }
 }

@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour
             Vector3 newPositionBack = member.transform.position + new Vector3(0, -0.8f, 5);
             turnIndicatorFront.transform.position = newPositionFront;
             turnIndicatorBack.transform.position = newPositionBack;
-
             // Wait until the player completes their action
             yield return StartCoroutine(member.AwaitInputFromUI());
         }
