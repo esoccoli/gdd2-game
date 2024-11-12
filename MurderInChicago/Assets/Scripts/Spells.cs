@@ -43,7 +43,7 @@ public class Spells : MonoBehaviour
         // { vitality, strength, resolve, fortitude, fortune }
         // Note: Vitality currently does not get increased or decreased, even by Supreme Being or Annihilation.
         // This is because weird things start happening when you temporarily increase or decrease your max health 
-        spells.Add(new Spell("Strengthen", "Buff", "Single", Emotion.Happiness, "Boosts Strength by 4", 0, 1, 3, 15, new int[] { 0, 4, 0, 0, 0 }));
+        spells.Add(new Spell("Strengthen", "Buff", "Single", Emotion.Happiness, "Boosts Strength by 4", 0, 4, 3, 15, new int[] { 0, 4, 0, 0, 0 }));
         spells.Add(new Spell("Invigorate", "Buff", "Single", Emotion.Happiness, "Boosts Resolve by 4", 0, 4, 3, 15, new int[] { 0, 0, 4, 0, 0 }));
         spells.Add(new Spell("Galvanize", "Buff", "Single", Emotion.Happiness, "Boosts Fortitude by 4", 0, 4, 3, 15, new int[] { 0, 0, 0, 4, 0 }));
         spells.Add(new Spell("Resolution", "Buff", "Single", Emotion.Happiness, "Boosts Fortune by 4", 0, 4, 3, 15, new int[] { 0, 0, 0, 0, 4 }));
