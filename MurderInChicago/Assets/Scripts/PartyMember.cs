@@ -1,10 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Collections.Specialized;
-using System;
-using Random = UnityEngine.Random;
-using UnityEngine.TextCore.Text;
 
 public class PartyMember : Character
 {

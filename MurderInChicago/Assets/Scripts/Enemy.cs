@@ -1,8 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Collections.Specialized;
-using System;
 using Random = UnityEngine.Random;
 
 public class Enemy : Character
@@ -23,7 +19,7 @@ public class Enemy : Character
         //Currently: 40% to do a physical attack, 40% to cast a spell, and 20% to rest
         int action = Random.Range(0, 100);
 
-        Character target = targetList[(Random.Range(0, targetList.Count - 1))];
+        Character target = targetList[Random.Range(0, targetList.Count - 1)];
         List<Character> characterList = targetList.ConvertAll(target => (Character)target);
 
         PhysicalAttack(target);
@@ -34,7 +30,7 @@ public class Enemy : Character
 
     public string GetRandomSpell()
     {
-        int choice = Random.Range(0, this.spellList.Count);
-        return this.spellList[choice];
+        int choice = Random.Range(0, spellList.Count);
+        return spellList[choice];
     }
 }

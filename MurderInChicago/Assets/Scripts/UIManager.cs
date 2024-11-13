@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -153,18 +152,12 @@ public class UIScript : MonoBehaviour
     /// <summary>
     /// quits game
     /// </summary>
-    public void OnQuit()
-    {
-        Application.Quit();
-    }
+    public void OnQuit() { Application.Quit(); }
 
     /// <summary>
     /// restarts the scene
     /// </summary>
-    public void OnRestart()
-    {
-        SceneManager.LoadScene(0);
-    }
+    public void OnRestart() { SceneManager.LoadScene(0); }
 
     /// <summary>
     /// moves the arrow next to the spell button the player is hovering over
@@ -215,8 +208,6 @@ public class UIScript : MonoBehaviour
             partyMemberHPTexts[i].text = partyMembers[i].Health.ToString();
             partyMemberWPTexts[i].text = partyMembers[i].Willpower.ToString();
 
-            
-
             // Checks if it is a party member's turn and then re enables the buttons if it is
             if (partyMembers[i].IsMyTurn)
             {
@@ -237,7 +228,18 @@ public class UIScript : MonoBehaviour
 
                     Spell spell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[j]);
 
-                    spellButtonTexts[j].text = spell.name + " WP: " + spell.willpowerCost;
+                    spellButtonTexts[j].text = $"{spell.name} WP: {spell.willpowerCost}";
+
+                    if (partyMembers[i].Willpower < spell.willpowerCost)
+                    {
+                        spellButtons[j].interactable = false;
+                        spellButtonTexts[j].color = Color.gray;
+                    }
+                    else
+                    {
+                        spellButtons[j].interactable = true;
+                        spellButtonTexts[j].color = Color.white;
+                    }
                 }
 
                 //while player is targeting call target function based on what the party member is doing
@@ -274,12 +276,10 @@ public class UIScript : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            if (!enemies[i].IsAlive)
-            {
-                enemyHPUI[i].SetActive(false);
-            }
+            if (!enemies[i].IsAlive) { enemyHPUI[i].SetActive(false); }
+
             // Updates each of the enemy hp and wp UI elements
-            enemyHPTexts[i].text = "HP: " + enemies[i].Health.ToString();
+            enemyHPTexts[i].text = $"HP: {enemies[i].Health}";
         }
     }
 
@@ -476,7 +476,7 @@ public class UIScript : MonoBehaviour
             {
                 foreach (PartyMember pMember in partyMembers)
                 {
-                    if (pMember.IsAlive)
+                    if (pMember.IsAlive) 
                     {
                         targetedCharacters.Add(pMember);
                     }

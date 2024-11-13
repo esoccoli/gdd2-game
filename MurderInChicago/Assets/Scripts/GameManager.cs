@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-//using UnityEditor.Presets;
-//using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,8 +27,8 @@ public class GameManager : MonoBehaviour
     // A queue to manage turn order
     Queue<IEnumerator> turnQueue = new Queue<IEnumerator>();
 
-    public List<PartyMember> PartyMembers { get { return partyMembers; } set { partyMembers = value; } }
-    public List<Enemy> Enemies { get { return enemies; } set { enemies = value; } }
+    public List<PartyMember> PartyMembers { get => partyMembers; set => partyMembers = value; }
+    public List<Enemy> Enemies { get => enemies; set => enemies = value; }
 
 
     // Start is called before the first frame update
@@ -71,7 +67,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void StartNextTurn()
     {
-        if (turnQueue.Count > 0){ StartCoroutine(turnQueue.Dequeue()); }
+        if (turnQueue.Count > 0) { StartCoroutine(turnQueue.Dequeue()); }
         else
         {
             // All turns are done, start the next round
@@ -96,6 +92,7 @@ public class GameManager : MonoBehaviour
             Vector3 newPositionBack = member.transform.position + new Vector3(0, -0.8f, 5);
             turnIndicatorFront.transform.position = newPositionFront;
             turnIndicatorBack.transform.position = newPositionBack;
+
             // Wait until the player completes their action
             yield return StartCoroutine(member.AwaitInputFromUI());
         }
@@ -123,8 +120,9 @@ public class GameManager : MonoBehaviour
             int target = Random.Range(0, partyMembers.Count - 1);
 
             List<PartyMember> targetList = new();
-            foreach (PartyMember partyMember in partyMembers) { 
-                if (partyMember.IsAlive) targetList.Add(partyMember);
+
+            foreach (PartyMember partyMember in partyMembers) {
+                if (partyMember.IsAlive) { targetList.Add(partyMember); }
             }
 
             // Simulate enemy determining action
@@ -144,6 +142,5 @@ public class GameManager : MonoBehaviour
         mousePos = Input.mousePosition;
         mousePos.z = 10.0f;
         cursor.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
-
     }
 }

@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Specialized;
-using System;
 using Random = UnityEngine.Random;
 using static Spells;
-using Unity.VisualScripting;
 //using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
@@ -42,7 +39,7 @@ public class Character : MonoBehaviour
     [SerializeField]
     GameObject character;
 
-    /// Emotion sprites
+    #region Emotion Sprites
     [SerializeField]
     SpriteRenderer angerSprite;
 
@@ -57,8 +54,8 @@ public class Character : MonoBehaviour
 
     [SerializeField]
     SpriteRenderer happinessSprite;
+    #endregion
 
-    /// Crit and Miss sprites
     [SerializeField]
     SpriteRenderer critSprite;
 
@@ -79,7 +76,8 @@ public class Character : MonoBehaviour
     List<GameObject> buffArrows = new();
 
     /// Offset to control where the sprites appear
-    [SerializeField] private Vector3 spriteOffset;
+    [SerializeField] 
+    private Vector3 spriteOffset;
 
     /// The SpriteRenderer component associated with the current character
     SpriteRenderer srCharacter;
@@ -102,8 +100,7 @@ public class Character : MonoBehaviour
     public List<string> spellList;
 
     //TODO: make a list of these spells using the names of them so that the UI manager can easily reference a spell's name, cost, damage, etc
-    public Spells GlobalSpellList { get { return spells; } }
-
+    public Spells GlobalSpellList { get => spells; }
 
     [SerializeField]
     Collider2D collider;
@@ -115,8 +112,8 @@ public class Character : MonoBehaviour
     int healthAmount;
 
 
-    public bool IsTargeting { get { return isTargeting; } set { isTargeting = value; } }
-    public bool IsUsingSpell { get { return isUsingSpell; } set { isUsingSpell = value; } }
+    public bool IsTargeting { get => isTargeting; set => isTargeting = value;  }
+    public bool IsUsingSpell { get => isUsingSpell; set => isUsingSpell = value ; }
 
     #region Defining Stats
 
@@ -242,12 +239,12 @@ public class Character : MonoBehaviour
 
     #endregion
 
-    public int Health { get { return currentHealth; } }
-    public int Willpower { get { return currentWillpower; } }
-    public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+    public int Health { get => currentHealth; }
+    public int Willpower { get => currentWillpower; }
+    public bool IsMyTurn { get => isMyTurn; set => isMyTurn = value; }
 
-    public bool IsAlive { get { return isAlive; } }
-    public Collider2D Collider { get { return collider; } }
+    public bool IsAlive { get => isAlive; }
+    public Collider2D Collider { get => collider; }
 
     // Start is called before the first frame update
     void Start()
@@ -326,13 +323,13 @@ public class Character : MonoBehaviour
 
         var spell = spells.GetSpell(spellName);
 
-        Debug.Log(spell.name + ": " + spell.damageAmount);
+        Debug.Log($"{spell.name} : {spell.damageAmount}");
 
 
         // If the character has fear, then all of their spells require more willpower to cast
         if (hasFear)
         {
-            spell.willpowerCost += ((int)(spell.willpowerCost * 0.5f));
+            spell.willpowerCost += (int)(spell.willpowerCost * 0.5f);
         }
 
         // If the character has enough willpower to cast the spell
@@ -401,7 +398,7 @@ public class Character : MonoBehaviour
     /// <returns></returns>
     public int[] GetSpellStats(string spellName)
     {
-        return new int[] { spells.GetSpell(spellName).damageAmount, spells.GetSpell(spellName).willpowerCost};
+        return new int[] { spells.GetSpell(spellName).damageAmount, spells.GetSpell(spellName).willpowerCost };
     }
 
     /// <summary>
@@ -414,7 +411,6 @@ public class Character : MonoBehaviour
         if (!hasFear && !hasDisgust)
         {
             ChangeEmotion(Emotion.None);
-
         }
         TurnEnd(regenWillpower + 3);
     }
@@ -471,9 +467,9 @@ public class Character : MonoBehaviour
 
             // Disgust prevents healing from having any positive effect
             // You can still cast it, but it won't do anything
-            if (!(targetList[i].hasDisgust))
+            if (!targetList[i].hasDisgust)
             {
-                targetList[i].currentHealth += (healCrit);
+                targetList[i].currentHealth += healCrit;
             }
             if (targetList[i].currentHealth > targetList[i].maxHealth)
             {
@@ -485,7 +481,7 @@ public class Character : MonoBehaviour
     }
 
     //TODO: Implement spells that buff or debuff certain stats
-    public void Buff(Spells.Spell spell, List<Character> targetList)
+    public void Buff(Spell spell, List<Character> targetList)
     {
         // Guide: { vitality, strength, resolve, fortitude, fortune }
         for (int i = 0; i < targetList.Count; i++)
