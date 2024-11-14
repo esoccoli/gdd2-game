@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -103,15 +104,14 @@ public class UIScript : MonoBehaviour
     {
         ShowAndHideButtons(false);
 
-        foreach (PartyMember partyMember in partyMembers) 
+        foreach (PartyMember partyMember in partyMembers)
         {
-            if (partyMember.IsMyTurn) 
+            if (partyMember.IsMyTurn)
             {
                 partyMember.IsTargeting = true;
             }
         }
     }
-
 
     /// <summary>
     /// Called when the user clicks the "Rest" button in the battle menu
@@ -131,6 +131,9 @@ public class UIScript : MonoBehaviour
     {
         spellBox.SetActive(!spellBox.activeSelf);
         isLookingAtSpells = !isLookingAtSpells;
+
+        buttons[0].interactable = !buttons[0].interactable;
+        buttons[1].interactable = !buttons[1].interactable;
     }
 
     public void OnSpell(int index)
@@ -146,8 +149,9 @@ public class UIScript : MonoBehaviour
                 spellListIndex = index;
             }
         }
+        buttons[0].interactable = true;
+        buttons[1].interactable = true;
     }
-
 
     /// <summary>
     /// quits game
@@ -169,7 +173,6 @@ public class UIScript : MonoBehaviour
         spellDescriptionBox.SetActive(true);
         currentSpell = index;
     }
-
     #endregion
 
     void Start()
@@ -181,7 +184,7 @@ public class UIScript : MonoBehaviour
         // Initialize the turn indicator position
         UpdateTurnIndicatorPosition();
 
-        // Hide win/lose and spell UI at start
+        // Hide things that do not need to be seen at start
         winScreen.SetActive(false);
         loseScreen.SetActive(false);
 
@@ -258,8 +261,8 @@ public class UIScript : MonoBehaviour
                         string[] spellInfo = partyMembers[i].GetSpellInfo(spellNames[spellListIndex]);
 
 
-                        TargetEnemies(partyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1]);
-                        
+                        TargetCharacters(partyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1], spellInfo[2]);
+
                     }
                     //attacking
                     else
@@ -284,6 +287,198 @@ public class UIScript : MonoBehaviour
     }
 
     #region Helper Functions
+
+
+    #region Player Targeting Functions
+
+    /// <summary>
+    /// lets a chosen party member target and ennemy and attack them
+    /// </summary>
+    /// <param name="member"></param>
+    void TargetEnemies(PartyMember member)
+    {
+        foreach (Enemy enemy in enemies)
+        {
+            if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
+            {
+                arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                arrowIndicator.SetActive(true);
+
+                if (Input.GetMouseButton(0))
+                {
+                    targetPromptText.gameObject.SetActive(false);
+                    member.PhysicalAttack(enemy);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// targets an enemy or player with a specific spell or if spell is multi targeted targets all
+    /// </summary>
+    /// <param name="member"></param>
+    /// <param name="isSpell"></param>
+    void TargetCharacters(PartyMember member, string name, int index, string type, string charactersTargeted, string emotion)
+    {
+        spellBox.SetActive(false);
+        spellDescriptionBox.SetActive(false);
+
+        targetPromptText.gameObject.SetActive(true);
+
+
+        List<Character> targetedCharacters = new List<Character>();
+
+        if (charactersTargeted == "Multiple")
+        {
+            if (type == "Heal" || type == "Buff")
+            {
+                foreach (PartyMember pMember in partyMembers)
+                {
+                    if (pMember.IsAlive)
+                    {
+                        targetedCharacters.Add(pMember);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    if (enemy.IsAlive)
+                    {
+                        targetedCharacters.Add(enemy);
+                    }
+                }
+            }
+            member.MagicAttack(targetedCharacters, name);
+            targetPromptText.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (type == "Heal" || type == "Buff")
+            {
+                foreach (PartyMember pMember in partyMembers)
+                {
+                    if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
+                    {
+                        arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                        arrowIndicator.SetActive(true);
+
+                        if (Input.GetMouseButton(0))
+                        {
+                            targetedCharacters.Add(pMember);
+                            targetPromptText.gameObject.SetActive(false);
+                            member.MagicAttack(targetedCharacters, name);
+
+                        }
+                    }
+                }
+            }
+            else if (type == "Emotion")
+            {
+                if (emotion != "Fear" && emotion != "Disgust")
+                {
+                    foreach (PartyMember pMember in partyMembers)
+                    {
+                        if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
+                        {
+                            arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                            arrowIndicator.SetActive(true);
+
+                            if (Input.GetMouseButton(0))
+                            {
+                                targetedCharacters.Add(pMember);
+                                targetPromptText.gameObject.SetActive(false);
+                                //member.MagicAttack(targetedCharacters, name);
+                            }
+                        }
+                    }
+                }
+                foreach (Enemy enemy in enemies)
+                {
+                    if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
+                    {
+                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                        arrowIndicator.SetActive(true);
+
+                        if (Input.GetMouseButton(0))
+                        {
+                            targetedCharacters.Add(enemy);
+                            targetPromptText.gameObject.SetActive(false);
+                            //member.MagicAttack(targetedCharacters, name);
+                        }
+                    }
+                }
+                member.MagicAttack(targetedCharacters, name);
+            }
+            else
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
+                    {
+                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                        arrowIndicator.SetActive(true);
+
+                        if (Input.GetMouseButton(0))
+                        {
+                            targetedCharacters.Add(enemy);
+                            targetPromptText.gameObject.SetActive(false);
+                            member.MagicAttack(targetedCharacters, name);
+                        }
+                    }
+                }
+                //TargetHelper(true, member, name);
+            }
+        }
+    }
+
+    //future targeting helper function
+    void TargetHelper(bool isEnemy, PartyMember member, string spellName)
+    {
+
+        List<Character> targets = new List<Character>();
+
+        if (isEnemy) 
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
+                {
+                    arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                    arrowIndicator.SetActive(true);
+
+                    if (Input.GetMouseButton(0))
+                    {
+                        targets.Add(enemy);
+                        targetPromptText.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        else 
+        {
+            foreach (PartyMember pMember in partyMembers)
+            {
+                if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
+                {
+                    arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                    arrowIndicator.SetActive(true);
+
+                    if (Input.GetMouseButton(0))
+                    {
+                        targets.Add(pMember);
+                        targetPromptText.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        member.MagicAttack(targets, name);
+    }
+
+
+    #endregion
+
 
     /// <summary>
     /// Update the turn indicator position based on the current turn
@@ -431,115 +626,6 @@ public class UIScript : MonoBehaviour
 
     //TODO: make second show and hide buttons function for Spell UI
 
-    #region Player Targeting Functions
-
-    /// <summary>
-    /// lets a chosen party member target and ennemy and attack them
-    /// </summary>
-    /// <param name="member"></param>
-    void TargetEnemies(PartyMember member)
-    {
-        foreach (Enemy enemy in enemies)
-        {
-            if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
-            {
-                arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                arrowIndicator.SetActive(true);
-
-                if (Input.GetMouseButton(0))
-                {
-                    targetPromptText.gameObject.SetActive(false);
-                    member.PhysicalAttack(enemy);
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// targets an enemy with a specific spell or if spell is multi targeted targets all
-    /// </summary>
-    /// <param name="member"></param>
-    /// <param name="isSpell"></param>
-    void TargetEnemies(PartyMember member, string name, int index, string type, string enemiesTargeted)
-    {
-        spellBox.SetActive(false);
-        spellDescriptionBox.SetActive(false);
-
-        targetPromptText.gameObject.SetActive(true);
-
-
-        List<Character> targetedCharacters = new List<Character>();
-
-        if (enemiesTargeted == "Multiple")
-        {
-            if (type == "Heal" || type == "Buff")
-            {
-                foreach (PartyMember pMember in partyMembers)
-                {
-                    if (pMember.IsAlive) 
-                    {
-                        targetedCharacters.Add(pMember);
-                    }
-                }
-            }
-            else
-            {
-                foreach (Enemy enemy in enemies)
-                {
-                    if (enemy.IsAlive)
-                    {
-                        targetedCharacters.Add(enemy);
-                    }
-                }
-            }
-            member.MagicAttack(targetedCharacters, name);
-            targetPromptText.gameObject.SetActive(false);
-        }
-        else
-        {
-            if (type == "Heal" || type == "Buff")
-            {
-                foreach (PartyMember pMember in partyMembers)
-                {
-                    if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
-                    {
-                        arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                        arrowIndicator.SetActive(true);
-
-                        if (Input.GetMouseButton(0))
-                        {
-                            targetedCharacters.Add(pMember);
-                            targetPromptText.gameObject.SetActive(false);
-                            member.MagicAttack(targetedCharacters, name);
-                            
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (Enemy enemy in enemies)
-                {
-                    if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
-                    {
-                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                        arrowIndicator.SetActive(true);
-
-                        if (Input.GetMouseButton(0))
-                        {
-                            targetedCharacters.Add(enemy);
-                            targetPromptText.gameObject.SetActive(false);
-                            member.MagicAttack(targetedCharacters, name);
-                               
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #endregion
-
-
+   
     #endregion
 }

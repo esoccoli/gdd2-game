@@ -388,7 +388,8 @@ public class Character : MonoBehaviour
     /// <returns></returns>
     public string[] GetSpellInfo(string spellName)
     {
-        return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target, spells.GetSpell(spellName).description};
+        //return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target, spells.GetSpell(spellName).description};
+        return new string[] {spells.GetSpell(spellName).type, spells.GetSpell(spellName).target, spells.GetSpell(spellName).emotion.ToString()};
     }
 
     /// <summary>
