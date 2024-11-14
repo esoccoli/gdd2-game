@@ -714,11 +714,11 @@ public class Character : MonoBehaviour
     {
         /// Order: Happiness, Anger, Sadness, Fear, Disgust
 
-        if (emotionPoints[0] >= 100) { ChangeEmotion(Emotion.Happiness); }
-        else if (emotionPoints[1] >= 100) { ChangeEmotion(Emotion.Anger); }
-        else if (emotionPoints[2] >= 100) { ChangeEmotion(Emotion.Sadness); }
-        else if (emotionPoints[3] >= 100) { ChangeEmotion(Emotion.Fear); }
-        else if (emotionPoints[4] >= 100) { ChangeEmotion(Emotion.Disgust); }
+        if (emotionPoints[0] >= 10) { ChangeEmotion(Emotion.Happiness); }
+        else if (emotionPoints[1] >= 10) { ChangeEmotion(Emotion.Anger); }
+        else if (emotionPoints[2] >= 10) { ChangeEmotion(Emotion.Sadness); }
+        else if (emotionPoints[3] >= 10) { ChangeEmotion(Emotion.Fear); }
+        else if (emotionPoints[4] >= 10) { ChangeEmotion(Emotion.Disgust); }
     }
 
     /// <summary>
@@ -732,7 +732,7 @@ public class Character : MonoBehaviour
 
         hasFear = false;
         hasDisgust = false;
-        hasHappiness = false;
+        //hasHappiness = false;
 
         /// Resets the emotion points values
         emotionPoints = new int[5];
