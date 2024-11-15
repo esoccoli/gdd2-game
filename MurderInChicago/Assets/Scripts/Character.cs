@@ -350,7 +350,7 @@ public class Character : MonoBehaviour
             {
                 case "Heal":
                     Heal(spell.damageAmount, targetList);
-                    FindObjectOfType<UIScript>().ShowHealPopup(targetList[0].transform.position, healthAmount, spriteOffset);
+                    FindObjectOfType<UIScript>().ShowNumberPopup(targetList[0].transform.position, healthAmount, spriteOffset, "Heal");
                     TurnEnd();
                     break;
                 case "Buff":
@@ -439,7 +439,7 @@ public class Character : MonoBehaviour
 
         currentHealth -= damageAmount;
 
-        FindObjectOfType<UIScript>().ShowDamagePopup(transform.position, damageAmount, spriteOffset);
+        FindObjectOfType<UIScript>().ShowNumberPopup(transform.position, damageAmount, spriteOffset, "");
 
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
 

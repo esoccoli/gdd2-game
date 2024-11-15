@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 using static Spells;
 
@@ -34,10 +35,10 @@ public class UIScript : MonoBehaviour
     List<TextMeshProUGUI> partyMemberWPTexts;
 
     [SerializeField]
-    TextMeshPro damageText;
+    Sprite[] damageNumbers;
 
     [SerializeField]
-    TextMeshPro healText;
+    Sprite[] healNumbers;
 
     [SerializeField]
     List<Button> buttons;
@@ -205,6 +206,7 @@ public class UIScript : MonoBehaviour
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
         targetPromptText.gameObject.SetActive(false);
+
     }
 
     void Update()
@@ -575,63 +577,66 @@ public class UIScript : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="damageAmount"></param>
     /// <param name="offset"></param>
-    public void ShowDamagePopup(Vector3 position, int damageAmount, Vector3 offset)
+    public void ShowNumberPopup(Vector3 position, int damageAmount, Vector3 offset, string numberType)
     {
-        damageText.text = damageAmount.ToString();
-        damageText.color = Color.red;
-        damageText.transform.position = position + offset; // Adjusts above the target
+        Sprite[] sourceNumbers = numberType == "Heal" ? healNumbers : damageNumbers;
 
-        StartCoroutine(FadeOutDamagePopup());
+        GameObject[] damageNumberArray;
+        if (damageAmount > 9)
+        {
+            damageNumberArray = new GameObject[2];
+            damageNumberArray[0] = CreateNumber((int)Mathf.Floor(damageAmount / 10), position + offset, sourceNumbers);
+            while (damageAmount >= 10)
+            {
+                damageAmount -= 10;
+            }
+            damageNumberArray[1] = CreateNumber(damageAmount, position + offset + new Vector3(0.4f, 0, 0), sourceNumbers);
+        }
+        else
+        {
+            damageNumberArray = new GameObject[1];
+            damageNumberArray[0] = CreateNumber(damageAmount, position + offset, sourceNumbers);
+        }
+       
+        StartCoroutine(FadeOutPopup(damageNumberArray));
     }
 
-    public void ShowHealPopup(Vector3 position, int healAmount, Vector3 offset)
+    private GameObject CreateNumber(int number, Vector3 position, Sprite[] sourceNumbers)
     {
-        healText.text = healAmount.ToString();
-        healText.color = Color.green;
-        healText.transform.position = position + offset; // Adjusts above the target
+        GameObject displayNumber = new();
+        displayNumber.AddComponent<SpriteRenderer>().sprite = sourceNumbers[number];
+        displayNumber.transform.position = position;
+        displayNumber.transform.localScale = new Vector3(5, 5, 5);
 
-        StartCoroutine(FadeOutHealPopup());
+        return displayNumber;
     }
 
     /// <summary>
     /// This makes the text that shows the damage fade away after a second
     /// </summary>
     /// <returns></returns>
-    private IEnumerator FadeOutDamagePopup()
+    private IEnumerator FadeOutPopup(GameObject[] numbers)
     {
-        float duration = 1f;
-        float elapsedTime = 0;
+        yield return new WaitForSeconds(1f);
 
-        while (elapsedTime < duration)
+        // Fade out
+        for (float t = 0; t < 1; t += Time.deltaTime)
         {
-            float alpha = Mathf.Lerp(1, 0, elapsedTime / duration);
-            damageText.color = new Color(1, 0, 0, alpha);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            foreach (GameObject number in numbers)
+            {
+                Color color = number.GetComponent<SpriteRenderer>().color;
+                color.a = Mathf.Lerp(1, 0, t); // Fade to transparent
+                number.GetComponent<SpriteRenderer>().color = color;
+                yield return null; // Wait for the next frame
+            }
         }
 
         // Hide the text after fading out
-        damageText.text = "";
-    }
-
-    private IEnumerator FadeOutHealPopup()
-    {
-        float duration = 1f;
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
+        for (int i = 0; i < numbers.Length; i++)
         {
-            float alpha = Mathf.Lerp(1, 0, elapsedTime / duration);
-            healText.color = new Color(0, 1, 0, alpha);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            Destroy(numbers[i]);
         }
-
-        // Hide the text after fading out
-        healText.text = "";
     }
-
-
     #endregion
 
 

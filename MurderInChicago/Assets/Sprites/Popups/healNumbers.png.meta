@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5e9045d99cc4f0f4894a00a3084dc3f4
+guid: f696244fbb4e35e4185c451627e69d6c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -93,29 +93,16 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: numbers_0
+      name: healNumbers_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 10
+        width: 9.2
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -124,40 +111,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a05c2cc661a6094ba1ad8fab1ee7b5c
-      internalID: -236832902
+      spriteID: f05eff825fc60644b8e42d9b23435c8c
+      internalID: 1549130883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_1
+      name: healNumbers_1
       rect:
         serializedVersion: 2
         x: 10
         y: 0
-        width: 10
+        width: 9
         height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.556093, y: 0.5125211}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de9c2dd40cea46045812f87ed1f5a46a
-      internalID: 929850861
+      spriteID: a2edba8fe0782b44e9da7839717c5c01
+      internalID: 40736557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_2
+      name: healNumbers_2
       rect:
         serializedVersion: 2
         x: 20
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -166,19 +153,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 865f28b6952635e4f80c5c0703843d4b
-      internalID: -2062282854
+      spriteID: fb5d8b3018d7c2c46bd0e8c0bd6d08e9
+      internalID: -1319046569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_3
+      name: healNumbers_3
       rect:
         serializedVersion: 2
-        x: 30
+        x: 29
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -187,19 +174,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e110bb759660d6b4ba307fb80b60f8aa
-      internalID: 1279652568
+      spriteID: 307c126521344fd4381bb9f9f806f8a2
+      internalID: 1992777221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_4
+      name: healNumbers_4
       rect:
         serializedVersion: 2
-        x: 40
+        x: 38
         y: 0
-        width: 10
+        width: 9
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -208,19 +195,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a04dc3cda82c10c4ca944d69f2bbc348
-      internalID: -1193708325
+      spriteID: d776fa071f4a5c6409d162bbd60d4cec
+      internalID: 1791380181
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_5
+      name: healNumbers_5
       rect:
         serializedVersion: 2
-        x: 50
+        x: 48
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -229,19 +216,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7488b8423cd8c92489ec56730a699bc4
-      internalID: 2100317504
+      spriteID: 6744f4c98a5c36344b97d9e02cdb713b
+      internalID: 1916058144
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_6
+      name: healNumbers_6
       rect:
         serializedVersion: 2
-        x: 60
+        x: 57
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -250,19 +237,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d88776e3999d55547a1d0e9889529c71
-      internalID: 932212979
+      spriteID: 9b88f8fe4f952644c803f87d7f18f5b4
+      internalID: 2030042346
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_7
+      name: healNumbers_7
       rect:
         serializedVersion: 2
-        x: 70
+        x: 66
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -271,19 +258,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cbf9b21ef31b164d8f403fc8b589ba5
-      internalID: -1713620126
+      spriteID: 953fbcf9e40b3f849a2043cf0ec0444e
+      internalID: -1221306546
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_8
+      name: healNumbers_8
       rect:
         serializedVersion: 2
-        x: 80
+        x: 75
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -292,19 +279,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd9b1e9bd77752247b04c5cc47f40f52
-      internalID: 805437209
+      spriteID: 38428e5ec1fd3c2458988bd93a45c407
+      internalID: -525649647
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: numbers_9
+      name: healNumbers_9
       rect:
         serializedVersion: 2
-        x: 90
+        x: 84
         y: 0
-        width: 10
+        width: 8
         height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -313,8 +300,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec436f487f44aad4e8502cb3bf3b0036
-      internalID: 711027420
+      spriteID: 8f98ecb3748e13741b78aec6999a4930
+      internalID: 1071137123
       vertices: []
       indices: 
       edges: []
@@ -330,16 +317,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      numbers_0: -236832902
-      numbers_1: 929850861
-      numbers_2: -2062282854
-      numbers_3: 1279652568
-      numbers_4: -1193708325
-      numbers_5: 2100317504
-      numbers_6: 932212979
-      numbers_7: -1713620126
-      numbers_8: 805437209
-      numbers_9: 711027420
+      healNumbers_0: 1549130883
+      healNumbers_1: 40736557
+      healNumbers_2: -1319046569
+      healNumbers_3: 1992777221
+      healNumbers_4: 1791380181
+      healNumbers_5: 1916058144
+      healNumbers_6: 2030042346
+      healNumbers_7: -1221306546
+      healNumbers_8: -525649647
+      healNumbers_9: 1071137123
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
