@@ -42,6 +42,11 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     List<Button> buttons;
 
+    [SerializeField]
+    GameObject pauseBG;
+
+    bool pauseBool = false;
+
     //spell UI
     [SerializeField]
     GameObject spellBox;
@@ -163,6 +168,14 @@ public class UIScript : MonoBehaviour
     /// </summary>
     public void OnRestart() { SceneManager.LoadScene(0); }
 
+    public void OnPause()
+    {
+        pauseBool = !pauseBool;
+        quitButton.SetActive(pauseBool);
+        restartButton.SetActive(pauseBool);
+        pauseBG.SetActive(pauseBool);
+    }
+
     /// <summary>
     /// moves the arrow next to the spell button the player is hovering over
     /// </summary>
@@ -198,6 +211,16 @@ public class UIScript : MonoBehaviour
     {
         // Check for win/lose conditions
         CheckGameOver();
+
+        //checking for if the player has paused the game
+        if (pauseBool)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
 
         if (!isLookingAtSpells)
         {

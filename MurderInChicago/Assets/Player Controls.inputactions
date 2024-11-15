@@ -70,6 +70,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "In Game Controls",
+            "id": "6c4abe1e-4047-4813-8b95-4d17da1783bf",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "8a22b735-3e39-4aeb-a4e7-fdb52885674e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "81327ed1-74c9-421b-899f-7812eed985fe",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
