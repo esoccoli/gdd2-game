@@ -350,7 +350,10 @@ public class Character : MonoBehaviour
             {
                 case "Heal":
                     Heal(spell.damageAmount, targetList);
-                    FindObjectOfType<UIScript>().ShowNumberPopup(targetList[0].transform.position, healthAmount, spriteOffset, "Heal");
+                    foreach (var c in targetList)
+                    {
+                        FindObjectOfType<UIScript>().ShowNumberPopup(c.transform.position, healthAmount, spriteOffset, "Heal");
+                    }
                     TurnEnd();
                     break;
                 case "Buff":
@@ -363,6 +366,10 @@ public class Character : MonoBehaviour
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
+                    foreach (var c in targetList)
+                    {
+                        c.AddEmotionPoints(spell.emotion, spell.emotionPoints);
+                    }
                     TurnEnd();
                     break;
                 default:
@@ -700,10 +707,34 @@ public class Character : MonoBehaviour
     {
         BuffEnd();
         currentWillpower += willpowerAmount;
+        FindObjectOfType<UIScript>().ShowNumberPopup(transform.position, willpowerAmount, spriteOffset, "Willpower");
         currentWillpower = currentWillpower > maxWillpower ? maxWillpower : currentWillpower;
         CheckEmotion();
         isMyTurn = false;
         UnityEngine.Debug.Log("Reached end of TurnEnd()");
+    }
+
+    public void AddEmotionPoints(Emotion emotion, int pointValue)
+    {
+        switch (emotion)
+        {
+            case Emotion.Happiness:
+                emotionPoints[0] += pointValue;
+                break;
+            case Emotion.Anger:
+                emotionPoints[1] += pointValue;
+                break;
+            case Emotion.Sadness:
+                emotionPoints[2] += pointValue;
+                break;
+            case Emotion.Fear:
+                emotionPoints[3] += pointValue;
+                break;
+            case Emotion.Disgust:
+                emotionPoints[4] += pointValue;
+                break;
+        }
+        CheckEmotion();
     }
 
     /// <summary>
@@ -714,11 +745,11 @@ public class Character : MonoBehaviour
     {
         /// Order: Happiness, Anger, Sadness, Fear, Disgust
 
-        if (emotionPoints[0] >= 10) { ChangeEmotion(Emotion.Happiness); }
-        else if (emotionPoints[1] >= 10) { ChangeEmotion(Emotion.Anger); }
-        else if (emotionPoints[2] >= 10) { ChangeEmotion(Emotion.Sadness); }
-        else if (emotionPoints[3] >= 10) { ChangeEmotion(Emotion.Fear); }
-        else if (emotionPoints[4] >= 10) { ChangeEmotion(Emotion.Disgust); }
+        if (emotionPoints[0] >= 50) { ChangeEmotion(Emotion.Happiness); }
+        else if (emotionPoints[1] >= 50) { ChangeEmotion(Emotion.Anger); }
+        else if (emotionPoints[2] >= 50) { ChangeEmotion(Emotion.Sadness); }
+        else if (emotionPoints[3] >= 50) { ChangeEmotion(Emotion.Fear); }
+        else if (emotionPoints[4] >= 50) { ChangeEmotion(Emotion.Disgust); }
     }
 
     /// <summary>
@@ -813,7 +844,7 @@ public class Character : MonoBehaviour
                 break;
             case Emotion.Fear:
                 hasFear = true;
-                srCharacter.color = new Color(160f, 32f, 240f, 1f); //purple
+                srCharacter.color = new Color(0.6f, 0.1f, 0.9f, 1f); //purple
 
                 fearSprite.enabled = true;
                 fearSprite.transform.position = transform.position + spriteOffset;

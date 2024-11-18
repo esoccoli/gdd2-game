@@ -39,6 +39,9 @@ public class UIScript : MonoBehaviour
 
     [SerializeField]
     Sprite[] healNumbers;
+    
+    [SerializeField]
+    Sprite[] willpowerNumbers;
 
     [SerializeField]
     List<Button> buttons;
@@ -414,7 +417,7 @@ public class UIScript : MonoBehaviour
                             {
                                 targetedCharacters.Add(pMember);
                                 targetPromptText.gameObject.SetActive(false);
-                                //member.MagicAttack(targetedCharacters, name);
+                                member.MagicAttack(targetedCharacters, name);
                             }
                         }
                     }
@@ -430,11 +433,11 @@ public class UIScript : MonoBehaviour
                         {
                             targetedCharacters.Add(enemy);
                             targetPromptText.gameObject.SetActive(false);
-                            //member.MagicAttack(targetedCharacters, name);
+                            member.MagicAttack(targetedCharacters, name);
                         }
                     }
                 }
-                member.MagicAttack(targetedCharacters, name);
+                //member.MagicAttack(targetedCharacters, name);
             }
             else
             {
@@ -579,7 +582,19 @@ public class UIScript : MonoBehaviour
     /// <param name="offset"></param>
     public void ShowNumberPopup(Vector3 position, int damageAmount, Vector3 offset, string numberType)
     {
-        Sprite[] sourceNumbers = numberType == "Heal" ? healNumbers : damageNumbers;
+        Sprite[] sourceNumbers;
+        switch (numberType)
+        {
+            case "Heal":
+                sourceNumbers = healNumbers;
+                break;
+            case "Willpower":
+                sourceNumbers = willpowerNumbers;
+                break;
+            default:
+                sourceNumbers = damageNumbers;
+                break;
+        }
 
         GameObject[] damageNumberArray;
         if (damageAmount > 9)
