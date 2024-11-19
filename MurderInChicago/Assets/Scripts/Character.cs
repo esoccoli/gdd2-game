@@ -92,6 +92,9 @@ public class Character : MonoBehaviour
     /// The GameManager empty object, used for spells and eventually items
     GameObject gameManager;
 
+    /// The animation manager, used to display emotion and spell effects
+    AnimationManager animManager;
+
     /// Contains the list of all spells that are available in the game.
     Spells spells;
 
@@ -250,6 +253,7 @@ public class Character : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager");
+        animManager = gameManager.GetComponent<AnimationManager>();
         spells = gameManager.GetComponent<Spells>();
 
         srCharacter = GetComponent<SpriteRenderer>();
@@ -758,12 +762,21 @@ public class Character : MonoBehaviour
     /// <param name="newEmotion">The new emotion to apply to the character</param>
     public void ChangeEmotion(Emotion newEmotion)
     {
+        Vector3 animOffset;
+        bool flipSprite = this is Enemy ? true : false;
+
         pastEmotion = currentEmotion;
         currentEmotion = newEmotion;
 
         hasFear = false;
         hasDisgust = false;
         //hasHappiness = false;
+        //Delete all the animation sprites if they exist
+        animManager.Delete(name + "Happy");
+        animManager.Delete(name + "Sad");
+        animManager.Delete(name + "Angry");
+        animManager.Delete(name + "Afraid");
+        animManager.Delete(name + "Disgust");
 
         /// Resets the emotion points values
         emotionPoints = new int[5];
@@ -811,6 +824,12 @@ public class Character : MonoBehaviour
 
                 srCharacter.color = Color.yellow;
 
+                if (this is Enemy)
+                    animOffset = new Vector3(-1.1f, 0, 0);
+                else
+                    animOffset = new Vector3(0.25f, 0.85f, 0);
+                animManager.Add("Happy", name, transform.position + animOffset, flipSprite);
+
                 happinessSprite.enabled = true;
                 happinessSprite.transform.position = transform.position + spriteOffset;
                 break;
@@ -824,6 +843,11 @@ public class Character : MonoBehaviour
                 if (fortune < 0) { fortune = 0; }
 
                 srCharacter.color = Color.red;
+                if (this is Enemy)
+                    animOffset = new Vector3(-0.65f, -0.2f, 0);
+                else
+                    animOffset = new Vector3(0.25f, 0.75f, 0);
+                animManager.Add("Angry", name, transform.position + animOffset, flipSprite);
 
                 angerSprite.enabled = true;
                 angerSprite.transform.position = transform.position + spriteOffset;
@@ -838,6 +862,11 @@ public class Character : MonoBehaviour
                 if (resolve < 0) { resolve = 0; }
 
                 srCharacter.color = Color.blue;
+                if (this is Enemy)
+                    animOffset = new Vector3(-0.9f, -0.5f, 0);
+                else
+                    animOffset = new Vector3(0.15f, 0.1f, 0);
+                animManager.Add("Sad", name, transform.position + animOffset, flipSprite);
 
                 sadnessSprite.enabled = true;
                 sadnessSprite.transform.position = transform.position + spriteOffset;
@@ -845,6 +874,11 @@ public class Character : MonoBehaviour
             case Emotion.Fear:
                 hasFear = true;
                 srCharacter.color = new Color(0.6f, 0.1f, 0.9f, 1f); //purple
+                if (this is Enemy)
+                    animOffset = new Vector3(-0.85f, -0.3f, 0);
+                else
+                    animOffset = new Vector3(0, 0.45f, 0);
+                animManager.Add("Afraid", name, transform.position + animOffset, flipSprite);
 
                 fearSprite.enabled = true;
                 fearSprite.transform.position = transform.position + spriteOffset;
@@ -852,6 +886,11 @@ public class Character : MonoBehaviour
             case Emotion.Disgust:
                 hasDisgust = true;
                 srCharacter.color = Color.green;
+                if (this is Enemy)
+                    animOffset = new Vector3(-1.2f, -0.5f, 0);
+                else
+                    animOffset = new Vector3(0.05f, 0.25f, 0);
+                animManager.Add("Disgust", name, transform.position + animOffset, flipSprite);
 
                 disgustSprite.enabled = true;
                 disgustSprite.transform.position = transform.position + spriteOffset;
