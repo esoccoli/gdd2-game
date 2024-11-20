@@ -39,22 +39,9 @@ public class Character : MonoBehaviour
     [SerializeField]
     GameObject character;
 
-    #region Emotion Sprites
     [SerializeField]
-    SpriteRenderer angerSprite;
-
-    [SerializeField]
-    SpriteRenderer sadnessSprite;
-
-    [SerializeField]
-    SpriteRenderer fearSprite;
-
-    [SerializeField]
-    SpriteRenderer disgustSprite;
-
-    [SerializeField]
-    SpriteRenderer happinessSprite;
-    #endregion
+    GameObject[] emotionSprites;
+    GameObject displayEmotion;
 
     [SerializeField]
     SpriteRenderer critSprite;
@@ -263,11 +250,6 @@ public class Character : MonoBehaviour
 
         isTargeting = false;
 
-        angerSprite.enabled = false;
-        sadnessSprite.enabled = false;
-        fearSprite.enabled = false;
-        disgustSprite.enabled = false;
-        happinessSprite.enabled = false;
         critSprite.enabled = false;
         missSprite.enabled = false;
 
@@ -341,13 +323,16 @@ public class Character : MonoBehaviour
         {
             //First, the spell increases Emotion, then is case
             //Order of Emotion Point Array: Happiness, Anger, Sadness, Fear, Disgust
-            switch (spell.emotion)
+            if (spell.type != "Emotion")
             {
-                case Emotion.Happiness: emotionPoints[0] += spell.emotionPoints; break;
-                case Emotion.Anger: emotionPoints[1] += spell.emotionPoints; break;
-                case Emotion.Sadness: emotionPoints[2] += spell.emotionPoints; break;
-                case Emotion.Fear: emotionPoints[3] += spell.emotionPoints; break;
-                case Emotion.Disgust: emotionPoints[4] += spell.emotionPoints; break;
+                switch (spell.emotion)
+                {
+                    case Emotion.Happiness: emotionPoints[0] += spell.emotionPoints; break;
+                    case Emotion.Anger: emotionPoints[1] += spell.emotionPoints; break;
+                    case Emotion.Sadness: emotionPoints[2] += spell.emotionPoints; break;
+                    case Emotion.Fear: emotionPoints[3] += spell.emotionPoints; break;
+                    case Emotion.Disgust: emotionPoints[4] += spell.emotionPoints; break;
+                }
             }
             currentWillpower -= spell.willpowerCost;
             switch (spell.type)
@@ -780,6 +765,7 @@ public class Character : MonoBehaviour
 
         /// Resets the emotion points values
         emotionPoints = new int[5];
+        Destroy(displayEmotion);
 
         switch (currentEmotion)
         {
@@ -806,11 +792,6 @@ public class Character : MonoBehaviour
                 }
                 srCharacter.color = Color.white;
 
-                angerSprite.enabled = false;
-                sadnessSprite.enabled = false;
-                happinessSprite.enabled = false;
-                fearSprite.enabled = false;
-                disgustSprite.enabled = false;
                 break;
             case Emotion.Happiness:
                 hasHappiness = true;
@@ -830,8 +811,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(0.25f, 0.85f, 0);
                 animManager.Add("Happy", name, transform.position + animOffset, flipSprite);
 
-                happinessSprite.enabled = true;
-                happinessSprite.transform.position = transform.position + spriteOffset;
+                DisplayCurrentEmotion((int)Emotion.Happiness);
                 break;
             case Emotion.Anger:
                 strength += 5;
@@ -849,8 +829,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(0.25f, 0.75f, 0);
                 animManager.Add("Angry", name, transform.position + animOffset, flipSprite);
 
-                angerSprite.enabled = true;
-                angerSprite.transform.position = transform.position + spriteOffset;
+                DisplayCurrentEmotion((int)Emotion.Anger);
                 break;
             case Emotion.Sadness:
                 fortitude += 5;
@@ -868,8 +847,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(0.15f, 0.1f, 0);
                 animManager.Add("Sad", name, transform.position + animOffset, flipSprite);
 
-                sadnessSprite.enabled = true;
-                sadnessSprite.transform.position = transform.position + spriteOffset;
+                DisplayCurrentEmotion((int)Emotion.Sadness);
                 break;
             case Emotion.Fear:
                 hasFear = true;
@@ -880,8 +858,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(0, 0.45f, 0);
                 animManager.Add("Afraid", name, transform.position + animOffset, flipSprite);
 
-                fearSprite.enabled = true;
-                fearSprite.transform.position = transform.position + spriteOffset;
+                DisplayCurrentEmotion((int)Emotion.Fear);
                 break;
             case Emotion.Disgust:
                 hasDisgust = true;
@@ -892,8 +869,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(0.05f, 0.25f, 0);
                 animManager.Add("Disgust", name, transform.position + animOffset, flipSprite);
 
-                disgustSprite.enabled = true;
-                disgustSprite.transform.position = transform.position + spriteOffset;
+                DisplayCurrentEmotion((int)Emotion.Disgust);
                 break;
         }
     }
@@ -944,5 +920,12 @@ public class Character : MonoBehaviour
             }
             if (affectedStats.Count == 0) areIconsUsed[i] = false;
         }
+    }
+
+    private void DisplayCurrentEmotion(int index)
+    {
+        displayEmotion = Instantiate(emotionSprites[index]);
+        displayEmotion.transform.position = transform.position + spriteOffset;
+        displayEmotion.SetActive(true);
     }
 }
