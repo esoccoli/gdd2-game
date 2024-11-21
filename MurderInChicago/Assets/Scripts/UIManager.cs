@@ -335,7 +335,7 @@ public class UIScript : MonoBehaviour
                 if (Input.GetMouseButton(0))
                 {
                     targetPromptText.gameObject.SetActive(false);
-                    member.PhysicalAttack(enemy);
+                    StartCoroutine(member.PhysicalAttack(enemy));
                 }
             }
         }

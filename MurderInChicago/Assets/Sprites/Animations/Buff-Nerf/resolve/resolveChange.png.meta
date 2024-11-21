@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fortitudeChange_0
+      name: resolveChange_0
       rect:
         serializedVersion: 2
         x: 0
@@ -105,7 +105,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -118,7 +118,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_1
+      name: resolveChange_1
       rect:
         serializedVersion: 2
         x: 28
@@ -126,7 +126,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,7 +139,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_2
+      name: resolveChange_2
       rect:
         serializedVersion: 2
         x: 56
@@ -147,7 +147,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,7 +160,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_3
+      name: resolveChange_3
       rect:
         serializedVersion: 2
         x: 84
@@ -168,7 +168,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,7 +181,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_4
+      name: resolveChange_4
       rect:
         serializedVersion: 2
         x: 112
@@ -189,7 +189,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_5
+      name: resolveChange_5
       rect:
         serializedVersion: 2
         x: 140
@@ -210,7 +210,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,7 +223,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fortitudeChange_6
+      name: resolveChange_6
       rect:
         serializedVersion: 2
         x: 168
@@ -231,7 +231,7 @@ TextureImporter:
         width: 28
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      fortitudeChange_0: 1969166868
-      fortitudeChange_1: 747288723
-      fortitudeChange_2: 2071359869
-      fortitudeChange_3: -1029029980
-      fortitudeChange_4: -728228777
-      fortitudeChange_5: -743663053
-      fortitudeChange_6: 52262271
+      resolveChange_0: 1969166868
+      resolveChange_1: 747288723
+      resolveChange_2: 2071359869
+      resolveChange_3: -1029029980
+      resolveChange_4: -728228777
+      resolveChange_5: -743663053
+      resolveChange_6: 52262271
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

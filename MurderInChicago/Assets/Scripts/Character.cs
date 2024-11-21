@@ -268,11 +268,12 @@ public class Character : MonoBehaviour
     /// Deals physical damage to a specified target
     /// </summary>
     /// <param name="target">The 'Character' component of the target</param>
-    public void PhysicalAttack(Character target)
+    public IEnumerator PhysicalAttack(Character target)
     {
         int crit = Crit();
         if (target != null)
         {
+            yield return StartCoroutine(animManager.AnimateSprite("Attack", target.transform.position));
             if (crit > 0)
             {
                 critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(1f, 0, 0);
@@ -809,7 +810,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(-1.1f, 0, 0);
                 else
                     animOffset = new Vector3(0.25f, 0.85f, 0);
-                animManager.Add("Happy", name, transform.position + animOffset, flipSprite);
+                animManager.AddLoop("Happy", name, transform.position + animOffset, flipSprite);
 
                 DisplayCurrentEmotion((int)Emotion.Happiness);
                 break;
@@ -827,7 +828,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(-0.65f, -0.2f, 0);
                 else
                     animOffset = new Vector3(0.25f, 0.75f, 0);
-                animManager.Add("Angry", name, transform.position + animOffset, flipSprite);
+                animManager.AddLoop("Angry", name, transform.position + animOffset, flipSprite);
 
                 DisplayCurrentEmotion((int)Emotion.Anger);
                 break;
@@ -845,7 +846,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(-0.9f, -0.5f, 0);
                 else
                     animOffset = new Vector3(0.15f, 0.1f, 0);
-                animManager.Add("Sad", name, transform.position + animOffset, flipSprite);
+                animManager.AddLoop("Sad", name, transform.position + animOffset, flipSprite);
 
                 DisplayCurrentEmotion((int)Emotion.Sadness);
                 break;
@@ -856,7 +857,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(-0.85f, -0.3f, 0);
                 else
                     animOffset = new Vector3(0, 0.45f, 0);
-                animManager.Add("Afraid", name, transform.position + animOffset, flipSprite);
+                animManager.AddLoop("Afraid", name, transform.position + animOffset, flipSprite);
 
                 DisplayCurrentEmotion((int)Emotion.Fear);
                 break;
@@ -867,7 +868,7 @@ public class Character : MonoBehaviour
                     animOffset = new Vector3(-1.2f, -0.5f, 0);
                 else
                     animOffset = new Vector3(0.05f, 0.25f, 0);
-                animManager.Add("Disgust", name, transform.position + animOffset, flipSprite);
+                animManager.AddLoop("Disgust", name, transform.position + animOffset, flipSprite);
 
                 DisplayCurrentEmotion((int)Emotion.Disgust);
                 break;
