@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e360aa64d9fe56142bf581c84c05951e
+guid: b6b5117c86c6874448538e2f92bab04a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: resolveChange_0
+      name: fortitudeChange_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dddc4d52c91b9a243b18449e476c7ecc
-      internalID: -1283220002
+      spriteID: 1c6284604f0438e4592b48cf4a094e9c
+      internalID: 1969166868
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_1
+      name: fortitudeChange_1
       rect:
         serializedVersion: 2
         x: 28
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dcc2bace6070a3c4db658671f80ed5dd
-      internalID: -153385975
+      spriteID: 8a7230faf0e3fe143a1647d7b0b4607b
+      internalID: 747288723
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_2
+      name: fortitudeChange_2
       rect:
         serializedVersion: 2
         x: 56
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d135868458c72a4ca04338ae02f0bb4
-      internalID: 119266589
+      spriteID: c3417b02c31197a40ad26b60decde436
+      internalID: 2071359869
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_3
+      name: fortitudeChange_3
       rect:
         serializedVersion: 2
         x: 84
@@ -174,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55b752efa049bf44594aebba422bc314
-      internalID: -1506962778
+      spriteID: 57a5b941c56c7a34d9f94e9d0e454ded
+      internalID: -1029029980
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_4
+      name: fortitudeChange_4
       rect:
         serializedVersion: 2
         x: 112
@@ -195,14 +195,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8d8eb4df6a41b8479387d7f92eae3a8
-      internalID: 1822913132
+      spriteID: 9a3fc54cc59a2634f80bfd4752d5ca72
+      internalID: -728228777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_5
+      name: fortitudeChange_5
       rect:
         serializedVersion: 2
         x: 140
@@ -216,14 +216,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5eef7028563beef4299d0aeb8a2e7b4d
-      internalID: -1136796666
+      spriteID: 92386f81586e98342bdb78089c26a63b
+      internalID: -743663053
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: resolveChange_6
+      name: fortitudeChange_6
       rect:
         serializedVersion: 2
         x: 168
@@ -237,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e9039450764d844fb511697d748d4d9
-      internalID: -4027420
+      spriteID: 6b4c2b136b36b3e408260f01733f9341
+      internalID: 52262271
       vertices: []
       indices: 
       edges: []
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      resolveChange_0: -1283220002
-      resolveChange_1: -153385975
-      resolveChange_2: 119266589
-      resolveChange_3: -1506962778
-      resolveChange_4: 1822913132
-      resolveChange_5: -1136796666
-      resolveChange_6: -4027420
+      fortitudeChange_0: 1969166868
+      fortitudeChange_1: 747288723
+      fortitudeChange_2: 2071359869
+      fortitudeChange_3: -1029029980
+      fortitudeChange_4: -728228777
+      fortitudeChange_5: -743663053
+      fortitudeChange_6: 52262271
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
