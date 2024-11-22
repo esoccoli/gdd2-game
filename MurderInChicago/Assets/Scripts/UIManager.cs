@@ -103,6 +103,8 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI targetPromptText;
 
+    AnimationManager animManager;
+
 
     #region Player UI Functions
     /// <summary>
@@ -209,7 +211,7 @@ public class UIScript : MonoBehaviour
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
         targetPromptText.gameObject.SetActive(false);
-
+        animManager = gameObject.GetComponent<AnimationManager>();
     }
 
     void Update()
@@ -277,7 +279,9 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
-                    targetPromptText.gameObject.SetActive(true);
+
+                    // The UI elements will hide while an animated sprite is playing
+                    targetPromptText.gameObject.SetActive(!animManager.IsActive);
 
                     //spells
                     if (partyMembers[i].IsUsingSpell)
@@ -330,9 +334,10 @@ public class UIScript : MonoBehaviour
             if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
             {
                 arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                arrowIndicator.SetActive(true);
+                arrowIndicator.SetActive(!animManager.IsActive);
 
-                if (Input.GetMouseButton(0))
+                //Ensure there's no animations played during the click, preventing double attacks
+                if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
                 {
                     targetPromptText.gameObject.SetActive(false);
                     StartCoroutine(member.PhysicalAttack(enemy));
@@ -476,7 +481,7 @@ public class UIScript : MonoBehaviour
                     arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
                     arrowIndicator.SetActive(true);
 
-                    if (Input.GetMouseButton(0))
+                    if (Input.GetMouseButtonUp(0))
                     {
                         targets.Add(enemy);
                         targetPromptText.gameObject.SetActive(false);
@@ -493,7 +498,7 @@ public class UIScript : MonoBehaviour
                     arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
                     arrowIndicator.SetActive(true);
 
-                    if (Input.GetMouseButton(0))
+                    if (Input.GetMouseButtonUp(0))
                     {
                         targets.Add(pMember);
                         targetPromptText.gameObject.SetActive(false);

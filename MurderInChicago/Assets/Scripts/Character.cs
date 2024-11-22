@@ -274,6 +274,7 @@ public class Character : MonoBehaviour
         if (target != null)
         {
             yield return StartCoroutine(animManager.AnimateSprite("Attack", target.transform.position));
+            while (animManager.IsActive) { /*Do absolutely nothing*/ }
             if (crit > 0)
             {
                 critSprite.transform.position = target.transform.position + spriteOffset + new Vector3(1f, 0, 0);
@@ -286,7 +287,6 @@ public class Character : MonoBehaviour
             }
 
         }
-
         TurnEnd();
     }
 

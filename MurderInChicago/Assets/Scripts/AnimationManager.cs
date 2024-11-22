@@ -11,12 +11,19 @@ public class AnimationManager : MonoBehaviour
     [SerializeField]
     GameObject[] sourceObjects;
 
+    bool isActive;
+    public bool IsActive
+    {
+        get { return isActive; }
+        set { isActive = value; }
+    }
+
     // A library of animated sprites. Animations are instantiated from this library.
     Dictionary<string, GameObject> spriteLibrary = new Dictionary<string, GameObject>();
 
     // A list of currently looping sprites, used primarily for emotions.
     Dictionary<string, GameObject> currentSprites = new Dictionary<string, GameObject>();
-
+    
     private void Start()
     {
         for (int i = 0; i < sourceNames.Length; i++)
@@ -56,9 +63,11 @@ public class AnimationManager : MonoBehaviour
     /// <param name="position"></param>
     public IEnumerator AnimateSprite(string spriteType, Vector3 position)
     {
+        isActive = true;
         GameObject animSprite = Instantiate(spriteLibrary[spriteType]);
         animSprite.transform.position = position;
-        yield return new WaitForSeconds(animSprite.GetComponent<Animation>().clip.length);
+        yield return new WaitForSeconds(animSprite.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length - 0.04f);
         Destroy(animSprite);
+        isActive = false;
     }
 }
