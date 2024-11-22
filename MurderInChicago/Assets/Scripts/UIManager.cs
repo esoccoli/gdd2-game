@@ -99,7 +99,6 @@ public class UIScript : MonoBehaviour
 
     [SerializeField]
     GameObject arrowIndicator;
-    
     GameObject targetSelectArrowIndicator;
 
     [SerializeField]
@@ -299,7 +298,6 @@ public class UIScript : MonoBehaviour
 
 
                         TargetCharacters(partyMembers[i], spellNames[spellListIndex], spellListIndex, spellInfo[0], spellInfo[1], spellInfo[2]);
-
                     }
                     //attacking
                     else
@@ -362,13 +360,12 @@ public class UIScript : MonoBehaviour
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
 
-        targetPromptText.gameObject.SetActive(true);
-
 
         List<Character> targetedCharacters = new List<Character>();
 
         if (charactersTargeted == "Multiple")
         {
+            targetPromptText.gameObject.SetActive(false);
             if (type == "Heal" || type == "Buff")
             {
                 foreach (PartyMember pMember in partyMembers)
@@ -376,6 +373,7 @@ public class UIScript : MonoBehaviour
                     if (pMember.IsAlive)
                     {
                         targetedCharacters.Add(pMember);
+
                     }
                 }
             }
@@ -389,8 +387,11 @@ public class UIScript : MonoBehaviour
                     }
                 }
             }
-            member.MagicAttack(targetedCharacters, name);
-            targetPromptText.gameObject.SetActive(false);
+            if (Input.GetMouseButton(0))
+            {
+                StartCoroutine(member.MagicAttack(targetedCharacters, name));
+                
+            }
         }
         else
         {
@@ -401,13 +402,13 @@ public class UIScript : MonoBehaviour
                     if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                     {
                         targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                        targetSelectArrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.SetActive(!animManager.IsActive);
 
-                        if (Input.GetMouseButton(0))
+                        if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
                         {
                             targetedCharacters.Add(pMember);
                             targetPromptText.gameObject.SetActive(false);
-                            member.MagicAttack(targetedCharacters, name);
+                            StartCoroutine(member.MagicAttack(targetedCharacters, name));
 
                         }
                     }
@@ -422,13 +423,13 @@ public class UIScript : MonoBehaviour
                         if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                         {
                             targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                            targetSelectArrowIndicator.SetActive(true);
+                            targetSelectArrowIndicator.SetActive(!animManager.IsActive);
 
-                            if (Input.GetMouseButton(0))
+                            if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
                             {
                                 targetedCharacters.Add(pMember);
                                 targetPromptText.gameObject.SetActive(false);
-                                member.MagicAttack(targetedCharacters, name);
+                                StartCoroutine(member.MagicAttack(targetedCharacters, name));
                             }
                         }
                     }
@@ -438,13 +439,13 @@ public class UIScript : MonoBehaviour
                     if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                     {
                         targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                        targetSelectArrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.SetActive(!animManager.IsActive);
 
-                        if (Input.GetMouseButton(0))
+                        if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
                         {
                             targetedCharacters.Add(enemy);
                             targetPromptText.gameObject.SetActive(false);
-                            member.MagicAttack(targetedCharacters, name);
+                            StartCoroutine(member.MagicAttack(targetedCharacters, name));
                         }
                     }
                 }
@@ -457,13 +458,13 @@ public class UIScript : MonoBehaviour
                     if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                     {
                         targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                        targetSelectArrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.SetActive(!animManager.IsActive);
 
-                        if (Input.GetMouseButton(0))
+                        if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
                         {
                             targetedCharacters.Add(enemy);
                             targetPromptText.gameObject.SetActive(false);
-                            member.MagicAttack(targetedCharacters, name);
+                            StartCoroutine(member.MagicAttack(targetedCharacters, name));
                         }
                     }
                 }

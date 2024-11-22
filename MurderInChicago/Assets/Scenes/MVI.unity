@@ -528,11 +528,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ec8881819b14d643b5e8451a153f6d6, type: 3}
---- !u!1 &256938454 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1769033496781352878, guid: 6ec8881819b14d643b5e8451a153f6d6, type: 3}
-  m_PrefabInstance: {fileID: 256938453}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &290239191
 GameObject:
   m_ObjectHideFlags: 0
@@ -5169,7 +5164,6 @@ MonoBehaviour:
   restartButton: {fileID: 1557168461}
   cursor: {fileID: 290239192}
   arrowIndicator: {fileID: 1187810461}
-  targetSelectArrowIndicator: {fileID: 256938454}
   targetPromptText: {fileID: 533386828}
 --- !u!114 &1706382068
 MonoBehaviour:
@@ -5255,6 +5249,14 @@ MonoBehaviour:
   - Sad
   - Afraid
   - Disgust
+  - StrengthBuff
+  - FortitudeBuff
+  - ResolveBuff
+  - FortuneBuff
+  - StrengthNerf
+  - FortitudeNerf
+  - ResolveNerf
+  - FortuneNerf
   - Attack
   sourceObjects:
   - {fileID: 9113927319239626787, guid: 2c0b9570d27d42a42b36b3691f35ed7b, type: 3}
@@ -5262,6 +5264,14 @@ MonoBehaviour:
   - {fileID: 458578483127520010, guid: 8f42569e101e1e143a8a148855a5909c, type: 3}
   - {fileID: 8215709970260399944, guid: 58c930d71de1d174f9ebdf58bdcc7de5, type: 3}
   - {fileID: 2945851044360000220, guid: 9b9b454743e906b4dafa243f95aaec70, type: 3}
+  - {fileID: 522222288216180079, guid: 94cead30c116ee84a8e953468af0f313, type: 3}
+  - {fileID: 4724147808995148947, guid: 7c10b018db65521408a314d745f58ef8, type: 3}
+  - {fileID: 6966655096225576653, guid: 95362c0f68b581c43858c7552eace4bb, type: 3}
+  - {fileID: 7608262571623877289, guid: 1559f6603e77d4e4f88776b3774bf0fe, type: 3}
+  - {fileID: 635353032647648084, guid: bc6cc4534cfa1e24d8cdd2714f709c71, type: 3}
+  - {fileID: 3560141227319179859, guid: 6435e6db2572be840a9ffc66825c063e, type: 3}
+  - {fileID: 6778379050037892916, guid: 4a3bf24245ae2394cad1283d2b0a8137, type: 3}
+  - {fileID: 6646087204220502672, guid: 910b35b059262e04597928edbc73027a, type: 3}
   - {fileID: 1871991291931932775, guid: 4e1e87166e241274585539957f245b46, type: 3}
 --- !u!1 &1707535565
 GameObject:

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -23,6 +24,13 @@ public class AnimationManager : MonoBehaviour
 
     // A list of currently looping sprites, used primarily for emotions.
     Dictionary<string, GameObject> currentSprites = new Dictionary<string, GameObject>();
+
+    List<Tuple<string, Vector3>> animationQueue = new List<Tuple<string, Vector3>>();
+
+    public int animQueueCount
+    {
+        get { return animationQueue.Count; }
+    }
     
     private void Start()
     {
@@ -54,6 +62,54 @@ public class AnimationManager : MonoBehaviour
             Destroy(currentSprites[name]);
             currentSprites.Remove(name);
         }
+    }
+
+    public string DetermineBuff(int[] buffArray, bool isDebuff)
+    {
+        string suffix = isDebuff ? "Nerf" : "Buff"; 
+        int buffIndex = 0;
+        int buffCount = 0;
+        for (int i = 0; i < buffArray.Length; i++)
+        {
+            if (buffArray[i] != 0)
+            {
+                buffIndex = i;
+                buffCount++;
+            }
+        }
+        if (buffCount > 1) return "Multi" + suffix;
+        switch (buffIndex)
+        {
+            case 1:
+                return "Strength" + suffix;
+            case 2:
+                return "Resolve" + suffix;
+            case 3:
+                return "Fortitude" + suffix;
+            case 4:
+                return "Fortune" + suffix;
+            default:
+                return "";
+        }
+    }
+
+    public void Enqueue(string animName, Vector3 position)
+    {
+        animationQueue.Add(new Tuple<string, Vector3>(animName, position));
+    }
+
+    public IEnumerator PlayQueue()
+    {
+        if (animationQueue.Count == 0)
+        {
+            yield break;
+        }
+        foreach(var anim in animationQueue)
+        {
+            StartCoroutine(AnimateSprite(anim.Item1, anim.Item2));
+        }
+        yield return new WaitUntil(() => isActive == false);
+        animationQueue.Clear();
     }
 
     /// <summary>

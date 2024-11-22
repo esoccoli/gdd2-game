@@ -300,12 +300,12 @@ public class Character : MonoBehaviour
     /// <param name="target">The 'Character' component of desired the target</param>
     /// <param name="spellType">The type of the spell to cast</param>
     /// <param name="spellCost">The amount of willpower required to cast this spell</param>
-    public void MagicAttack(List<Character> targetList, string spellName)
+    public IEnumerator MagicAttack(List<Character> targetList, string spellName)
     {
         if (targetList.Count == 0)
         {
             TurnEnd();
-            return;
+            yield return null;
         }
 
         var spell = spells.GetSpell(spellName);
@@ -344,15 +344,10 @@ public class Character : MonoBehaviour
                     {
                         FindObjectOfType<UIScript>().ShowNumberPopup(c.transform.position, healthAmount, spriteOffset, "Heal");
                     }
-                    TurnEnd();
                     break;
                 case "Buff":
-                    Buff(spell, targetList);
-                    TurnEnd();
-                    break;
                 case "Debuff":
-                    Buff(spell, targetList);
-                    TurnEnd();
+                    yield return StartCoroutine(Buff(spell, targetList));
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
@@ -360,16 +355,16 @@ public class Character : MonoBehaviour
                     {
                         c.AddEmotionPoints(spell.emotion, spell.emotionPoints);
                     }
-                    TurnEnd();
                     break;
                 default:
                     for (int i = 0; i < targetList.Count; i++)
                     {
                         targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);
                     }
-                    TurnEnd();
                     break;
             }
+            while (animManager.IsActive) { };
+            TurnEnd();
         }
         else
         {
@@ -479,8 +474,14 @@ public class Character : MonoBehaviour
     }
 
     //TODO: Implement spells that buff or debuff certain stats
-    public void Buff(Spell spell, List<Character> targetList)
+    public IEnumerator Buff(Spell spell, List<Character> targetList)
     {
+        //Animate the buffs or debuffs first
+        foreach (Character target in targetList)
+        {
+            animManager.Enqueue(animManager.DetermineBuff(spell.statChanges, spell.type == "Debuff"), target.transform.position);
+        }
+        if (animManager.animQueueCount > 0) yield return StartCoroutine(animManager.PlayQueue());
         // Guide: { vitality, strength, resolve, fortitude, fortune }
         for (int i = 0; i < targetList.Count; i++)
         {
@@ -580,6 +581,7 @@ public class Character : MonoBehaviour
             targetList[i].DisplayBuffs(spell.statChanges, spell.type);
             // TODO: Make a new function to reverse the buff/ debuff
         }
+        yield return null;
     }
 
     /// <summary>
