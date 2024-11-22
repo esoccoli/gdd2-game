@@ -101,6 +101,9 @@ public class UIScript : MonoBehaviour
     GameObject arrowIndicator;
 
     [SerializeField]
+    GameObject targetSelectArrowIndicator;
+
+    [SerializeField]
     TextMeshProUGUI targetPromptText;
 
     AnimationManager animManager;
@@ -208,6 +211,7 @@ public class UIScript : MonoBehaviour
         loseScreen.SetActive(false);
 
         arrowIndicator.SetActive(false);
+        targetSelectArrowIndicator.SetActive(false);
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
         targetPromptText.gameObject.SetActive(false);
@@ -279,6 +283,7 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
+                    targetSelectArrowIndicator.SetActive(true);
 
                     // The UI elements will hide while an animated sprite is playing
                     targetPromptText.gameObject.SetActive(!animManager.IsActive);
@@ -305,6 +310,7 @@ public class UIScript : MonoBehaviour
                 else
                 {
                     targetPromptText.gameObject.SetActive(false);
+                    targetSelectArrowIndicator.SetActive(false);
                 }
             }
         }
@@ -333,8 +339,8 @@ public class UIScript : MonoBehaviour
         {
             if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
             {
-                arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                arrowIndicator.SetActive(!animManager.IsActive);
+                targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                targetSelectArrowIndicator.SetActive(!animManager.IsActive);
 
                 //Ensure there's no animations played during the click, preventing double attacks
                 if (Input.GetMouseButtonUp(0) && !animManager.IsActive)
@@ -394,8 +400,8 @@ public class UIScript : MonoBehaviour
                 {
                     if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                     {
-                        arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                        arrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                        targetSelectArrowIndicator.SetActive(true);
 
                         if (Input.GetMouseButton(0))
                         {
@@ -415,8 +421,8 @@ public class UIScript : MonoBehaviour
                     {
                         if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                         {
-                            arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                            arrowIndicator.SetActive(true);
+                            targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                            targetSelectArrowIndicator.SetActive(true);
 
                             if (Input.GetMouseButton(0))
                             {
@@ -431,8 +437,8 @@ public class UIScript : MonoBehaviour
                 {
                     if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                     {
-                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                        arrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                        targetSelectArrowIndicator.SetActive(true);
 
                         if (Input.GetMouseButton(0))
                         {
@@ -450,8 +456,8 @@ public class UIScript : MonoBehaviour
                 {
                     if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                     {
-                        arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                        arrowIndicator.SetActive(true);
+                        targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                        targetSelectArrowIndicator.SetActive(true);
 
                         if (Input.GetMouseButton(0))
                         {
@@ -478,8 +484,8 @@ public class UIScript : MonoBehaviour
             {
                 if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
                 {
-                    arrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                    arrowIndicator.SetActive(true);
+                    targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                    targetSelectArrowIndicator.SetActive(true);
 
                     if (Input.GetMouseButtonUp(0))
                     {
@@ -495,8 +501,8 @@ public class UIScript : MonoBehaviour
             {
                 if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
                 {
-                    arrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                    arrowIndicator.SetActive(true);
+                    targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
+                    targetSelectArrowIndicator.SetActive(true);
 
                     if (Input.GetMouseButtonUp(0))
                     {
