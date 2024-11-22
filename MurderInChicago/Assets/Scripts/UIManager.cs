@@ -99,8 +99,7 @@ public class UIScript : MonoBehaviour
 
     [SerializeField]
     GameObject arrowIndicator;
-
-    [SerializeField]
+    
     GameObject targetSelectArrowIndicator;
 
     [SerializeField]
@@ -211,6 +210,8 @@ public class UIScript : MonoBehaviour
         loseScreen.SetActive(false);
 
         arrowIndicator.SetActive(false);
+        targetSelectArrowIndicator = Instantiate(arrowIndicator);
+        targetSelectArrowIndicator.transform.localScale = new Vector3(2, 2, 1);
         targetSelectArrowIndicator.SetActive(false);
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
@@ -283,7 +284,6 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
-                    targetSelectArrowIndicator.SetActive(true);
 
                     // The UI elements will hide while an animated sprite is playing
                     targetPromptText.gameObject.SetActive(!animManager.IsActive);
