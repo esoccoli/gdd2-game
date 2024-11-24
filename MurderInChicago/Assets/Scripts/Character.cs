@@ -357,6 +357,7 @@ public class Character : MonoBehaviour
                     }
                     break;
                 default:
+                    if (targetList.Count == 1) yield return StartCoroutine(animManager.AnimateSprite(spellName, targetList[0].transform.position));
                     for (int i = 0; i < targetList.Count; i++)
                     {
                         targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);

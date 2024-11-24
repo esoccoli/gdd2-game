@@ -119,6 +119,7 @@ public class AnimationManager : MonoBehaviour
     /// <param name="position"></param>
     public IEnumerator AnimateSprite(string spriteType, Vector3 position)
     {
+        if (!spriteLibrary.ContainsKey(spriteType)) yield break;
         isActive = true;
         GameObject animSprite = Instantiate(spriteLibrary[spriteType]);
         animSprite.transform.position = position;

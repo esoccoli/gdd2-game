@@ -5258,6 +5258,7 @@ MonoBehaviour:
   - ResolveNerf
   - FortuneNerf
   - Attack
+  - Fire
   sourceObjects:
   - {fileID: 9113927319239626787, guid: 2c0b9570d27d42a42b36b3691f35ed7b, type: 3}
   - {fileID: 5040812790056431131, guid: bdbb97e0d754cea4297e8c7cbcf8d3d1, type: 3}
@@ -5273,6 +5274,7 @@ MonoBehaviour:
   - {fileID: 6778379050037892916, guid: 4a3bf24245ae2394cad1283d2b0a8137, type: 3}
   - {fileID: 6646087204220502672, guid: 910b35b059262e04597928edbc73027a, type: 3}
   - {fileID: 1871991291931932775, guid: 4e1e87166e241274585539957f245b46, type: 3}
+  - {fileID: 5803286949999328196, guid: e5275ce3f8c27d74e820e8abe7bd2426, type: 3}
 --- !u!1 &1707535565
 GameObject:
   m_ObjectHideFlags: 0
