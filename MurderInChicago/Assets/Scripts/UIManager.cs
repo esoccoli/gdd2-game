@@ -397,7 +397,7 @@ public class UIScript : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 StartCoroutine(member.MagicAttack(targetedCharacters, name));
                 
