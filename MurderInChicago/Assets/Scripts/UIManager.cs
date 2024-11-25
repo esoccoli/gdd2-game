@@ -242,8 +242,8 @@ public class UIScript : MonoBehaviour
         for (int i = 0; i < partyMembers.Count; i++)
         {
             // Updates each of the player hp and wp UI elements
-            partyMemberHPTexts[i].text = partyMembers[i].Health.ToString();
-            partyMemberWPTexts[i].text = partyMembers[i].Willpower.ToString();
+            partyMemberHPTexts[i].text = partyMembers[i].IsAlive ? partyMembers[i].Health.ToString() : "0";
+            partyMemberWPTexts[i].text = partyMembers[i].IsAlive ? partyMembers[i].Willpower.ToString() : "0";
 
             // Checks if it is a party member's turn and then re enables the buttons if it is
             if (partyMembers[i].IsMyTurn)
