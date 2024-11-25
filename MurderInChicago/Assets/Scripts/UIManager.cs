@@ -250,8 +250,21 @@ public class UIScript : MonoBehaviour
             {
                 ShowAndHideButtons(true);
 
+                if (partyMembers[i].HasFear || partyMembers[i].HasDisgust)
+                {
+                    buttons[1].enabled = false;
+                    //buttons[1].interactable = false;
+                    buttons[1].targetGraphic.color = Color.gray;
+                    //buttons[1].GetComponent<SpriteRenderer>().color = Color.gray;
+                }
+                else
+                {
+                    buttons[1].enabled = true;
+                    //buttons[1].interactable = true;
+                    buttons[1].targetGraphic.color = Color.white;
+                    //buttons[1].GetComponent<Button>(). = Color.white;
+                }
                 List<string> spellNames = new List<string>();
-
 
                 Spell cSpell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[currentSpell]);
 

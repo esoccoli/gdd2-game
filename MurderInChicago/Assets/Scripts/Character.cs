@@ -236,6 +236,9 @@ public class Character : MonoBehaviour
     public bool IsAlive { get => isAlive; }
     public Collider2D Collider { get => collider; }
 
+    public bool HasFear { get => hasFear; }
+    public bool HasDisgust { get => hasDisgust; }
+
     // Start is called before the first frame update
     void Start()
     {
