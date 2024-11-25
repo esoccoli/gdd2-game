@@ -253,16 +253,12 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].HasFear || partyMembers[i].HasDisgust)
                 {
                     buttons[1].enabled = false;
-                    //buttons[1].interactable = false;
                     buttons[1].targetGraphic.color = Color.gray;
-                    //buttons[1].GetComponent<SpriteRenderer>().color = Color.gray;
                 }
                 else
                 {
                     buttons[1].enabled = true;
-                    //buttons[1].interactable = true;
                     buttons[1].targetGraphic.color = Color.white;
-                    //buttons[1].GetComponent<Button>(). = Color.white;
                 }
                 List<string> spellNames = new List<string>();
 
@@ -328,10 +324,11 @@ public class UIScript : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            if (!enemies[i].IsAlive) { enemyHPUI[i].SetActive(false); }
-
             // Updates each of the enemy hp and wp UI elements
             enemyHPTexts[i].text = $"HP: {enemies[i].Health}";
+
+            if (!enemies[i].IsAlive) { enemyHPUI[i].SetActive(false); }
+            
         }
     }
 

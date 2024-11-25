@@ -687,7 +687,7 @@ public class Character : MonoBehaviour
     public void TurnEnd()
     {
         BuffEnd();
-        isMyTurn = false;
+        //isMyTurn = false;
         isTargeting = false;
         //TurnEnd(regenWillpower)
         CheckEmotion();
@@ -886,9 +886,9 @@ public class Character : MonoBehaviour
     /// </summary>
     public void Death()
     {
-        isAlive = false;
         ChangeEmotion(Emotion.None);
         srCharacter.sprite = tombstone;
+        isAlive = false;
     }
 
     /// <summary>
