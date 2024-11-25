@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Spells;
-//using System.Diagnostics;
 
 /// Set of emotions a character could potentially have
 public enum Emotion
@@ -56,6 +55,7 @@ public class Character : MonoBehaviour
 
     [SerializeField]
     GameObject boostArrow;
+
     [SerializeField]
     GameObject dropArrow;
 
@@ -263,9 +263,7 @@ public class Character : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-    }
+    void Update() { }
 
     /// <summary>
     /// Deals physical damage to a specified target
@@ -321,7 +319,7 @@ public class Character : MonoBehaviour
         {
             spell.willpowerCost += (int)(spell.willpowerCost * 0.5f);
         }
-
+        
         // If the character has enough willpower to cast the spell
         if (currentWillpower >= spell.willpowerCost)
         {
@@ -372,7 +370,6 @@ public class Character : MonoBehaviour
         }
         else
         {
-            // TODO: Implement functionality for what happens if you try to cast a spell but don't have enough willpower
             UnityEngine.Debug.Log("You do not have enough Willpower to cast this spell");
         }
     }
@@ -409,6 +406,7 @@ public class Character : MonoBehaviour
         {
             ChangeEmotion(Emotion.None);
         }
+
         TurnEnd(regenWillpower + 3);
     }
 
@@ -423,15 +421,9 @@ public class Character : MonoBehaviour
             return;
         }
 
-        if (damageType == "physical")
-        {
-            damageAmount = fortitude > damageAmount ? 0 : damageAmount - fortitude;
-        }
+        if (damageType == "physical") { damageAmount = fortitude > damageAmount ? 0 : damageAmount - fortitude; }
 
-        if (spellType == weakness)
-        {
-            damageAmount += 3;
-        }
+        if (spellType == weakness) { damageAmount += 3; }
 
         currentHealth -= damageAmount;
 
@@ -439,10 +431,7 @@ public class Character : MonoBehaviour
 
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
 
-        if (currentHealth <= 0)
-        {
-            Death();
-        }
+        if (currentHealth <= 0) { Death(); }
     }
 
     /// <summary>
@@ -886,9 +875,9 @@ public class Character : MonoBehaviour
     /// </summary>
     public void Death()
     {
+        isAlive = false;
         ChangeEmotion(Emotion.None);
         srCharacter.sprite = tombstone;
-        isAlive = false;
     }
 
     /// <summary>

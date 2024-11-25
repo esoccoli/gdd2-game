@@ -3,16 +3,6 @@ using System.Collections;
 public class PartyMember : Character
 {
     /// <summary>
-    /// Allows the player to select an item from their inventory and use it
-    /// Only players can use items
-    /// This function will get called when the player selects the "Use Item" option in the battle menu
-    /// </summary>
-    public void UseItem()
-    {
-
-    }
-
-    /// <summary>
     /// Waits for input from the UI and takes the appropriate action based on the specific input
     /// </summary>
     /// <returns></returns>
