@@ -358,7 +358,16 @@ public class Character : MonoBehaviour
                     }
                     break;
                 default:
-                    if (targetList.Count == 1) yield return StartCoroutine(animManager.AnimateSprite(spellName, targetList[0].transform.position));
+                    if (targetList.Count > 1)
+                    {
+                        Vector3[] positions = new Vector3[targetList.Count];
+                        for(int i = 0; i < targetList.Count; i++)
+                        {
+                            positions[i] = targetList[i].transform.position;
+                        }
+                        yield return StartCoroutine(animManager.AnimateMultiTarget(spellName, positions));
+                    }
+                    else yield return StartCoroutine(animManager.AnimateSprite(spellName, targetList[0].transform.position));
                     for (int i = 0; i < targetList.Count; i++)
                     {
                         targetList[i].TakeDamage("spell", spell.damageAmount + resolve + Crit(), spell.type);

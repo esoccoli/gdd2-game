@@ -112,6 +112,25 @@ public class AnimationManager : MonoBehaviour
         animationQueue.Clear();
     }
 
+    public IEnumerator AnimateMultiTarget(string spellName, Vector3[] positions)
+    {
+        switch (spellName) {
+            case "Soulfire":
+                spellName = "Fire";
+                goto default;
+            case "Dreadcall":
+                spellName = "Curse";
+                goto default;
+            default:
+                foreach (Vector3 position in positions)
+                {
+                    Enqueue(spellName, position);
+                }
+                yield return PlayQueue();
+                break;
+        }
+    }
+
     /// <summary>
     /// Animates a sprite, then deletes it.
     /// </summary>
