@@ -104,6 +104,10 @@ public class UIScript : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI targetPromptText;
 
+    bool stopTargeting;
+
+    public bool StopTargeting { get => stopTargeting; set => stopTargeting = value; }
+
     AnimationManager animManager;
 
 
@@ -292,6 +296,11 @@ public class UIScript : MonoBehaviour
                 if (partyMembers[i].IsTargeting)
                 {
                     ShowAndHideButtons(false);
+
+                    if (stopTargeting)
+                    {
+                        return;
+                    }
 
                     // The UI elements will hide while an animated sprite is playing
                     targetPromptText.gameObject.SetActive(!animManager.IsActive);
