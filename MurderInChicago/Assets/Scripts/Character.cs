@@ -893,6 +893,7 @@ public class Character : MonoBehaviour
     {
         isAlive = false;
         ChangeEmotion(Emotion.None);
+        ClearDisplayedBuffs();
         srCharacter.sprite = tombstone;
     }
 
@@ -920,6 +921,21 @@ public class Character : MonoBehaviour
 
             }
         }
+    }
+
+    private void ClearDisplayedBuffs()
+    {
+        foreach (GameObject icon in buffIcons)
+        {
+            Destroy(icon);
+        }
+        buffIcons.Clear();
+
+        foreach (GameObject arrow in buffArrows)
+        {
+            Destroy(arrow);
+        }
+        buffArrows.Clear();
     }
 
     private void ResetUsedBuffIcons()
