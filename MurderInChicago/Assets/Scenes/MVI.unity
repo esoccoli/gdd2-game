@@ -5203,6 +5203,7 @@ MonoBehaviour:
   - Attack
   - Fire
   - Fireball
+  - Curse
   - Cursebind
   - Ice Blast
   sourceObjects:
@@ -5222,6 +5223,7 @@ MonoBehaviour:
   - {fileID: 1871991291931932775, guid: 4e1e87166e241274585539957f245b46, type: 3}
   - {fileID: 5803286949999328196, guid: e5275ce3f8c27d74e820e8abe7bd2426, type: 3}
   - {fileID: 3645987065169012031, guid: 823f3eb0f923f8b4cb70bbd1040f5338, type: 3}
+  - {fileID: 2429330424283132313, guid: d14c3b5205504df4b9394f317ead6310, type: 3}
   - {fileID: 1797469911196609247, guid: 064f3039855fea447a6db63e2878f4d0, type: 3}
   - {fileID: 4448614506464008588, guid: 740532615d22d034fbf8760364896e11, type: 3}
 --- !u!1 &1707535565
