@@ -317,7 +317,7 @@ public class Character : MonoBehaviour
         // If the character has fear, then all of their spells require more willpower to cast
         if (hasFear)
         {
-            spell.willpowerCost += (int)(spell.willpowerCost * 0.5f);
+            spell.willpowerCost += 3;
         }
         
         // If the character has enough willpower to cast the spell
@@ -337,6 +337,13 @@ public class Character : MonoBehaviour
                 }
             }
             currentWillpower -= spell.willpowerCost;
+
+            // Undos the additional fear willpower penalty
+            if (hasFear)
+            {
+                spell.willpowerCost -= 3;
+            }
+
             switch (spell.type)
             {
                 case "Heal":

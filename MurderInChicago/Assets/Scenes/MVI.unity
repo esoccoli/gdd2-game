@@ -7015,6 +7015,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 842757529}
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: boostArrow
       value: 
       objectReference: {fileID: 347139593}
@@ -7037,6 +7041,10 @@ PrefabInstance:
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: pastEmotion
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
+      propertyPath: maxWillpower
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2644259004442345730, guid: 81112cc0bd7dfff408af1395bc66f0be, type: 3}
       propertyPath: disgustSprite
@@ -7213,6 +7221,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 842757529}
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: boostArrow
       value: 
       objectReference: {fileID: 347139593}
@@ -7235,6 +7247,10 @@ PrefabInstance:
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: pastEmotion
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
+      propertyPath: maxWillpower
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 18831704630811973, guid: faaa93921799cd34a9923211368ba1ee, type: 3}
       propertyPath: disgustSprite

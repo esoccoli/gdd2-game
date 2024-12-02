@@ -110,6 +110,8 @@ public class UIScript : MonoBehaviour
 
     AnimationManager animManager;
 
+    int addedFearModifier = 0;
+
 
     #region Player UI Functions
     /// <summary>
@@ -268,6 +270,13 @@ public class UIScript : MonoBehaviour
 
                 Spell cSpell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[currentSpell]);
 
+                // If a character has Fear, the UI should show that the Willpower cost has increased by 3
+                //if (partyMembers[i].HasFear && addedFearModifier == false)
+                //{
+                //    cSpell.willpowerCost += 3;
+                //    addedFearModifier = true;
+                //}
+
                 spellDescriptionText.text = cSpell.description;
 
 
@@ -278,9 +287,18 @@ public class UIScript : MonoBehaviour
 
                     Spell spell = partyMembers[i].GlobalSpellList.GetSpell(partyMembers[i].spellList[j]);
 
-                    spellButtonTexts[j].text = $"{spell.name} WP: {spell.willpowerCost}";
+                    if (partyMembers[i].HasFear)
+                    {
+                        addedFearModifier = 3;
+                    }
+                    else
+                    {
+                        addedFearModifier = 0;
+                    }
 
-                    if (partyMembers[i].Willpower < spell.willpowerCost)
+                    spellButtonTexts[j].text = $"{spell.name} WP: {spell.willpowerCost + addedFearModifier}";
+
+                    if (partyMembers[i].Willpower < spell.willpowerCost + addedFearModifier)
                     {
                         spellButtons[j].interactable = false;
                         spellButtonTexts[j].color = Color.gray;
@@ -553,6 +571,7 @@ public class UIScript : MonoBehaviour
                 Vector3 newPositionBack = character.transform.position + new Vector3(0, -0.8f, 5);
                 turnIndicatorFront.transform.position = newPositionFront;
                 turnIndicatorBack.transform.position = newPositionBack;
+                addedFearModifier = 0;
                 return;
             }
         }
