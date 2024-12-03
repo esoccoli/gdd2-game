@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using static Spells;
 
 public class UIScript : MonoBehaviour
@@ -103,6 +104,11 @@ public class UIScript : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI targetPromptText;
+
+    [SerializeField]
+    GameObject infoScreen;
+
+    bool isGameStarted = false;
 
     bool stopTargeting;
 
@@ -222,10 +228,20 @@ public class UIScript : MonoBehaviour
         spellDescriptionBox.SetActive(false);
         targetPromptText.gameObject.SetActive(false);
         animManager = gameObject.GetComponent<AnimationManager>();
+
+        infoScreen.SetActive(true);
+        Time.timeScale = 0;
     }
 
     void Update()
     {
+        if (!isGameStarted && (Input.GetMouseButtonDown(0) || Input.anyKeyDown || Input.GetKeyDown(KeyCode.Space)))
+        {
+            isGameStarted = true;
+            infoScreen.SetActive(false);
+            Time.timeScale = 1;
+        }
+
         // Check for win/lose conditions
         CheckGameOver();
 
