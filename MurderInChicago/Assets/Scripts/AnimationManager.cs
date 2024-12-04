@@ -118,6 +118,9 @@ public class AnimationManager : MonoBehaviour
             case "Dreadcall":
                 spellName = "Curse";
                 goto default;
+            case "Mercy":
+                spellName = "Heal";
+                goto default;
             default:
                 foreach (Vector3 position in positions)
                 {
