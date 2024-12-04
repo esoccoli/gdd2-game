@@ -2303,13 +2303,29 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
-      propertyPath: strength
+      propertyPath: resolve
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: strength
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: weakness
+      value: Curse
       objectReference: {fileID: 0}
     - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: dropArrow
       value: 
       objectReference: {fileID: 842757529}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: fortitude
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: maxHealth
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: boostArrow
       value: 
@@ -2345,6 +2361,14 @@ PrefabInstance:
     - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: statIcons.Array.size
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: spellList.Array.data[0]
+      value: Poison
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
+      propertyPath: spellList.Array.data[1]
+      value: Heal
       objectReference: {fileID: 0}
     - target: {fileID: 8204833465253249778, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: statIcons.Array.data[0]
@@ -6620,8 +6644,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4364584052329221243}
     - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: spellList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
       propertyPath: statIcons.Array.size
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: spellList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: spellList.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
+      propertyPath: spellList.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8052036408583998412, guid: f2353b12a96123040a93c5c00919cf31, type: 3}
       propertyPath: statIcons.Array.data[0]

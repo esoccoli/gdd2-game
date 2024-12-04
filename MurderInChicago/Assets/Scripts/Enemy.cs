@@ -20,17 +20,29 @@ public class Enemy : Character
         int action = Random.Range(0, 100);
 
         Character target = targetList[Random.Range(0, targetList.Count - 1)];
-        List<Character> characterList = targetList.ConvertAll(target => (Character)target);
+        List<Character> characterList;
+        if (spellName != "None" && GetSpellInfo(spellName)[1] == "Multiple")
+            characterList = targetList.ConvertAll(target => (Character)target);
+        else characterList = new List<Character>() { target };
 
-        StartCoroutine(PhysicalAttack(target));
-        /*if (action < 40) { PhysicalAttack(target); }
-        else if (action > 40 && action < 80) { MagicAttack(characterList, spellName); }
-        else { Rest(); }*/
+        if (action < 30) { StartCoroutine(PhysicalAttack(target)); }
+        else if (action > 30 && action < 80) {
+            if (spellName == "None") StartCoroutine(PhysicalAttack(target));
+            else if (spellName == "Heal") StartCoroutine(MagicAttack(new List<Character>() { this }, spellName));
+            else StartCoroutine(MagicAttack(characterList, spellName)); 
+        }
+        else { Rest(); }
     }
 
     public string GetRandomSpell()
     {
-        int choice = Random.Range(0, spellList.Count);
-        return spellList[choice];
+        if (spellList.Count == 0) return "None";
+        string spell = spellList[Random.Range(0, spellList.Count)];
+        //Ensure the user has enough willpower to cast the spell
+        while (currentWillpower < GetSpellStats(spell)[1])
+        {
+            spell = spellList[Random.Range(0, spellList.Count)];
+        }
+        return spell;
     }
 }

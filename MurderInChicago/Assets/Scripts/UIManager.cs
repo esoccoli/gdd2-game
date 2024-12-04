@@ -418,7 +418,6 @@ public class UIScript : MonoBehaviour
 
         if (charactersTargeted == "Multiple")
         {
-            targetPromptText.gameObject.SetActive(false);
             if (type == "Heal" || type == "Buff")
             {
                 foreach (PartyMember pMember in partyMembers)
@@ -443,7 +442,7 @@ public class UIScript : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 StartCoroutine(member.MagicAttack(targetedCharacters, name));
-                
+                targetPromptText.gameObject.SetActive(false);
             }
         }
         else
