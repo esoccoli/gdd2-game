@@ -20,15 +20,22 @@ public class Enemy : Character
         int action = Random.Range(0, 100);
 
         Character target = targetList[Random.Range(0, targetList.Count - 1)];
+
+        //If this enemy has no spells, just attack every turn
+        if (spellList.Count == 0)
+        {
+            StartCoroutine(PhysicalAttack(target));
+            return;
+        }
+
         List<Character> characterList;
-        if (spellName != "None" && GetSpellInfo(spellName)[1] == "Multiple")
+        if (GetSpellInfo(spellName)[1] == "Multiple")
             characterList = targetList.ConvertAll(target => (Character)target);
         else characterList = new List<Character>() { target };
 
         if (action < 30) { StartCoroutine(PhysicalAttack(target)); }
         else if (action > 30 && action < 80) {
-            if (spellName == "None") StartCoroutine(PhysicalAttack(target));
-            else if (spellName == "Heal") StartCoroutine(MagicAttack(new List<Character>() { this }, spellName));
+            if (spellName == "Heal") StartCoroutine(MagicAttack(new List<Character>() { this }, spellName));
             else StartCoroutine(MagicAttack(characterList, spellName)); 
         }
         else { Rest(); }

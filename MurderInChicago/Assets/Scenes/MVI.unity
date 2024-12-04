@@ -5265,6 +5265,7 @@ MonoBehaviour:
   - Ice Blast
   - Heal
   - Strong Heal
+  - Poison
   sourceObjects:
   - {fileID: 9113927319239626787, guid: 2c0b9570d27d42a42b36b3691f35ed7b, type: 3}
   - {fileID: 5040812790056431131, guid: bdbb97e0d754cea4297e8c7cbcf8d3d1, type: 3}
@@ -5287,6 +5288,7 @@ MonoBehaviour:
   - {fileID: 4448614506464008588, guid: 740532615d22d034fbf8760364896e11, type: 3}
   - {fileID: 6990259683888376577, guid: fbcde411663b2d948a9891351c66d88c, type: 3}
   - {fileID: 8244816638835205957, guid: c66c9337e579900409f6dd633fbcc248, type: 3}
+  - {fileID: 6992045615577308673, guid: 1e667754f753b604fa845d65207a00be, type: 3}
 --- !u!1 &1707535565
 GameObject:
   m_ObjectHideFlags: 0
