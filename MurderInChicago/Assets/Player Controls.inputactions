@@ -76,9 +76,18 @@
             "id": "6c4abe1e-4047-4813-8b95-4d17da1783bf",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Pause Game",
                     "type": "Button",
                     "id": "8a22b735-3e39-4aeb-a4e7-fdb52885674e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel Target",
+                    "type": "Button",
+                    "id": "19d4d00a-95d4-4063-a81c-9c8da6f1ff57",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -93,7 +102,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Pause Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -104,7 +113,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Cancel Target",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

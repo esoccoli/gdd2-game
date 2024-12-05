@@ -1419,7 +1419,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Choose a target!
+  m_text: 'Choose a target!
+
+    Press "E" to cancel'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5202,20 +5204,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1706382067}
         m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: OnPause
+        m_MethodName: OnCancelTarget
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1706382067}
-        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
-        m_MethodName: set_StopTargeting
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5226,6 +5216,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8a22b735-3e39-4aeb-a4e7-fdb52885674e
     m_ActionName: In Game Controls/New action[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1706382067}
+        m_TargetAssemblyTypeName: UIScript, Assembly-CSharp
+        m_MethodName: OnCancelTarget
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 19d4d00a-95d4-4063-a81c-9c8da6f1ff57
+    m_ActionName: In Game Controls/Cancel Target[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: In Game Controls
