@@ -2246,11 +2246,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2904725101726459799, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 2904725101726459799, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 4036260078664944413, guid: 090260a4f81d83b4f8de2f1be34e0a8d, type: 3}
       propertyPath: m_Name
@@ -6937,7 +6937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: spellList.Array.data[0]
-      value: Poison
+      value: Fire
       objectReference: {fileID: 0}
     - target: {fileID: 124758713763570548, guid: 3718c55766894914484d7c91c3e6e7f8, type: 3}
       propertyPath: spellList.Array.data[2]

@@ -839,7 +839,13 @@ public class Character : MonoBehaviour
                 srCharacter.color = Color.yellow;
 
                 if (this is Enemy)
-                    animOffset = new Vector3(-1.1f, 0, 0);
+                {
+                    animOffset = gameObject.name switch
+                    {
+                        "Green Djinn" => new Vector3(-0.1f, 0.85f, 0),
+                        _ => new Vector3(-1.1f, 0, 0),
+                    };
+                }
                 else
                     animOffset = new Vector3(0.25f, 0.85f, 0);
                 animManager.AddLoop("Happy", name, transform.position + animOffset, flipSprite);
@@ -857,7 +863,13 @@ public class Character : MonoBehaviour
 
                 srCharacter.color = Color.red;
                 if (this is Enemy)
-                    animOffset = new Vector3(-0.65f, -0.2f, 0);
+                {
+                    animOffset = gameObject.name switch
+                    {
+                        "Green Djinn" => new Vector3(0.25f, 0.75f, 0),
+                        _ => new Vector3(-0.65f, -0.2f, 0),
+                    };
+                }
                 else
                     animOffset = new Vector3(0.25f, 0.75f, 0);
                 animManager.AddLoop("Angry", name, transform.position + animOffset, flipSprite);
@@ -875,7 +887,13 @@ public class Character : MonoBehaviour
 
                 srCharacter.color = Color.blue;
                 if (this is Enemy)
-                    animOffset = new Vector3(-0.9f, -0.5f, 0);
+                {
+                    animOffset = gameObject.name switch
+                    {
+                        "Green Djinn" => new Vector3(0, 0.3f, 0),
+                        _ => new Vector3(-0.9f, -0.5f, 0),
+                    };
+                }
                 else
                     animOffset = new Vector3(0.15f, 0.1f, 0);
                 animManager.AddLoop("Sad", name, transform.position + animOffset, flipSprite);
@@ -886,7 +904,13 @@ public class Character : MonoBehaviour
                 hasFear = true;
                 srCharacter.color = new Color(0.6f, 0.1f, 0.9f, 1f); //purple
                 if (this is Enemy)
-                    animOffset = new Vector3(-0.85f, -0.3f, 0);
+                {
+                    animOffset = gameObject.name switch
+                    {
+                        "Green Djinn" => new Vector3(0.1f, 0.65f, 0),
+                        _ => new Vector3(-0.85f, -0.3f, 0),
+                    };
+                }
                 else
                     animOffset = new Vector3(0, 0.45f, 0);
                 animManager.AddLoop("Afraid", name, transform.position + animOffset, flipSprite);
@@ -897,7 +921,14 @@ public class Character : MonoBehaviour
                 hasDisgust = true;
                 srCharacter.color = Color.green;
                 if (this is Enemy)
-                    animOffset = new Vector3(-1.2f, -0.5f, 0);
+                {
+                    animOffset = gameObject.name switch
+                    {
+                        "Green Djinn" => new Vector3(-0.1f, 0.65f, 0),
+                        _ => new Vector3(-1.2f, -0.5f, 0),
+                    };
+                }
+                    
                 else
                     animOffset = new Vector3(0.05f, 0.25f, 0);
                 animManager.AddLoop("Disgust", name, transform.position + animOffset, flipSprite);

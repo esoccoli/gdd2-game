@@ -109,6 +109,8 @@ public class UIScript : MonoBehaviour
     GameObject infoScreen;
 
     bool isGameStarted = false;
+    public static bool targetArrowsAdded = false;
+    List<GameObject> targetArrows = new();
 
     AnimationManager animManager;
 
@@ -238,6 +240,7 @@ public class UIScript : MonoBehaviour
 
         infoScreen.SetActive(true);
         Time.timeScale = 0;
+        targetArrowsAdded = false;
     }
 
     void Update()
@@ -415,7 +418,6 @@ public class UIScript : MonoBehaviour
         spellBox.SetActive(false);
         spellDescriptionBox.SetActive(false);
 
-
         List<Character> targetedCharacters = new List<Character>();
 
         if (charactersTargeted == "Multiple")
@@ -438,13 +440,26 @@ public class UIScript : MonoBehaviour
                     if (enemy.IsAlive)
                     {
                         targetedCharacters.Add(enemy);
+                        if (!targetArrowsAdded)
+                        {
+                            GameObject targetArrow = Instantiate(targetSelectArrowIndicator);
+                            targetArrow.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
+                            targetArrow.SetActive(true);
+                            targetArrows.Add(targetArrow);
+                        }
                     }
                 }
+                targetArrowsAdded = true;
             }
             if (Input.GetMouseButtonDown(0))
             {
-                StartCoroutine(member.MagicAttack(targetedCharacters, name));
                 targetPromptText.gameObject.SetActive(false);
+                foreach (GameObject arrow in targetArrows)
+                {
+                    Destroy(arrow);
+                }
+                targetArrows.Clear();
+                StartCoroutine(member.MagicAttack(targetedCharacters, name));
             }
         }
         else
@@ -503,7 +518,6 @@ public class UIScript : MonoBehaviour
                         }
                     }
                 }
-                //member.MagicAttack(targetedCharacters, name);
             }
             else
             {
@@ -522,54 +536,9 @@ public class UIScript : MonoBehaviour
                         }
                     }
                 }
-                //TargetHelper(true, member, name);
             }
         }
     }
-
-    //future targeting helper function
-    void TargetHelper(bool isEnemy, PartyMember member, string spellName)
-    {
-
-        List<Character> targets = new List<Character>();
-
-        if (isEnemy) 
-        {
-            foreach (Enemy enemy in enemies)
-            {
-                if (cursor.bounds.Intersects(enemy.Collider.bounds) && enemy.IsAlive)
-                {
-                    targetSelectArrowIndicator.transform.position = enemy.transform.position + new Vector3(-1.5f, 0, 0);
-                    targetSelectArrowIndicator.SetActive(true);
-
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        targets.Add(enemy);
-                        targetPromptText.gameObject.SetActive(false);
-                    }
-                }
-            }
-        }
-        else 
-        {
-            foreach (PartyMember pMember in partyMembers)
-            {
-                if (cursor.bounds.Intersects(pMember.Collider.bounds) && pMember.IsAlive)
-                {
-                    targetSelectArrowIndicator.transform.position = pMember.transform.position + new Vector3(-1.5f, 0, 0);
-                    targetSelectArrowIndicator.SetActive(true);
-
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        targets.Add(pMember);
-                        targetPromptText.gameObject.SetActive(false);
-                    }
-                }
-            }
-        }
-        member.MagicAttack(targets, name);
-    }
-
 
     #endregion
 
