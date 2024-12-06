@@ -369,6 +369,16 @@ public class Character : MonoBehaviour
                     break;
                 case "Emotion":
                     //Emotion spells just increase your Emotion and nothing else
+                    if (targetList.Count > 1)
+                    {
+                        Vector3[] positions = new Vector3[targetList.Count];
+                        for (int i = 0; i < targetList.Count; i++)
+                        {
+                            positions[i] = targetList[i].transform.position;
+                        }
+                        yield return StartCoroutine(animManager.AnimateMultiTarget(spellName, positions));
+                    }
+                    else yield return StartCoroutine(animManager.AnimateSprite(spellName, targetList[0].transform.position));
                     foreach (var c in targetList)
                     {
                         c.AddEmotionPoints(spell.emotion, spell.emotionPoints);
